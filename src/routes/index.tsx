@@ -4,9 +4,14 @@ import {
   createRouter,
   Outlet,
 } from "@tanstack/react-router";
+import PublicLayout from "../layouts/PublicLayout";
 import RootLayout from "../layouts/RootLayout";
-import { ROUTER_ROUTES } from "./routes";
-import { authRoute, loginRoute, registerRoute } from "./auth.routes";
+import {
+  authRoute,
+  loginRoute,
+  registerRoute,
+  verifyEmailRoute
+} from "./auth.routes";
 import {
   consultancyInfoRoute,
   eventsInfoRoute,
@@ -14,7 +19,7 @@ import {
   productsInfoRoute,
   termsAndConditionsRoute,
 } from "./info.routes";
-import PublicLayout from "../layouts/PublicLayout";
+import { ROUTER_ROUTES } from "./routes";
 
 export const rootRoute = createRootRoute({
   component: () => <Outlet />,
@@ -35,7 +40,11 @@ export const publicRoute = createRoute({
 });
 
 export const routeTree = rootRoute.addChildren([
-  authRoute.addChildren([loginRoute, registerRoute]),
+  authRoute.addChildren([
+    loginRoute,
+    registerRoute,
+    verifyEmailRoute,
+  ]),
   appRoute.addChildren([]),
   publicRoute.addChildren([
     eventsInfoRoute,

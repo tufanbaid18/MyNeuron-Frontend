@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import AuthGlassCard from "../components/auth/AuthGlassCard";
 import AuthInput from "../components/auth/AuthInput";
-import toast from "react-hot-toast";
 import { APP_ROUTES } from "../constants/app.routes";
 
 const LogIn = () => {
