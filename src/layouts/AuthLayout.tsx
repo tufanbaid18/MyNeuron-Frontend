@@ -1,13 +1,11 @@
-import { Outlet } from "@tanstack/react-router";
+import { Outlet, useNavigate } from "@tanstack/react-router";
 import { APP_ROUTES } from "../constants/app.routes";
-import { useEffect } from "react";
 
 const AuthLayout = () => {
-  useEffect(() => {
-    if (window.location.pathname === APP_ROUTES.AUTH) {
-      window.location.href = APP_ROUTES.LOGIN;
-    }
-  }, []);
+  const navigate = useNavigate();
+  if (window.location.pathname === APP_ROUTES.AUTH) {
+    navigate({ to: APP_ROUTES.LOGIN });
+  }
 
   return (
     <div
@@ -16,7 +14,7 @@ const AuthLayout = () => {
     >
       {/* Overlay */}
       <div className="absolute inset-0 bg-[#001428a6] z-1"></div>
-      
+
       {/* Left side text container */}
       <div className="relative z-2 text-white w-full max-w-[1000px] max-h-[800px] text-center md:text-left mx-auto md:mx-0">
         <img

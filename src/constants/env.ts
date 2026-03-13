@@ -1,10 +1,5 @@
 import { validateEnv } from "../config/env.config";
-import { AppEnv, type ValidationSchema } from "../types/root.types";
-
-export const envSchema: ValidationSchema = {
-  VITE_API_BASE_URL: { type: "string", required: true },
-  VITE_APP_ENV: { type: "enum", default: AppEnv.DEVELOPMENT, enumObj: AppEnv },
-};
+import { envSchema } from "../config/env.schema";
 
 // Pass `false` so it logs a warning instead of throwing an unhandled exception in the browser console.
 // Also use a safe fallback because this file gets evaluated by Node.js when `vite.config.ts` runs.
