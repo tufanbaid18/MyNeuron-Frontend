@@ -33,19 +33,19 @@ const AuthLayout = () => {
 
         <div className="flex flex-wrap gap-4 font-semibold justify-center md:justify-start">
           <a
-            href="#"
+            href={APP_ROUTES.EVENTS_INFO}
             className="text-white hover:text-[#70a83e] transition-colors"
           >
             Events
           </a>
           <a
-            href="#"
+            href={APP_ROUTES.CONSULTANCY_INFO}
             className="text-white hover:text-[#70a83e] transition-colors"
           >
             Consultancy
           </a>
           <a
-            href="#"
+            href={APP_ROUTES.PRODUCTS_INFO}
             className="text-white hover:text-[#70a83e] transition-colors"
           >
             Products
