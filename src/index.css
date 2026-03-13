@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+
 @theme {
   --color-primary: #00ff99;
   --color-link: oklch(62.3% 0.214 259.815);

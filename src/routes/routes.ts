@@ -10,4 +10,5 @@ export const ROUTER_ROUTES = {
   CONSULTANCY_INFO: "consultancy-info",
   PRODUCTS_INFO: "products-info",
   VERIFY_EMAIL: "verify-email",
+  PLASMA: "plasma",
 };

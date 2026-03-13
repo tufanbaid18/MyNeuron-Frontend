@@ -1,5 +1,11 @@
-import { createRootRoute, createRouter, Outlet } from "@tanstack/react-router";
-import { appRoute } from "./app.routes";
+import {
+  createRootRoute,
+  createRouter,
+  Outlet,
+  createRoute,
+  redirect,
+} from "@tanstack/react-router";
+import { appRoute, plasmaRoute } from "./app.routes";
 import {
   authRoute,
   loginRoute,
@@ -15,14 +21,24 @@ import {
   publicRoute,
   termsAndConditionsRoute,
 } from "./public.routes";
+import { APP_ROUTES } from "../constants/app.routes";
 
 export const rootRoute = createRootRoute({
   component: () => <Outlet />,
 });
 
+// Redirect from / to /plasma
+export const indexAppRoute = createRoute({
+  getParentRoute: () => appRoute,
+  path: "/",
+  beforeLoad: () => {
+    throw redirect({ to: APP_ROUTES.PLASMA });
+  },
+});
+
 export const routeTree = rootRoute.addChildren([
   authRoute.addChildren([loginRoute, registerRoute, verifyEmailRoute]),
-  appRoute.addChildren([]),
+  appRoute.addChildren([indexAppRoute, plasmaRoute]),
   publicRoute.addChildren([
     eventsInfoRoute,
     productsInfoRoute,
@@ -32,4 +48,9 @@ export const routeTree = rootRoute.addChildren([
   ]),
 ]);
 
-export const router = createRouter({ routeTree });
+import NotFound from "../pages/error/NotFound";
+
+export const router = createRouter({
+  routeTree,
+  defaultNotFoundComponent: () => <NotFound />,
+});

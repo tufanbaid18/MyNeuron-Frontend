@@ -5,10 +5,11 @@ import { appStore, userProfileAtom } from "../store/auth.store";
 import { getUserProfile } from "../services/auth/auth.service";
 import RootLayout from "../layouts/RootLayout";
 import { APP_ROUTES } from "../constants/app.routes";
+import Plasma from "../pages/Plasma";
 
 export const appRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: ROUTER_ROUTES.HOME,
+  id: "_app",
   beforeLoad: async () => {
     const existingProfile = appStore.get(userProfileAtom);
     if (existingProfile) return;
@@ -21,4 +22,10 @@ export const appRoute = createRoute({
     }
   },
   component: () => <RootLayout />,
+});
+
+export const plasmaRoute = createRoute({
+  getParentRoute: () => appRoute,
+  path: ROUTER_ROUTES.PLASMA,
+  component: () => <Plasma />,
 });
