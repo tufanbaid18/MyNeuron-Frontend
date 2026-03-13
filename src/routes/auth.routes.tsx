@@ -3,6 +3,7 @@ import { rootRoute } from ".";
 import { ROUTER_ROUTES } from "./routes";
 import AuthLayout from "../layouts/AuthLayout";
 import LogIn from "../pages/LogIn";
+import Register from "../pages/Register";
 
 export const authRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -15,4 +16,10 @@ export const loginRoute = createRoute({
   path: ROUTER_ROUTES.LOGIN,
   beforeLoad: async () => {},
   component: () => <LogIn />,
+});
+
+export const registerRoute = createRoute({
+  getParentRoute: () => authRoute,
+  path: ROUTER_ROUTES.REGISTER,
+  component: () => <Register />,
 });

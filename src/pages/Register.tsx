@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import toast from "react-hot-toast";
 import AuthGlassCard from "../components/auth/AuthGlassCard";
 import AuthInput from "../components/auth/AuthInput";
-import toast from "react-hot-toast";
-import { APP_ROUTES } from "../constants/app.routes";
+import { useState } from "react";
 
-const LogIn = () => {
+function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -57,7 +56,7 @@ const LogIn = () => {
       <p className="mt-[15px] text-center text-[0.9rem] text-[#cfe3f0]">
         Don’t have an account?{" "}
         <a
-          href={APP_ROUTES.REGISTER}
+          href="/register"
           className="text-[#00ff99] no-underline hover:underline"
         >
           Register
@@ -67,14 +66,14 @@ const LogIn = () => {
       <div className="mt-[15px] text-center text-[0.9rem] text-[#cfe3f0]">
         <label>
           <a
-            href={APP_ROUTES.TERMS_AND_CONDITIONS}
+            href="/terms-and-conditions"
             className="text-[#00ff99] no-underline hover:underline"
           >
             Terms & Conditions
           </a>{" "}
           and{" "}
           <a
-            href={APP_ROUTES.PRIVACY_POLICY}
+            href="/privacy-policy"
             className="text-[#00ff99] no-underline hover:underline"
           >
             Privacy Policy
@@ -84,6 +83,6 @@ const LogIn = () => {
       </div>
     </AuthGlassCard>
   );
-};
+}
 
-export default LogIn;
+export default Register;
