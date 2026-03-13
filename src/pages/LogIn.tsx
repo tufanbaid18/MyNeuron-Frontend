@@ -66,14 +66,14 @@ const LogIn = () => {
       <div className="mt-[15px] text-center text-[0.9rem] text-[#cfe3f0]">
         <label>
           <a
-            href="/Terms&Conditions"
+            href="/terms-and-conditions"
             className="text-[#00ff99] no-underline hover:underline"
           >
             Terms & Conditions
           </a>{" "}
           and{" "}
           <a
-            href="/PrivacyPolicy"
+            href="/privacy-policy"
             className="text-[#00ff99] no-underline hover:underline"
           >
             Privacy Policy
