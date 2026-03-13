@@ -7,7 +7,7 @@ const AuthLayout = () => {
     if (window.location.pathname === APP_ROUTES.AUTH) {
       window.location.href = APP_ROUTES.LOGIN;
     }
-  }, [window.location.href]);
+  }, []);
 
   return (
     <div

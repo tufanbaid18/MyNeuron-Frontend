@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import AuthGlassCard from "../components/AuthGlassCard";
-import AuthInput from "../components/AuthInput";
+import AuthGlassCard from "../components/auth/AuthGlassCard";
+import AuthInput from "../components/auth/AuthInput";
+import toast from "react-hot-toast";
 
 const LogIn = () => {
   const [email, setEmail] = useState("");
@@ -46,6 +47,7 @@ const LogIn = () => {
           type="submit"
           className="w-full py-[12px] rounded-[8px] text-white text-[1rem] font-medium transition-transform hover:-translate-y-[2px]"
           style={{ background: "linear-gradient(90deg, #00c896, #00ff99)" }}
+          onClick={() => toast.success("Success")}
         >
           Log in
         </button>
