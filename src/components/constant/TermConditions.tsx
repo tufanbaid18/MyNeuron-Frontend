@@ -20,7 +20,7 @@ export default function TermsConditions(): JSX.Element {
             </header>
 
             {/* Important Notice */}
-            <div className="mb-8 rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm text-gray-700">
+            <div className="mb-8 rounded-lg border border-gray-300 bg-gray-100 p-4 text-sm text-gray-700">
               <strong>Important:</strong> This agreement is a legally binding
               contract between you (“User”) and Bencos Research & Healthcare
               Solutions Pvt. Ltd. By accessing or using MyNeuron™, you agree to

@@ -7,6 +7,14 @@ const AuthLayout = () => {
     navigate({ to: APP_ROUTES.LOGIN });
   }
 
+  const animationCss = `
+  relative no-underline
+             after:absolute after:left-0 after:bottom-0
+             after:h-[2px] after:w-0 after:bg-white
+             after:transition-all after:duration-300
+             hover:after:w-full
+  `;
+
   return (
     <div
       className="min-h-screen w-full bg-cover bg-center bg-no-repeat relative flex items-center px-[5%] md:px-[8%] py-[60px] flex-col md:flex-row gap-10 md:gap-0 font-sans"
@@ -31,22 +39,22 @@ const AuthLayout = () => {
           Connecting bright minds to advance health research & innovation
         </p>
 
-        <div className="flex flex-wrap gap-4 font-semibold justify-center md:justify-start">
+        <div className="flex flex-wrap gap-4 font-semibold justify-center md:justify-start no-underline">
           <a
             href={APP_ROUTES.EVENTS_INFO}
-            className="text-white hover:text-[#70a83e] transition-colors"
+            className={`text-white hover:text-[#70a83e] transition-colors ${animationCss}`}
           >
             Events
           </a>
           <a
             href={APP_ROUTES.CONSULTANCY_INFO}
-            className="text-white hover:text-[#70a83e] transition-colors"
+            className={`text-white hover:text-[#70a83e] transition-colors ${animationCss}`}
           >
             Consultancy
           </a>
           <a
             href={APP_ROUTES.PRODUCTS_INFO}
-            className="text-white hover:text-[#70a83e] transition-colors"
+            className={`text-white hover:text-[#70a83e] transition-colors ${animationCss}`}
           >
             Products
           </a>
