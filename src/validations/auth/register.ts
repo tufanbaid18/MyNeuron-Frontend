@@ -2,13 +2,13 @@ import { z } from "zod";
 
 export const registerSchema = z
   .object({
-    firstName: z
+    first_name: z
       .string()
       .min(2, "At least 2 characters expected")
       .max(50, "Maximum 50 character")
       .trim(),
-    middleName: z.string().optional(),
-    lastName: z
+    middle_name: z.string().optional(),
+    last_name: z
       .string()
       .min(2, "At least 2 characters expected")
       .max(50, "Maximum 50 character")
@@ -27,7 +27,7 @@ export const registerSchema = z
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
         "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character",
       ),
-    confirmPassword: z
+    confirm_password: z
       .string()
       .min(8, "Password must be atleast 8 characters")
       .max(16, "Password must be atmost 16 characters")
@@ -39,7 +39,7 @@ export const registerSchema = z
       message: "You must accept the terms",
     }),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine((data) => data.password === data.confirm_password, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });

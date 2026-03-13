@@ -1,12 +1,20 @@
 import { createRoute } from "@tanstack/react-router";
+import { rootRoute } from ".";
+import PublicLayout from "../layouts/PublicLayout";
+import { ROUTER_ROUTES } from "./routes";
+
 import ConsultancyInfo from "../components/constant/CosultancyInfo";
 import EventsInfo from "../components/constant/EventsInfo";
 import PrivacyPolicy from "../components/constant/PrivacyPolicy";
 import ProductInfo from "../components/constant/ProductInfo";
 import TermsConditions from "../components/constant/TermConditions";
-import { publicRoute } from "./index";
-import { ROUTER_ROUTES } from "./routes";
 
+export const publicRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: ROUTER_ROUTES.PUBLIC,
+  beforeLoad: async () => {},
+  component: () => <PublicLayout />,
+});
 
 export const eventsInfoRoute = createRoute({
   getParentRoute: () => publicRoute,

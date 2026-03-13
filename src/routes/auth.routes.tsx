@@ -7,6 +7,7 @@ import VerificationMail from "../pages/VerificationMail";
 import { ROUTER_ROUTES } from "./routes";
 import { getUserProfile } from "../services/auth/auth.service";
 import { appStore, userProfileAtom } from "../store/auth.store";
+import { APP_ROUTES } from "../constants/app.routes";
 
 export const authRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -17,12 +18,10 @@ export const authRoute = createRoute({
       const profile = await getUserProfile();
       appStore.set(userProfileAtom, profile);
       isAuthenticated = true;
-    } catch (error) {
-      // Unauthenticated, let them proceed
-    }
+    } catch (error) {}
 
     if (isAuthenticated) {
-      throw redirect({ to: "/" });
+      throw redirect({ to: APP_ROUTES.ROOT });
     }
   },
   component: () => <AuthLayout />,

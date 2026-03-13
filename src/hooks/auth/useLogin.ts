@@ -1,11 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
+import { isAxiosError } from "axios";
 import { useSetAtom } from "jotai";
 import toast from "react-hot-toast";
+import { APP_ROUTES } from "../../constants/app.routes";
 import { getUserProfile, loginUser } from "../../services/auth/auth.service";
 import { userProfileAtom } from "../../store/auth.store";
 import type { LoginRequest } from "../../types/auth/login.types";
-import { isAxiosError } from "axios";
 
 export const useLogin = () => {
   const setUserProfile = useSetAtom(userProfileAtom);
@@ -18,7 +19,7 @@ export const useLogin = () => {
         const profile = await getUserProfile();
         setUserProfile(profile);
         toast.success("Logged in successfully");
-        navigate({ to: "/" });
+        navigate({ to: APP_ROUTES.LOGIN });
       } catch {
         toast.error("Login succeeded but failed to fetch profile");
       }

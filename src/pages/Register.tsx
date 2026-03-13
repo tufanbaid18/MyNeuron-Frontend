@@ -1,19 +1,22 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Checkbox } from "antd";
-import { useForm, Controller } from "react-hook-form";
-import toast from "react-hot-toast";
+import { Controller, useForm } from "react-hook-form";
 import AuthGlassCard from "../components/auth/AuthGlassCard";
 import AuthInput from "../components/auth/AuthInput";
-import { APP_ROUTES } from "../constants/app.routes";
-import type { RegisterFormFields } from "../types/auth/register.types";
-import { registerSchema } from "../validations/auth/register";
 import PlatformButton from "../components/ui/PlatformButton";
+import { APP_ROUTES } from "../constants/app.routes";
+import { useRegister } from "../hooks/auth/useRegister";
+import type { RegisterFormFields } from "../types/auth/register.types";
+import {
+  registerSchema,
+  type RegisterForm,
+} from "../validations/auth/register";
 
 function Register() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     control,
     watch,
   } = useForm<RegisterFormFields>({
@@ -22,18 +25,10 @@ function Register() {
 
   const termsAccepted = watch("termsAccepted");
 
-  const onSubmit = async (data: RegisterFormFields) => {
-    try {
-      console.log(data);
+  const registerMutation = useRegister();
 
-      // await api.register(data)
-
-      toast.success("Account created");
-
-      // navigate(APP_ROUTES.LOGIN);
-    } catch (error) {
-      toast.error("Registration failed");
-    }
+  const onSubmit = (data: RegisterForm) => {
+    registerMutation.mutate(data);
   };
 
   return (
@@ -45,23 +40,23 @@ function Register() {
       {/* FIXED */}
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
         <div>
-          <AuthInput placeholder="First Name" {...register("firstName")} />
-          {errors.firstName && (
-            <p className="text-error text-sm">{errors.firstName.message}</p>
+          <AuthInput placeholder="First Name" {...register("first_name")} />
+          {errors.first_name && (
+            <p className="text-error text-sm">{errors.first_name.message}</p>
           )}
         </div>
 
         <div>
-          <AuthInput placeholder="Middle Name" {...register("middleName")} />
-          {errors.middleName && (
-            <p className="text-error text-sm">{errors.middleName.message}</p>
+          <AuthInput placeholder="Middle Name" {...register("middle_name")} />
+          {errors.middle_name && (
+            <p className="text-error text-sm">{errors.middle_name.message}</p>
           )}
         </div>
 
         <div>
-          <AuthInput placeholder="Last Name" {...register("lastName")} />
-          {errors.lastName && (
-            <p className="text-error text-sm">{errors.lastName.message}</p>
+          <AuthInput placeholder="Last Name" {...register("last_name")} />
+          {errors.last_name && (
+            <p className="text-error text-sm">{errors.last_name.message}</p>
           )}
         </div>
 
@@ -87,11 +82,11 @@ function Register() {
           <AuthInput
             type="password"
             placeholder="Confirm Password"
-            {...register("confirmPassword")}
+            {...register("confirm_password")}
           />
-          {errors.confirmPassword && (
+          {errors.confirm_password && (
             <p className="text-error text-sm">
-              {errors.confirmPassword.message}
+              {errors.confirm_password.message}
             </p>
           )}
         </div>
@@ -130,8 +125,8 @@ function Register() {
           )}
         </div>
 
-        <PlatformButton disabled={isSubmitting || !termsAccepted}>
-          {isSubmitting ? "Registering..." : "Register"}
+        <PlatformButton disabled={registerMutation.isPending || !termsAccepted}>
+          {registerMutation.isPending ? "Registering..." : "Register"}
         </PlatformButton>
       </form>
 

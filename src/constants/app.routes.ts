@@ -1,4 +1,6 @@
 export const APP_ROUTES = {
+  ROOT: "/",
+  HOME: "/plasma",
   AUTH: "/auth",
   LOGIN: "/auth/login",
   REGISTER: "/auth/register",
