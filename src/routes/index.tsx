@@ -3,6 +3,7 @@ import {
   createRoute,
   createRouter,
   Outlet,
+  redirect,
 } from "@tanstack/react-router";
 import PublicLayout from "../layouts/PublicLayout";
 import RootLayout from "../layouts/RootLayout";
@@ -10,7 +11,7 @@ import {
   authRoute,
   loginRoute,
   registerRoute,
-  verifyEmailRoute
+  verifyEmailRoute,
 } from "./auth.routes";
 import {
   consultancyInfoRoute,
@@ -20,6 +21,8 @@ import {
   termsAndConditionsRoute,
 } from "./info.routes";
 import { ROUTER_ROUTES } from "./routes";
+import { getUserProfile } from "../services/auth/auth.service";
+import { appStore, userProfileAtom } from "../store/auth.store";
 
 export const rootRoute = createRootRoute({
   component: () => <Outlet />,
@@ -28,7 +31,17 @@ export const rootRoute = createRootRoute({
 export const appRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: ROUTER_ROUTES.HOME,
-  beforeLoad: async () => {},
+  beforeLoad: async () => {
+    const existingProfile = appStore.get(userProfileAtom);
+    if (existingProfile) return;
+
+    try {
+      const profile = await getUserProfile();
+      appStore.set(userProfileAtom, profile);
+    } catch {
+      throw redirect({ to: "/auth/login" });
+    }
+  },
   component: () => <RootLayout />,
 });
 
@@ -40,11 +53,7 @@ export const publicRoute = createRoute({
 });
 
 export const routeTree = rootRoute.addChildren([
-  authRoute.addChildren([
-    loginRoute,
-    registerRoute,
-    verifyEmailRoute,
-  ]),
+  authRoute.addChildren([loginRoute, registerRoute, verifyEmailRoute]),
   appRoute.addChildren([]),
   publicRoute.addChildren([
     eventsInfoRoute,
