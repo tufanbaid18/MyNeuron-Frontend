@@ -21,18 +21,20 @@ export const useLogin = () => {
         toast.success("Logged in successfully");
         navigate({ to: APP_ROUTES.LOGIN });
       } catch {
-        toast.error("Login succeeded but failed to fetch profile");
+        toast.error("Login succeeded but failed to fetch profile.");
       }
     },
     onError: (error) => {
       if (isAxiosError(error)) {
         const message =
-          error.response?.data?.message ??
-          error.response?.data?.detail ??
+          error.response?.data?.message ||
+          error.response?.data?.detail ||
           "Login failed. Please check your credentials.";
         toast.error(message);
+      } else if (error instanceof Error) {
+        toast.error(error.message);
       } else {
-        toast.error("An unexpected error occurred");
+        toast.error("An unexpected error occurred.");
       }
     },
   });

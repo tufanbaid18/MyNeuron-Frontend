@@ -23,3 +23,8 @@ export const getUserProfile = async (): Promise<UserProfile> => {
 export const refreshToken = async (): Promise<void> => {
   await axiosInstance.post(API_ROUTES.REFRESH_TOKEN);
 };
+
+export const verifyEmail = async (email: string): Promise<void> => {
+  console.log("email in service", email);
+  await axiosInstance.post(API_ROUTES.VERIFY_EMAIL, { email });
+};
