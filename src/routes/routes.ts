@@ -9,4 +9,5 @@ export const ROUTER_ROUTES = {
   EVENTS_INFO: "events-info",
   CONSULTANCY_INFO: "consultancy-info",
   PRODUCTS_INFO: "products-info",
+  VERIFY_EMAIL: "verify-email",
 };

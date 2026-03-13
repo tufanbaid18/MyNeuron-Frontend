@@ -1,9 +1,10 @@
 import { createRoute } from "@tanstack/react-router";
 import { rootRoute } from ".";
-import { ROUTER_ROUTES } from "./routes";
 import AuthLayout from "../layouts/AuthLayout";
 import LogIn from "../pages/LogIn";
 import Register from "../pages/Register";
+import VerificationMail from "../pages/VerificationMail";
+import { ROUTER_ROUTES } from "./routes";
 
 export const authRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -22,4 +23,10 @@ export const registerRoute = createRoute({
   getParentRoute: () => authRoute,
   path: ROUTER_ROUTES.REGISTER,
   component: () => <Register />,
+});
+
+export const verifyEmailRoute = createRoute({
+  getParentRoute: () => authRoute,
+  path: ROUTER_ROUTES.VERIFY_EMAIL,
+  component: () => <VerificationMail />,
 });

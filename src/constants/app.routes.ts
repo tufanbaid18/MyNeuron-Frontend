@@ -2,6 +2,7 @@ export const APP_ROUTES = {
   AUTH: "/auth",
   LOGIN: "/auth/login",
   REGISTER: "/auth/register",
+  VERIFY_EMAIL: "/auth/verify-email",
   TERMS_AND_CONDITIONS: "/public/terms-and-conditions",
   PRIVACY_POLICY: "/public/privacy-policy",
   EVENTS_INFO: "/public/events-info",
