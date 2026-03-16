@@ -41,6 +41,6 @@ export const registerRoute = createRoute({
 
 export const verifyEmailRoute = createRoute({
   getParentRoute: () => authRoute,
-  path: ROUTER_ROUTES.VERIFY_EMAIL,
+  path: ROUTER_ROUTES.RESEND_EMAIL,
   component: () => <VerificationMail />,
 });

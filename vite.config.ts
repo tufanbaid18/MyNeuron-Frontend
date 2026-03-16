@@ -9,11 +9,15 @@ export default defineConfig(({ mode }) => {
   // Load env file based on `mode` in the current working directory.
   // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
   const env = loadEnv(mode, process.cwd(), "");
-  
+
   // Validate the environment variables and throw error if invalid during server startup
   validateEnv(env, envSchema, true);
 
   return {
     plugins: [react(), tailwindcss()],
+    server: {
+      host: true,
+      allowedHosts: ["0.0.0.0","myneuron.com"],
+    },
   };
 });
