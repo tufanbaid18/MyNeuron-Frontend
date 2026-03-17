@@ -39,7 +39,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         theme={{
           algorithm: dark ? darkAlgorithm : defaultAlgorithm,
           token: {
-            colorPrimary: "#00ff99", // matched with CSS variable
+            colorPrimary: "#059669",
             borderRadius: 6,
             colorBgBase: dark ? "#141414" : "#ffffff",
             colorTextBase: dark ? "#ffffff" : "#141414",
@@ -48,6 +48,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
             Layout: {
               headerBg: dark ? "#141414" : "#ffffff",
               siderBg: dark ? "#141414" : "#ffffff",
+            },
+            Menu: {
+              itemSelectedBg: dark ? "#065f4620" : "#05966912",
+              itemSelectedColor: dark ? "#34d399" : "#059669",
+              itemHoverBg: dark ? "#065f4615" : "#0596690a",
+              itemHoverColor: dark ? "#6ee7b7" : "#047857",
+              subMenuItemBg: dark ? "#141414" : "#ffffff",
+              itemActiveBg: dark ? "#065f4625" : "#05966918",
             },
           },
         }}

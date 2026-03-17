@@ -5,7 +5,7 @@ import {
   createRoute,
   redirect,
 } from "@tanstack/react-router";
-import { appRoute, plasmaRoute } from "./app.routes";
+import { appRoute } from "./app.routes";
 import {
   authRoute,
   loginRoute,
@@ -22,6 +22,16 @@ import {
   termsAndConditionsRoute,
 } from "./public.routes";
 import { APP_ROUTES } from "../constants/app.routes";
+import NotFound from "../pages/error/NotFound";
+import { plasmaIndexRoute, plasmaRootRoute } from "./plasma.routes";
+import {
+  gatcIndexRoute,
+  gatcMyHandshakesRoute,
+  gatcParticipantsRoute,
+  gatcProgramsRoute,
+  gatcRootRoute,
+  gatcSpeakersRoute,
+} from "./gatc.routes";
 
 export const rootRoute = createRootRoute({
   component: () => <Outlet />,
@@ -38,7 +48,17 @@ export const indexAppRoute = createRoute({
 
 export const routeTree = rootRoute.addChildren([
   authRoute.addChildren([loginRoute, registerRoute, verifyEmailRoute]),
-  appRoute.addChildren([indexAppRoute, plasmaRoute]),
+  appRoute.addChildren([
+    indexAppRoute,
+    plasmaRootRoute.addChildren([plasmaIndexRoute]),
+    gatcRootRoute.addChildren([
+      gatcIndexRoute,
+      gatcSpeakersRoute,
+      gatcProgramsRoute,
+      gatcParticipantsRoute,
+      gatcMyHandshakesRoute,
+    ]),
+  ]),
   publicRoute.addChildren([
     eventsInfoRoute,
     productsInfoRoute,
@@ -47,8 +67,6 @@ export const routeTree = rootRoute.addChildren([
     privacyPolicyRoute,
   ]),
 ]);
-
-import NotFound from "../pages/error/NotFound";
 
 export const router = createRouter({
   routeTree,

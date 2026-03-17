@@ -11,4 +11,11 @@ export const ROUTER_ROUTES = {
   PRODUCTS_INFO: "products-info",
   RESEND_EMAIL: "resend-email",
   PLASMA: "plasma",
+  GATC: "gatc",
+  GATC_SPEAKERS: "speakers",
+  GATC_PROGRAMS: "programs",
+  GATC_PARTICIPANTS: "participants",
+  GATC_MY_HANDSHAKES: "my-handshakes",
+  MY_BOOKSHELF: "my-bookshelf",
+  IMPULSE: "impulse",
 };

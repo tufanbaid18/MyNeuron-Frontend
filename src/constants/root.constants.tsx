@@ -1,18 +1,6 @@
-import { BiMessageSquareDots } from "react-icons/bi";
-import { GoBook, GoHome, GoPulse } from "react-icons/go";
-import { RiNotification3Line } from "react-icons/ri";
-
-export const sidebarMenuItems = [
-  { key: "1", icon: <GoHome />, label: "Home" },
-  { key: "2", icon: <GoPulse />, label: "Pulse" },
-  { key: "3", icon: <GoBook />, label: "Book" },
-  { key: "4", icon: <BiMessageSquareDots />, label: "Messages" },
-  { key: "5", icon: <RiNotification3Line />, label: "Notifications" },
-];
-
 import { SettingOutlined, UserOutlined } from "@ant-design/icons";
-import { CgDarkMode } from "react-icons/cg";
 import type { MenuProps } from "antd";
+import { CgDarkMode } from "react-icons/cg";
 
 export const getHeaderProfileItems = (
   toggleTheme: () => void,

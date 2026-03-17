@@ -1,11 +1,9 @@
 import { createRoute, redirect } from "@tanstack/react-router";
 import { rootRoute } from ".";
-import { ROUTER_ROUTES } from "./routes";
-import { appStore, userProfileAtom } from "../store/auth.store";
-import { getUserProfile } from "../services/auth/auth.service";
-import RootLayout from "../layouts/RootLayout";
 import { APP_ROUTES } from "../constants/app.routes";
-import Plasma from "../pages/Plasma";
+import RootLayout from "../layouts/RootLayout";
+import { getUserProfile } from "../services/auth/auth.service";
+import { appStore, userProfileAtom } from "../store/auth.store";
 
 export const appRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -22,10 +20,4 @@ export const appRoute = createRoute({
     }
   },
   component: () => <RootLayout />,
-});
-
-export const plasmaRoute = createRoute({
-  getParentRoute: () => appRoute,
-  path: ROUTER_ROUTES.PLASMA,
-  component: () => <Plasma />,
 });

@@ -11,7 +11,7 @@
 }
 
 :root {
-  --primary: #20c482;
+  --primary: #059669;
   --link: oklch(62.3% 0.214 259.815);
   --error: #fb2c36;
   --bg-base: #ffffff;
@@ -19,7 +19,7 @@
 }
 
 .dark {
-  --primary: #20c482;
+  --primary: #059669;
   --link: oklch(62.3% 0.214 259.815);
   --error: #fb2c36;
   --bg-base: #141414;

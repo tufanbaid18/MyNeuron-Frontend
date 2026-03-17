@@ -1,6 +1,13 @@
 export const APP_ROUTES = {
   ROOT: "/",
   PLASMA: "/plasma",
+  GATC: "/gatc",
+  GATC_SPEAKERS: "/gatc/speakers",
+  GATC_PROGRAMS: "/gatc/programs",
+  GATC_PARTICIPANTS: "/gatc/participants",
+  GATC_MY_HANDSHAKES: "/gatc/my-handshakes",
+  MY_BOOKSHELF: "/my-bookshelf",
+  IMPULSE: "/impulse",
   AUTH: "/auth",
   LOGIN: "/auth/login",
   REGISTER: "/auth/register",
