@@ -24,7 +24,7 @@ const RootLayout = () => {
           SIDEBAR_WIDTH={SIDEBAR_WIDTH}
           MD_BREAKPOINT={MD_BREAKPOINT}
         />
-        <Content>
+        <Content className="p-2">
           <Outlet />
         </Content>
       </Layout>

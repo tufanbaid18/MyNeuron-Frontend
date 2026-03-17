@@ -39,7 +39,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         theme={{
           algorithm: dark ? darkAlgorithm : defaultAlgorithm,
           token: {
-            colorPrimary: "#059669",
+            fontFamily: "'Poppins', ui-sans-serif, system-ui, sans-serif",
+            colorPrimary: "#70a83e",
             borderRadius: 6,
             colorBgBase: dark ? "#141414" : "#ffffff",
             colorTextBase: dark ? "#ffffff" : "#141414",
@@ -50,12 +51,12 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
               siderBg: dark ? "#141414" : "#ffffff",
             },
             Menu: {
-              itemSelectedBg: dark ? "#065f4620" : "#05966912",
-              itemSelectedColor: dark ? "#34d399" : "#059669",
-              itemHoverBg: dark ? "#065f4615" : "#0596690a",
+              itemSelectedBg: dark ? "#065f4620" : "#70a83e12",
+              itemSelectedColor: dark ? "#34d399" : "#70a83e",
+              itemHoverBg: dark ? "#065f4615" : "#70a83e0a",
               itemHoverColor: dark ? "#6ee7b7" : "#047857",
               subMenuItemBg: dark ? "#141414" : "#ffffff",
-              itemActiveBg: dark ? "#065f4625" : "#05966918",
+              itemActiveBg: dark ? "#065f4625" : "#70a83e18",
             },
           },
         }}

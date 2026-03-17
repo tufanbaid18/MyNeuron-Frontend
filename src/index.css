@@ -3,7 +3,10 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
   --color-primary: var(--primary);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
   --color-link: var(--link);
   --color-error: var(--error);
   --color-bg-base: var(--bg-base);
@@ -11,7 +14,9 @@
 }
 
 :root {
-  --primary: #059669;
+  --primary: #70a83e;
+  --background: #ffffff;
+  --foreground: #000000;
   --link: oklch(62.3% 0.214 259.815);
   --error: #fb2c36;
   --bg-base: #ffffff;
@@ -19,7 +24,9 @@
 }
 
 .dark {
-  --primary: #059669;
+  --primary: #70a83e;
+  --background: #141414;
+  --foreground: #ffffff;
   --link: oklch(62.3% 0.214 259.815);
   --error: #fb2c36;
   --bg-base: #141414;
@@ -31,6 +38,12 @@ body,
 #root {
   height: 100%;
   margin: 0;
+  font-family: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   background-color: var(--bg-base);
   color: var(--text-base);
 }

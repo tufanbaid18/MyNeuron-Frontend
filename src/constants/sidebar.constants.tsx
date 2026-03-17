@@ -35,7 +35,7 @@ export const SIDEBAR_MENU_ITEMS = [
             ),
           },
           {
-            key: "2a1",
+            key: "2a2",
             label: (
               <Link to={APP_ROUTES.GATC_SPEAKERS} className="block w-full">
                 Speakers
@@ -43,7 +43,7 @@ export const SIDEBAR_MENU_ITEMS = [
             ),
           },
           {
-            key: "2a1",
+            key: "2a3",
             label: (
               <Link to={APP_ROUTES.GATC_PARTICIPANTS} className="block w-full">
                 Participants
@@ -51,7 +51,7 @@ export const SIDEBAR_MENU_ITEMS = [
             ),
           },
           {
-            key: "2a1",
+            key: "2a4",
             label: (
               <Link to={APP_ROUTES.GATC_MY_HANDSHAKES} className="block w-full">
                 My Handshakes
