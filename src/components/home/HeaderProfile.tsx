@@ -1,5 +1,5 @@
 import { Avatar, Dropdown, Space } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { BiChevronDown } from "react-icons/bi";
 import type { UserProfile } from "../../types/user/user.types";
 import { getAvatarByName } from "../../utils/avatar.utils";
@@ -12,10 +12,16 @@ export type HeaderProfileProps = {
 
 const HeaderProfile: React.FC<HeaderProfileProps> = ({ user }) => {
   const { toggleTheme } = useTheme();
+  const [open, setOpen] = useState(false);
   const items = getHeaderProfileItems(toggleTheme);
 
   return (
-    <Dropdown menu={{ items }}>
+    <Dropdown
+      menu={{ items, onClick: () => setOpen(false) }}
+      open={open}
+      onOpenChange={setOpen}
+      trigger={["click"]}
+    >
       <a onClick={(e) => e.preventDefault()}>
         <Space>
           <div className="flex justify-center items-center gap-2 cursor-pointer">
