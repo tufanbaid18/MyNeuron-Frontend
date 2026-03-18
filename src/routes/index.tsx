@@ -12,7 +12,7 @@ import {
   loginRoute,
   registerRoute,
   resetPasswordRoute,
-  verifyEmailRoute
+  verifyEmailRoute,
 } from "./auth.routes";
 
 import { APP_ROUTES } from "../constants/app.routes";
@@ -34,6 +34,7 @@ import {
   publicRoute,
   termsAndConditionsRoute,
 } from "./public.routes";
+import { userIndexRoute, userProfileRoute, userRootRoute } from "./user.routes";
 
 export const rootRoute = createRootRoute({
   component: () => <Outlet />,
@@ -49,7 +50,13 @@ export const indexAppRoute = createRoute({
 });
 
 export const routeTree = rootRoute.addChildren([
-  authRoute.addChildren([loginRoute, registerRoute, verifyEmailRoute,forgotPasswordRoute, resetPasswordRoute]),
+  authRoute.addChildren([
+    loginRoute,
+    registerRoute,
+    verifyEmailRoute,
+    forgotPasswordRoute,
+    resetPasswordRoute,
+  ]),
   appRoute.addChildren([
     indexAppRoute,
     plasmaRootRoute.addChildren([plasmaIndexRoute]),
@@ -60,6 +67,7 @@ export const routeTree = rootRoute.addChildren([
       gatcParticipantsRoute,
       gatcMyHandshakesRoute,
     ]),
+    userRootRoute.addChildren([userIndexRoute, userProfileRoute]),
   ]),
   publicRoute.addChildren([
     eventsInfoRoute,

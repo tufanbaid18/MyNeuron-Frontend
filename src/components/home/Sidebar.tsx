@@ -43,6 +43,7 @@ const Sidebar = ({
       <Menu
         theme={dark ? "dark" : "light"}
         mode="inline"
+        className="bg-background!"
         defaultSelectedKeys={["1"]}
         items={SIDEBAR_MENU_ITEMS}
       />

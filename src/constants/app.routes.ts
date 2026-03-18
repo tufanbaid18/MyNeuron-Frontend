@@ -1,6 +1,7 @@
 export const APP_ROUTES = {
   ROOT: "/",
   PLASMA: "/plasma",
+  PROFILE: "/user/profile",
   GATC: "/gatc",
   GATC_SPEAKERS: "/gatc/speakers",
   GATC_PROGRAMS: "/gatc/programs",

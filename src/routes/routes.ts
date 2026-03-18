@@ -20,4 +20,6 @@ export const ROUTER_ROUTES = {
   GATC_MY_HANDSHAKES: "my-handshakes",
   MY_BOOKSHELF: "my-bookshelf",
   IMPULSE: "impulse",
+  USER: "user",
+  PROFILE: "profile",
 };

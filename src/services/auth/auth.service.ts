@@ -1,6 +1,9 @@
 import { API_ROUTES } from "../../constants/api.routes";
 import axiosInstance from "../../lib/axiosInstance";
-import type { LoginRequest, ResetPasswordPayload } from "../../types/auth/login.types";
+import type {
+  LoginRequest,
+  ResetPasswordPayload,
+} from "../../types/auth/login.types";
 import type { UserProfile } from "../../types/user/user.types";
 import type { RegisterForm } from "../../validations/auth/register";
 
@@ -30,11 +33,19 @@ export const verifyEmail = async (email: string): Promise<string> => {
 };
 
 export const forgotPassword = async (email: string): Promise<string> => {
-  const response = await axiosInstance.post(API_ROUTES.FORGOT_PASSWORD, { email });
+  const response = await axiosInstance.post(API_ROUTES.FORGOT_PASSWORD, {
+    email,
+  });
   return response.data;
 };
 
-export const resetPassword = async (data: ResetPasswordPayload): Promise<string> => {
+export const resetPassword = async (
+  data: ResetPasswordPayload,
+): Promise<string> => {
   const response = await axiosInstance.post(API_ROUTES.RESET_PASSWORD, data);
   return response.data;
+};
+
+export const logout = async (): Promise<void> => {
+  await axiosInstance.post(API_ROUTES.LOGOUT);
 };
