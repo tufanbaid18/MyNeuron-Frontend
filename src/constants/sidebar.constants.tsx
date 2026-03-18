@@ -1,12 +1,14 @@
 import { Link } from "@tanstack/react-router";
-import { BiMessageSquareDots } from "react-icons/bi";
-import { GoBook, GoHome, GoPulse } from "react-icons/go";
 import { APP_ROUTES } from "./app.routes";
+import DashboardIcon from "../components/icons/DashboardIcon";
+import GatcIcon from "../components/icons/GatcIcon";
+import BookshelfIcon from "../components/icons/BookshelfIcon";
+import ImpulseIcon from "../components/icons/ImpulseIcon";
 
 export const SIDEBAR_MENU_ITEMS = [
   {
     key: "1",
-    icon: <GoHome />,
+    icon: <DashboardIcon />,
     label: (
       <Link to={APP_ROUTES.PLASMA} className="block w-full">
         Dashboard
@@ -15,7 +17,7 @@ export const SIDEBAR_MENU_ITEMS = [
   },
   {
     key: "2",
-    icon: <GoPulse />,
+    icon: <GatcIcon />,
     label: "GATC",
     children: [
       {
@@ -64,7 +66,7 @@ export const SIDEBAR_MENU_ITEMS = [
   },
   {
     key: "3",
-    icon: <GoBook />,
+    icon: <BookshelfIcon />,
     label: (
       <Link to={APP_ROUTES.MY_BOOKSHELF} className="block w-full">
         My Bookshelf
@@ -73,7 +75,7 @@ export const SIDEBAR_MENU_ITEMS = [
   },
   {
     key: "4",
-    icon: <BiMessageSquareDots />,
+    icon: <ImpulseIcon />,
     label: (
       <Link to={APP_ROUTES.IMPULSE} className="block w-full">
         Impulse

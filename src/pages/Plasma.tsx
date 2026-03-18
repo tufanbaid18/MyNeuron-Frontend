@@ -1,8 +1,15 @@
 import { useState } from "react";
 import { IoSearch } from "react-icons/io5";
+import { usePubMedSearch } from "../hooks/plasma/usePlasma";
+import { FcNews } from "react-icons/fc";
 
 const Plasma = () => {
   const [search, setSearch] = useState<string>("");
+  const [page, _setPage] = useState(1);
+  const PAGE_SIZE = 10;
+  const { data, isLoading, isError } = usePubMedSearch(search, page, PAGE_SIZE);
+  console.log(data);
+
   return (
     <div className="w-full h-full flex flex-col justify-center items-center bg-background">
       <div className="w-full py-5 flex flex-col justify-center items-center gap-5">
@@ -24,7 +31,22 @@ const Plasma = () => {
           </button>
         </div>
       </div>
-      <div className="w-full h-full p-5">results</div>
+      <div className="w-full h-full p-5 flex justify-center items-center">
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : isError ? (
+          <div>Error fetching data</div>
+        ) : (
+          <div>
+            {data?.articles?.map((article) => (
+              <div key={article.id}>
+                <FcNews />
+                <div>{article.title}</div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
