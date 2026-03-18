@@ -1,5 +1,6 @@
 import { createRoute } from "@tanstack/react-router";
-import GatcIndex from "../pages/GatcIndex";
+
+import GatcIndex from "../pages/GATC/GatcIndex";
 import GatcMyHandshakes from "../pages/GatcMyHandshakes";
 import GatcParticipants from "../pages/GatcParticipants";
 import GatcPrograms from "../pages/GatcPrograms";
