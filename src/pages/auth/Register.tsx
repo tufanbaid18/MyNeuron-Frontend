@@ -1,16 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Checkbox } from "antd";
 import { Controller, useForm } from "react-hook-form";
-import AuthGlassCard from "../components/auth/AuthGlassCard";
-import AuthInput from "../components/auth/AuthInput";
-import PlatformButton from "../components/ui/PlatformButton";
-import { APP_ROUTES } from "../constants/app.routes";
-import { useRegister } from "../hooks/auth/useRegister";
-import type { RegisterFormFields } from "../types/auth/register.types";
+import type { RegisterFormFields } from "../../types/auth/register.types";
 import {
   registerSchema,
   type RegisterForm,
-} from "../validations/auth/register";
+} from "../../validations/auth/register";
+import { useRegister } from "../../hooks/auth/useRegister";
+import AuthGlassCard from "../../components/auth/AuthGlassCard";
+import AuthInput from "../../components/auth/AuthInput";
+import PlatformButton from "../../components/ui/PlatformButton";
+import { APP_ROUTES } from "../../constants/app.routes";
 
 function Register() {
   const {

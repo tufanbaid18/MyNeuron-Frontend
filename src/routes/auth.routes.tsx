@@ -1,13 +1,15 @@
 import { createRoute, redirect } from "@tanstack/react-router";
 import { rootRoute } from ".";
+import { APP_ROUTES } from "../constants/app.routes";
 import AuthLayout from "../layouts/AuthLayout";
-import LogIn from "../pages/LogIn";
-import Register from "../pages/Register";
-import VerificationMail from "../pages/VerificationMail";
-import { ROUTER_ROUTES } from "./routes";
+import ForgetPassword from "../pages/auth/ForgotPassword";
+import LogIn from "../pages/auth/LogIn";
+import Register from "../pages/auth/Register";
+import ResetPassword from "../pages/auth/ResetPassword";
+import VerificationMail from "../pages/auth/VerificationMail";
 import { getUserProfile } from "../services/auth/auth.service";
 import { appStore, userProfileAtom } from "../store/auth.store";
-import { APP_ROUTES } from "../constants/app.routes";
+import { ROUTER_ROUTES } from "./routes";
 
 export const authRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -43,4 +45,14 @@ export const verifyEmailRoute = createRoute({
   getParentRoute: () => authRoute,
   path: ROUTER_ROUTES.RESEND_EMAIL,
   component: () => <VerificationMail />,
+});
+export const forgotPasswordRoute = createRoute({
+  getParentRoute: () => authRoute,
+  path: ROUTER_ROUTES.FORGOT_PASSWORD,
+  component: () => <ForgetPassword />,
+});
+export const resetPasswordRoute = createRoute({
+  getParentRoute: () => authRoute,
+  path: ROUTER_ROUTES.RESET_PASSWORD,
+  component: () => <ResetPassword />,
 });

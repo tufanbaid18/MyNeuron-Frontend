@@ -12,6 +12,8 @@ export const APP_ROUTES = {
   LOGIN: "/auth/login",
   REGISTER: "/auth/register",
   RESEND_EMAIL: "/auth/resend-email",
+  FORGOT_PASSWORD: "/auth/forgot-password",
+  RESET_PASSWORD: "/auth/reset-password",
   TERMS_AND_CONDITIONS: "/public/terms-and-conditions",
   PRIVACY_POLICY: "/public/privacy-policy",
   EVENTS_INFO: "/public/events-info",

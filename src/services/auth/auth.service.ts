@@ -1,6 +1,6 @@
 import { API_ROUTES } from "../../constants/api.routes";
 import axiosInstance from "../../lib/axiosInstance";
-import type { LoginRequest } from "../../types/auth/login.types";
+import type { LoginRequest, ResetPasswordPayload } from "../../types/auth/login.types";
 import type { UserProfile } from "../../types/user/user.types";
 import type { RegisterForm } from "../../validations/auth/register";
 
@@ -24,7 +24,17 @@ export const refreshToken = async (): Promise<void> => {
   await axiosInstance.post(API_ROUTES.REFRESH_TOKEN);
 };
 
-export const verifyEmail = async (email: string): Promise<void> => {
-  console.log("email in service", email);
-  await axiosInstance.post(API_ROUTES.VERIFY_EMAIL, { email });
+export const verifyEmail = async (email: string): Promise<string> => {
+  const response = await axiosInstance.post(API_ROUTES.VERIFY_EMAIL, { email });
+  return response.data;
+};
+
+export const forgotPassword = async (email: string): Promise<string> => {
+  const response = await axiosInstance.post(API_ROUTES.FORGOT_PASSWORD, { email });
+  return response.data;
+};
+
+export const resetPassword = async (data: ResetPasswordPayload): Promise<string> => {
+  const response = await axiosInstance.post(API_ROUTES.RESET_PASSWORD, data);
+  return response.data;
 };

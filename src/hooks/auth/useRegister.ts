@@ -13,7 +13,7 @@ export const useRegister = () => {
     mutationFn: (data: RegisterForm) => registerUser(data),
     onSuccess: async () => {
       toast.success(
-        "User registered! Verification Link is sent on the registered email verify to login!s",
+        "User registered! Verification Link is sent on the registered email verify to login!",
       );
       navigate({ to: APP_ROUTES.ROOT });
     },
