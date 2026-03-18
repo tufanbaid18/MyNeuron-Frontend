@@ -15,57 +15,57 @@ const DashboardIcon = () => {
             id="Vector"
             fill="#d7e0ff"
             d="M13 6.5H9c-0.27614 0 -0.5 0.22386 -0.5 0.5v6c0 0.2761 0.22386 0.5 0.5 0.5h4c0.2761 0 0.5 -0.2239 0.5 -0.5V7c0 -0.27614 -0.2239 -0.5 -0.5 -0.5Z"
-            stroke-width="1"
+            strokeWidth="1"
           ></path>
           <path
             id="Vector_2"
             fill="#d7e0ff"
             d="M13 0.5H9c-0.27614 0 -0.5 0.223858 -0.5 0.5v2.01c0 0.27614 0.22386 0.5 0.5 0.5h4c0.2761 0 0.5 -0.22386 0.5 -0.5V1c0 -0.276142 -0.2239 -0.5 -0.5 -0.5Z"
-            stroke-width="1"
+            strokeWidth="1"
           ></path>
           <path
             id="Vector_3"
             fill="#d7e0ff"
             d="M5 0.5H1C0.723858 0.5 0.5 0.723858 0.5 1v6c0 0.27614 0.223858 0.5 0.5 0.5h4c0.27614 0 0.5 -0.22386 0.5 -0.5V1c0 -0.276142 -0.22386 -0.5 -0.5 -0.5Z"
-            stroke-width="1"
+            strokeWidth="1"
           ></path>
           <path
             id="Vector_4"
             fill="#d7e0ff"
             d="M5 10.49H1c-0.276142 0 -0.5 0.2239 -0.5 0.5V13c0 0.2761 0.223858 0.5 0.5 0.5h4c0.27614 0 0.5 -0.2239 0.5 -0.5v-2.01c0 -0.2761 -0.22386 -0.5 -0.5 -0.5Z"
-            stroke-width="1"
+            strokeWidth="1"
           ></path>
           <path
             id="Vector_5"
             stroke="#4147d5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             d="M13 6.5H9c-0.27614 0 -0.5 0.22386 -0.5 0.5v6c0 0.2761 0.22386 0.5 0.5 0.5h4c0.2761 0 0.5 -0.2239 0.5 -0.5V7c0 -0.27614 -0.2239 -0.5 -0.5 -0.5Z"
-            stroke-width="1"
+            strokeWidth="1"
           ></path>
           <path
             id="Vector_6"
             stroke="#4147d5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             d="M13 0.5H9c-0.27614 0 -0.5 0.223858 -0.5 0.5v2.01c0 0.27614 0.22386 0.5 0.5 0.5h4c0.2761 0 0.5 -0.22386 0.5 -0.5V1c0 -0.276142 -0.2239 -0.5 -0.5 -0.5Z"
-            stroke-width="1"
+            strokeWidth="1"
           ></path>
           <path
             id="Vector_7"
             stroke="#4147d5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             d="M5 0.5H1C0.723858 0.5 0.5 0.723858 0.5 1v6c0 0.27614 0.223858 0.5 0.5 0.5h4c0.27614 0 0.5 -0.22386 0.5 -0.5V1c0 -0.276142 -0.22386 -0.5 -0.5 -0.5Z"
-            stroke-width="1"
+            strokeWidth="1"
           ></path>
           <path
             id="Vector_8"
             stroke="#4147d5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             d="M5 10.49H1c-0.276142 0 -0.5 0.2238 -0.5 0.5V13c0 0.2761 0.223858 0.5 0.5 0.5h4c0.27614 0 0.5 -0.2239 0.5 -0.5v-2.01c0 -0.2762 -0.22386 -0.5 -0.5 -0.5Z"
-            stroke-width="1"
+            strokeWidth="1"
           ></path>
         </g>
       </svg>

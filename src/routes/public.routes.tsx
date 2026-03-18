@@ -3,11 +3,11 @@ import { rootRoute } from ".";
 import PublicLayout from "../layouts/PublicLayout";
 import { ROUTER_ROUTES } from "./routes";
 
-import ConsultancyInfo from "../components/constant/CosultancyInfo";
-import EventsInfo from "../components/constant/EventsInfo";
-import PrivacyPolicy from "../components/constant/PrivacyPolicy";
-import ProductInfo from "../components/constant/ProductInfo";
-import TermsConditions from "../components/constant/TermConditions";
+import ConsultancyInfo from "../components/public/CosultancyInfo";
+import EventsInfo from "../components/public/EventsInfo";
+import PrivacyPolicy from "../components/public/PrivacyPolicy";
+import ProductInfo from "../components/public/ProductInfo";
+import TermsConditions from "../components/public/TermConditions";
 
 export const publicRoute = createRoute({
   getParentRoute: () => rootRoute,

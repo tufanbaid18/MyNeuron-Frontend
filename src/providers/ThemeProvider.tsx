@@ -39,7 +39,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         theme={{
           algorithm: dark ? darkAlgorithm : defaultAlgorithm,
           token: {
-            fontFamily: "'Poppins', ui-sans-serif, system-ui, sans-serif",
+            fontFamily: "system-ui, Avenir, Helvetica, Arial, sans-serif",
             colorPrimary: "#70a83e",
             borderRadius: 6,
             colorBgBase: dark ? "#141414" : "#ffffff",

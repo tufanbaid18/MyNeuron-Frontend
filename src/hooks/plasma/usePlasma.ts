@@ -144,13 +144,13 @@ export function usePubMedSearch(
           const id = get("PMID");
 
           return {
-            id,
-            pmcid,
+            id: id ?? Math.random().toString(),
+            pmcid: pmcid ?? Math.random().toString(),
             title: get("ArticleTitle") || "No title",
             abstract,
             journal: get("Journal Title") || "Unknown Journal",
-            year,
-            authors,
+            year: year ?? "NoYear",
+            authors: authors ?? "Unknown",
             pdf: pmcid
               ? `https://www.ncbi.nlm.nih.gov/pmc/articles/${pmcid}/pdf`
               : null,
