@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import AuthGlassCard from "../../components/auth/AuthGlassCard";
 import AuthInput from "../../components/auth/AuthInput";
+import { APP_ROUTES } from "../../constants/app.routes";
 import { useVerifyEmail } from "../../hooks/auth/useVerifyEmail";
 import type { VerifyForm } from "../../validations/auth/verify";
 import { emailSchema } from "../../validations/auth/verify";
@@ -48,6 +49,15 @@ const VerificationMail = () => {
         >
           {verifyEmailMutation.isPending ? "Resending..." : "Resend Email"}
         </button>
+        <p className="text-center text-[0.9rem] text-white mt-5">
+          Back to{" "}
+          <a
+            href={APP_ROUTES.LOGIN}
+            className="text-primary no-underline font-semibold"
+          >
+            Login
+          </a>
+        </p>
       </form>
     </AuthGlassCard>
   );

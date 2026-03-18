@@ -31,7 +31,6 @@ function ResetPassword() {
       new_password: data.new_password,
       confirm_password: data.confirm_password,
     };
-    console.log("payload===========>", payload);
     resetPasswordMutation.mutate(payload);
   };
 
