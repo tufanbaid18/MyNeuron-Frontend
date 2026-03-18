@@ -1,29 +1,22 @@
 import {
   createRootRoute,
+  createRoute,
   createRouter,
   Outlet,
-  createRoute,
   redirect,
 } from "@tanstack/react-router";
 import { appRoute } from "./app.routes";
 import {
   authRoute,
+  forgotPasswordRoute,
   loginRoute,
   registerRoute,
-  verifyEmailRoute,
+  resetPasswordRoute,
+  verifyEmailRoute
 } from "./auth.routes";
 
-import {
-  consultancyInfoRoute,
-  eventsInfoRoute,
-  privacyPolicyRoute,
-  productsInfoRoute,
-  publicRoute,
-  termsAndConditionsRoute,
-} from "./public.routes";
 import { APP_ROUTES } from "../constants/app.routes";
 import NotFound from "../pages/error/NotFound";
-import { plasmaIndexRoute, plasmaRootRoute } from "./plasma.routes";
 import {
   gatcIndexRoute,
   gatcMyHandshakesRoute,
@@ -32,6 +25,15 @@ import {
   gatcRootRoute,
   gatcSpeakersRoute,
 } from "./gatc.routes";
+import { plasmaIndexRoute, plasmaRootRoute } from "./plasma.routes";
+import {
+  consultancyInfoRoute,
+  eventsInfoRoute,
+  privacyPolicyRoute,
+  productsInfoRoute,
+  publicRoute,
+  termsAndConditionsRoute,
+} from "./public.routes";
 
 export const rootRoute = createRootRoute({
   component: () => <Outlet />,
@@ -47,7 +49,7 @@ export const indexAppRoute = createRoute({
 });
 
 export const routeTree = rootRoute.addChildren([
-  authRoute.addChildren([loginRoute, registerRoute, verifyEmailRoute]),
+  authRoute.addChildren([loginRoute, registerRoute, verifyEmailRoute,forgotPasswordRoute, resetPasswordRoute]),
   appRoute.addChildren([
     indexAppRoute,
     plasmaRootRoute.addChildren([plasmaIndexRoute]),

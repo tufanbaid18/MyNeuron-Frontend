@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const verifySchema = z.object({
+export const emailSchema = z.object({
   email: z
     .string()
     .email()
@@ -9,4 +9,5 @@ export const verifySchema = z.object({
     .max(200, "Maximum 200 character"),
 });
 
-export type VerifyForm = z.infer<typeof verifySchema>;
+export type EmailForm = z.infer<typeof emailSchema>;
+export type VerifyForm = z.infer<typeof emailSchema>;

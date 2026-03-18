@@ -10,6 +10,8 @@ export const ROUTER_ROUTES = {
   CONSULTANCY_INFO: "consultancy-info",
   PRODUCTS_INFO: "products-info",
   RESEND_EMAIL: "resend-email",
+  FORGOT_PASSWORD: "forgot-password",
+  RESET_PASSWORD: "reset-password",
   PLASMA: "plasma",
   GATC: "gatc",
   GATC_SPEAKERS: "speakers",

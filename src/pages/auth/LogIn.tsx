@@ -1,10 +1,10 @@
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import AuthGlassCard from "../components/auth/AuthGlassCard";
-import AuthInput from "../components/auth/AuthInput";
-import { APP_ROUTES } from "../constants/app.routes";
-import { useLogin } from "../hooks/auth/useLogin";
-import { loginSchema, type LoginForm } from "../validations/auth/login";
+import { useForm } from "react-hook-form";
+import AuthGlassCard from "../../components/auth/AuthGlassCard";
+import AuthInput from "../../components/auth/AuthInput";
+import { APP_ROUTES } from "../../constants/app.routes";
+import { useLogin } from "../../hooks/auth/useLogin";
+import { loginSchema, type LoginForm } from "../../validations/auth/login";
 
 const LogIn = () => {
   const {
@@ -47,9 +47,12 @@ const LogIn = () => {
             </p>
           )}
           <div className="text-right mt-[5px] mb-[5px]">
-            <span className="cursor-pointer text-[14px] text-primary hover:underline">
+            <a
+              href={APP_ROUTES.FORGOT_PASSWORD}
+              className="cursor-pointer text-[14px] text-primary"
+            >
               Forgot Password?
-            </span>
+            </a>
           </div>
         </div>
 

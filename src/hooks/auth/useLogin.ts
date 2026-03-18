@@ -26,6 +26,12 @@ export const useLogin = () => {
     },
     onError: (error) => {
       if (isAxiosError(error)) {
+        if (error.response?.status === 403) {
+          toast.error("Account is not activated. Please verify your email.");
+          navigate({ to: APP_ROUTES.RESEND_EMAIL });
+          return;
+        }
+
         const message =
           error.response?.data?.message ||
           error.response?.data?.detail ||

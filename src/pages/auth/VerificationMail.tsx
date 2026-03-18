@@ -1,10 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import AuthGlassCard from "../components/auth/AuthGlassCard";
-import AuthInput from "../components/auth/AuthInput";
-import { useVerifyEmail } from "../hooks/auth/useVerifyEmail";
-import type { VerifyForm } from "../validations/auth/verify";
-import { verifySchema } from "../validations/auth/verify";
+import AuthGlassCard from "../../components/auth/AuthGlassCard";
+import AuthInput from "../../components/auth/AuthInput";
+import { useVerifyEmail } from "../../hooks/auth/useVerifyEmail";
+import type { VerifyForm } from "../../validations/auth/verify";
+import { emailSchema } from "../../validations/auth/verify";
 
 const VerificationMail = () => {
   const {
@@ -12,7 +12,7 @@ const VerificationMail = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<VerifyForm>({
-    resolver: zodResolver(verifySchema),
+    resolver: zodResolver(emailSchema),
   });
 
   const verifyEmailMutation = useVerifyEmail();
