@@ -20,4 +20,5 @@ export const APP_ROUTES = {
   EVENTS_INFO: "/public/events-info",
   CONSULTANCY_INFO: "/public/consultancy-info",
   PRODUCTS_INFO: "/public/products-info",
+  GATC_REGISTRATION: "/gatc/registration",
 };

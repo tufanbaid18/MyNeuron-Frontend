@@ -58,6 +58,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
               subMenuItemBg: dark ? "#141414" : "#ffffff",
               itemActiveBg: dark ? "#065f4625" : "#70a83e18",
             },
+            Select: {
+              optionSelectedBg: dark ? "#34d399" : "#70a83e",
+              optionSelectedColor: "#ffffff",
+
+              // optionActiveBg: dark ? "#15803d" : "#22c55e",
+              optionSelectedFontWeight: 500,
+            },
           },
         }}
       >

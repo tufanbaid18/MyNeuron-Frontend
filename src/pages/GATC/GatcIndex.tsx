@@ -1,4 +1,9 @@
+import { useNavigate } from "@tanstack/react-router";
+import { Button } from "antd";
+import { APP_ROUTES } from "../../constants/app.routes";
+
 export default function GATC2026() {
+  const navigate = useNavigate();
   return (
     <section className="bg-white py-10 sm:py-14 lg:py-20 overflow-y-scroll h-full">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -44,14 +49,16 @@ export default function GATC2026() {
 
             {/* CTA */}
             <div className="mt-6 sm:mt-8">
-              <a
-                href="/gatc2026/registration"
-                className="inline-block text-sm sm:text-base border border-blue-600 text-blue-600 
-                hover:bg-blue-600 hover:text-white transition-all duration-200 
-                px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-semibold shadow-sm hover:shadow-md"
+              <Button
+                size="large"
+                variant="outlined"
+                type="primary"
+                onClick={() => {
+                  navigate({ to: APP_ROUTES.GATC_REGISTRATION });
+                }}
               >
                 Register now
-              </a>
+              </Button>
             </div>
           </div>
         </div>

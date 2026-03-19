@@ -1,6 +1,7 @@
 import { createRoute } from "@tanstack/react-router";
 
 import GatcIndex from "../pages/GATC/GatcIndex";
+import GatcRegistration from "../pages/GATC/Registration";
 import GatcMyHandshakes from "../pages/GatcMyHandshakes";
 import GatcParticipants from "../pages/GatcParticipants";
 import GatcPrograms from "../pages/GatcPrograms";
@@ -43,4 +44,10 @@ export const gatcMyHandshakesRoute = createRoute({
   getParentRoute: () => gatcRootRoute,
   path: ROUTER_ROUTES.GATC_MY_HANDSHAKES,
   component: () => <GatcMyHandshakes />,
+});
+
+export const gatcRegistrationRoute = createRoute({
+  getParentRoute: () => gatcRootRoute,
+  path: ROUTER_ROUTES.GATC_REGISTRATION,
+  component: () => <GatcRegistration />,
 });

@@ -25,9 +25,13 @@ const VerificationMail = () => {
 
   return (
     <AuthGlassCard>
-      <h2 className="text-center mb-[25px] text-[1.6rem] font-semibold">
+      <h2 className="text-center mb-[10px] text-[1.6rem] font-semibold ">
         Resend Verification Email
       </h2>
+      <p className="text-center mb-[25px] text-[0.9rem] text-white">
+        We’ve sent a verification email to your registered address. If it expired
+        or you didn’t receive it, enter your email to resend.
+      </p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-[14px]">
           <AuthInput
