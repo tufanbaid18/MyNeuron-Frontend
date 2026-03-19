@@ -15,7 +15,7 @@ export type ValidationSchema = Record<
   {
     type: "string" | "number" | "boolean" | "enum";
     required?: boolean;
-    default?: any;
-    enumObj?: any;
+    default?: unknown;
+    enumObj?: Record<string, unknown>;
   }
 >;

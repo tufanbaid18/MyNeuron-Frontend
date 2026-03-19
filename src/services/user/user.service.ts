@@ -7,7 +7,7 @@ export const getPersonalDetail = async () => {
   return res.data;
 };
 
-export const updatePersonalDetail = async (data: any) => {
+export const updatePersonalDetail = async (data: unknown) => {
   const res = await axiosInstance.patch(
     API_ROUTES.UPDATE_USER_PERSONAL_PROFILE,
     data,
@@ -24,7 +24,7 @@ export const getProfessionalDetail = async () => {
   return res.data;
 };
 
-export const updateProfessionalDetail = async (data: any) => {
+export const updateProfessionalDetail = async (data: unknown) => {
   const res = await axiosInstance.patch(
     API_ROUTES.UPDATE_USER_PROFESSIONAL_PROFILE,
     data,
@@ -41,7 +41,7 @@ export const getEducationList = async () => {
   return res.data;
 };
 
-export const addEducation = async (data: any) => {
+export const addEducation = async (data: unknown) => {
   const res = await axiosInstance.post(API_ROUTES.ADD_USER_EDUCATION, data);
   return res.data;
 };
@@ -51,7 +51,7 @@ export const updateEducation = async ({
   data,
 }: {
   id: number;
-  data: any;
+  data: unknown;
 }) => {
   const res = await axiosInstance.patch(
     API_ROUTES.UPDATE_USER_EDUCATION(id),
@@ -74,7 +74,7 @@ export const getScientificInterest = async () => {
   return res.data;
 };
 
-export const updateScientificInterest = async (data: any) => {
+export const updateScientificInterest = async (data: unknown) => {
   const res = await axiosInstance.patch(
     "/profile/scientific-interest/update/",
     data,
@@ -86,7 +86,7 @@ export const updateScientificInterest = async (data: any) => {
    🖼 PROFILE IMAGE
 ================================================= */
 
-export const uploadProfileImage = async (formData: any) => {
+export const uploadProfileImage = async (formData: FormData) => {
   const res = await axiosInstance.post("/upload-profile-image/", formData, {
     headers: {
       "Content-Type": "multipart/form-data",

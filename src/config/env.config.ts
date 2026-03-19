@@ -4,14 +4,14 @@ import { type EnvConfig, type ValidationSchema } from "../types/root.types";
 
 
 export const validateEnv = (
-  envObject: Record<string, any>,
+  envObject: Record<string, string | undefined>,
   schema: ValidationSchema,
   throwOnError: boolean = true
 ): EnvConfig => {
   const parsedEnv: Partial<EnvConfig> = {};
 
   for (const [key, config] of Object.entries(schema)) {
-    const { type, required, default: defaultValue, enumObj } = config as any;
+    const { type, required, default: defaultValue, enumObj } = config as { type: string, required?: boolean, default?: unknown, enumObj?: Record<string, unknown> };
     const value = envObject[key];
 
     // Check if required but missing
@@ -28,8 +28,8 @@ export const validateEnv = (
 
     if (finalValue !== undefined) {
       if (type === "number") {
-        finalValue = Number(finalValue);
-        if (isNaN(finalValue) && throwOnError) {
+        finalValue = Number(finalValue as string | number);
+        if (isNaN(finalValue as number) && throwOnError) {
           throw new Error(`Environment variable ${key} must be a number`);
         }
       } else if (type === "boolean") {
@@ -47,7 +47,7 @@ export const validateEnv = (
       }
     }
 
-    parsedEnv[key as keyof EnvConfig] = finalValue as any;
+    parsedEnv[key as keyof EnvConfig] = finalValue as never;
   }
 
   return parsedEnv as EnvConfig;

@@ -159,16 +159,15 @@ export function usePubMedSearch(
         });
 
         return { articles, total };
-      } catch (error: any) {
+      } catch (error: unknown) {
         if (axios.isCancel(error)) {
           return { articles: [], total: 0 };
         }
 
-        throw new Error(
-          error?.response?.data?.message ||
-            error.message ||
-            "Failed to fetch PubMed data",
-        );
+        if (axios.isAxiosError(error)) {
+          throw new Error(error.response?.data?.message || error.message || "Failed to fetch PubMed data");
+        }
+        throw new Error(error instanceof Error ? error.message : "Failed to fetch PubMed data");
       }
     },
 

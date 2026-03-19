@@ -8,10 +8,13 @@ export const useUploadProfileImage = () => {
     mutationFn: uploadProfileImage,
     onSuccess: (data) => {
       // Update user-profile cache
-      queryClient.setQueryData(["user-profile"], (old: any) => ({
-        ...old,
-        profile_image: data.profile_image,
-      }));
+      queryClient.setQueryData(["userProfile"], (old: import("../../types/user/user.types").UserProfile | undefined) => {
+        if (!old) return old;
+        return {
+          ...old,
+          profile_image: data.profile_image,
+        };
+      });
     },
   });
 };
