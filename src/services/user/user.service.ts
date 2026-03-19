@@ -1,0 +1,96 @@
+import { API_ROUTES } from "../../constants/api.routes";
+import axiosInstance from "../../lib/axiosInstance";
+
+/*========================= Personal Details ============================*/
+export const getPersonalDetail = async () => {
+  const res = await axiosInstance.get(API_ROUTES.GET_USER_PERSONAL_PROFILE);
+  return res.data;
+};
+
+export const updatePersonalDetail = async (data: any) => {
+  const res = await axiosInstance.patch(
+    API_ROUTES.UPDATE_USER_PERSONAL_PROFILE,
+    data,
+  );
+  return res.data;
+};
+
+/* =================================================
+   💼 PROFESSIONAL DETAILS (Current)
+================================================= */
+
+export const getProfessionalDetail = async () => {
+  const res = await axiosInstance.get(API_ROUTES.GET_USER_PROFESSIONAL_PROFILE);
+  return res.data;
+};
+
+export const updateProfessionalDetail = async (data: any) => {
+  const res = await axiosInstance.patch(
+    API_ROUTES.UPDATE_USER_PROFESSIONAL_PROFILE,
+    data,
+  );
+  return res.data;
+};
+
+/* =================================================
+   🎓 EDUCATION
+================================================= */
+
+export const getEducationList = async () => {
+  const res = await axiosInstance.get(API_ROUTES.GET_USER_EDUCATION);
+  return res.data;
+};
+
+export const addEducation = async (data: any) => {
+  const res = await axiosInstance.post(API_ROUTES.ADD_USER_EDUCATION, data);
+  return res.data;
+};
+
+export const updateEducation = async ({
+  id,
+  data,
+}: {
+  id: number;
+  data: any;
+}) => {
+  const res = await axiosInstance.patch(
+    API_ROUTES.UPDATE_USER_EDUCATION(id),
+    data,
+  );
+  return res.data;
+};
+
+export const deleteEducation = async (id: number) => {
+  const res = await axiosInstance.delete(API_ROUTES.DELETE_USER_EDUCATION(id));
+  return res.data;
+};
+
+/* =================================================
+   🔬 SCIENTIFIC INTEREST
+================================================= */
+
+export const getScientificInterest = async () => {
+  const res = await axiosInstance.get("/profile/scientific-interest/");
+  return res.data;
+};
+
+export const updateScientificInterest = async (data: any) => {
+  const res = await axiosInstance.patch(
+    "/profile/scientific-interest/update/",
+    data,
+  );
+  return res.data;
+};
+
+/* =================================================
+   🖼 PROFILE IMAGE
+================================================= */
+
+export const uploadProfileImage = async (formData: any) => {
+  const res = await axiosInstance.post("/upload-profile-image/", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return res.data;
+};

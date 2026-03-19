@@ -7,4 +7,12 @@ export const API_ROUTES = {
   VERIFY_EMAIL: "/verify-email/",
   FORGOT_PASSWORD: "/forgot-password/",
   RESET_PASSWORD: "/reset-password/",
+  GET_USER_PERSONAL_PROFILE: "/profile/personal/",
+  UPDATE_USER_PERSONAL_PROFILE: "/profile/personal/update/",
+  GET_USER_PROFESSIONAL_PROFILE: "/profile/professional/",
+  UPDATE_USER_PROFESSIONAL_PROFILE: "/profile/professional/update/",
+  GET_USER_EDUCATION: "/profile/education/",
+  ADD_USER_EDUCATION: "/profile/education/add/",
+  UPDATE_USER_EDUCATION: (id: number) => `/profile/education/${id}/update/`,
+  DELETE_USER_EDUCATION: (id: number) => `/profile/education/${id}/delete/`,
 };
