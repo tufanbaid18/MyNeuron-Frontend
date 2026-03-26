@@ -25,6 +25,56 @@ import { createZodValidator } from "../../../validations/zodValidator";
 const { TextArea } = Input;
 const { Text, Title } = Typography;
 
+const RESEARCH_AREA_OPTIONS = [
+  "Aging and Cancer", "Behavioral and Implementation Science", "Biochemistry and Biophysics",
+  "Bioengineering and Biomaterials", "Bioinformatics, Computational Biology, and Systems Biology",
+  "Biostatistics", "Cancer Disparities Research", "Cancer Evolution", "Cancer Metabolism",
+  "Cancer Modeling", "Cancer Prevention Research", "Cell Biology", "Chemistry and Chemical Biology",
+  "Clinical Research", "Clinical Trials", "Convergence Cancer Science",
+  "Data Science and Artificial Intelligence", "Developmental Biology", "Diagnostics and Biomarkers",
+  "Drug Discovery and Development", "Early Detection and Interception", "Endocrinology", "Epigenetics",
+  "Experimental and Molecular Therapeutics", "Genetics", "Genomics", "Immunology", "Microenvironment",
+  "Molecular Biology", "Pathology", "Pharmacology and Toxicology", "Population Sciences",
+  "Radiation Science and Medicine", "Surgical Oncology", "Survivorship Research", "Translational Research",
+  "Tumor Biology / Tumor Microenvironment", "Other",
+].map(opt => ({ label: opt, value: opt }));
+
+const MAJOR_FOCUS_OPTIONS = [
+  "Advocacy", "Basic Science", "Business Development", "Clinical Practice", "Clinical Research",
+  "Population Science", "Regulatory Science and Health Policy", "Research Administration",
+  "Science Education", "Science Education and Training", "Translational Research",
+].map(opt => ({ label: opt, value: opt }));
+
+const SPECIFIC_RESEARCH_AREA_OPTIONS = [
+  "Aging", "AIDS and Cancer", "Angiogenesis", "Animal Models", "Apoptosis",
+  "Biochemical Modulators of Therapy and Toxicity", "Biological Response Modifiers", "Biomarkers",
+  "Bone Marrow Transplantation", "Cachexia", "Cancer Control and Screening", "Cancer Disparities",
+  "Cancer Epidemiology", "Cancer Genetics", "Cancer Immunology", "Cancer Metabolism", "Cancer Stem Cells",
+  "Cancer Vaccines", "Carcinogenesis", "Cell Adhesion Molecules", "Cell and Tissue Culture",
+  "Cell Cycle Regulation", "Cell Death (Apoptosis)", "Chemoprevention", "Chemotherapy",
+  "Chromatin Structure and Function", "Clinical Trials", "Combined Modalities of Therapy",
+  "Computational Biology", "DNA Damage and Repair", "DNA Methylation", "Drug Delivery Systems",
+  "Drug Metabolism", "Drug Resistance", "Early Detection", "Epigenetics and Epigenomics",
+  "Experimental Immunotherapy", "Extracellular Matrix", "Flow Cytometry", "Gene Expression",
+  "Gene Therapy", "Genetic Predisposition and Cancer Risk", "Imaging", "Immunobiology",
+  "Immunotherapy (Clinical)", "Immunotherapy (Experimental)", "Inflammation", "Invasion and Metastasis",
+  "Microbiome Research", "MicroRNAs", "Molecular Carcinogenesis", "Nanotechnology", "Oncogenes",
+  "Population-Based Studies", "Precision Medicine", "Radiation Biology", "Radiation Therapy",
+  "Signal Transduction", "Single-Cell Analysis", "Stem Cells", "Systems Biology", "Tumor Angiogenesis",
+  "Tumor Heterogeneity", "Tumor Immunology", "Tumor Microenvironment", "Tumor Progression",
+  "Tumor Suppressor Genes", "Viral Carcinogenesis", "Other",
+].map(opt => ({ label: opt, value: opt }));
+
+const ORGAN_SITE_OPTIONS = [
+  "Bone", "Brain and Central Nervous System", "Breast", "Colon and Rectum", "Esophagus", "Eye",
+  "Gastrointestinal", "Head and Neck", "Kidney", "Larynx", "Leukemia", "Liver", "Lung and Bronchus",
+  "Lymphoma", "Melanoma", "Multiple Myeloma", "Neuroblastoma", "Ovary", "Pancreas", "Pediatric",
+  "Prostate", "Sarcoma and Soft Tissue", "Skin", "Stomach", "Testis", "Thyroid", "Urinary Bladder",
+  "Uterine Cervix", "Uterine Corpus",
+].map(opt => ({ label: opt, value: opt }));
+
+const ADDITIONAL_RESEARCH_AREA_OPTIONS = RESEARCH_AREA_OPTIONS;
+
 type ScientificInterestSectionProps = {
   mode?: "profile" | "registration";
 };
@@ -191,7 +241,11 @@ const ScientificInterestSection: React.FC<ScientificInterestSectionProps> = ({
           rules={zodRule("research_area_of_expertise")}
           hasFeedback
         >
-          <Input placeholder="e.g. Molecular Biology" />
+          <Select 
+            placeholder="e.g. Molecular Biology" 
+            options={RESEARCH_AREA_OPTIONS}
+            showSearch
+          />
         </Form.Item>
 
         <Row gutter={16}>
@@ -210,6 +264,7 @@ const ScientificInterestSection: React.FC<ScientificInterestSectionProps> = ({
                 mode="tags"
                 placeholder="e.g. Oncology, Neurodegeneration"
                 tokenSeparators={[","]}
+                options={MAJOR_FOCUS_OPTIONS}
               />
             </Form.Item>
           </Col>
@@ -226,6 +281,7 @@ const ScientificInterestSection: React.FC<ScientificInterestSectionProps> = ({
                 mode="tags"
                 placeholder="e.g. CRISPR, Gene Editing"
                 tokenSeparators={[","]}
+                options={SPECIFIC_RESEARCH_AREA_OPTIONS}
               />
             </Form.Item>
           </Col>
@@ -243,6 +299,7 @@ const ScientificInterestSection: React.FC<ScientificInterestSectionProps> = ({
                 mode="tags"
                 placeholder="e.g. Brain, Liver"
                 tokenSeparators={[","]}
+                options={ORGAN_SITE_OPTIONS}
               />
             </Form.Item>
           </Col>
@@ -261,6 +318,7 @@ const ScientificInterestSection: React.FC<ScientificInterestSectionProps> = ({
                 mode="tags"
                 placeholder="Any secondary areas..."
                 tokenSeparators={[","]}
+                options={ADDITIONAL_RESEARCH_AREA_OPTIONS}
               />
             </Form.Item>
           </Col>

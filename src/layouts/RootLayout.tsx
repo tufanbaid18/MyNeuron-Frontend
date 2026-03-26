@@ -15,16 +15,16 @@ const RootLayout = () => {
   );
 
   return (
-    <Layout className="w-full h-full">
+    <Layout className="w-full h-screen overflow-hidden">
       <RootHeader setSidebarVisible={setSidebarVisible} />
-      <Layout className="relative">
+      <Layout className="relative overflow-hidden">
         <Sidebar
           sidebarVisible={sidebarVisible}
           setSidebarVisible={setSidebarVisible}
           SIDEBAR_WIDTH={SIDEBAR_WIDTH}
           MD_BREAKPOINT={MD_BREAKPOINT}
         />
-        <Content className="p-2">
+        <Content className="p-2 overflow-y-auto">
           <Outlet />
         </Content>
       </Layout>

@@ -10,7 +10,9 @@ import {
   Select,
   Typography,
   Skeleton,
+  DatePicker,
 } from "antd";
+import dayjs from "dayjs";
 import { EditOutlined, SaveOutlined, CloseOutlined } from "@ant-design/icons";
 import {
   usePersonalDetail,
@@ -56,12 +58,18 @@ const PersonalSection: React.FC<PersonalSectionProps> = ({ mode = "profile" }) =
     }
   }, [personalDetail, isEditing, form]);
 
-  const handleFinish = async (values: UserPersonalDetailsForm) => {
+  const handleFinish = async (values: any) => {
 
     try {
-      // Format dates or other specialized values as needed
-      // Our generic values are mostly strings here
-      await updateDetails(values);
+      const payload = { ...values };
+      
+      // Django DateField throws a "wrong format" error for empty strings.
+      // So if the user hasn't selected a date (empty string), we send null instead.
+      if (payload.dob === "") {
+        payload.dob = null;
+      }
+
+      await updateDetails(payload);
       if (mode === "profile") {
         setIsEditing(false);
       }
@@ -189,9 +197,11 @@ const PersonalSection: React.FC<PersonalSectionProps> = ({ mode = "profile" }) =
               label={<span style={{ fontWeight: 500 }}>Date of Birth</span>}
               rules={zodRule("dob")}
               hasFeedback
+              getValueProps={(value) => ({ value: value ? dayjs(value) : "" })}
+              getValueFromEvent={(_, dateString) => dateString}
             >
-              {/* Note: Storing dob as a string 'YYYY-MM-DD' usually. We could use DatePicker but DatePicker returns a dayjs object. To simplify bridging with Zod strictly requiring string, using Input type date or custom formatter is easier. */}
-              <Input type="date" />
+              {/* Used AntD DatePicker to cleanly output YYYY-MM-DD */}
+              <DatePicker format="YYYY-MM-DD" style={{ width: "100%" }} />
             </Form.Item>
           </Col>
         </Row>
