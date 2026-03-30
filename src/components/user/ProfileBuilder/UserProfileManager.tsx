@@ -1,5 +1,19 @@
 import React, { useState } from "react";
-import { Tabs, Typography, Card, Grid, theme, Avatar, Space, Row, Col, Statistic, Upload, message, Divider } from "antd";
+import {
+  Tabs,
+  Typography,
+  Card,
+  Grid,
+  theme,
+  Avatar,
+  Space,
+  Row,
+  Col,
+  Statistic,
+  Upload,
+  message,
+  Divider,
+} from "antd";
 import {
   UserOutlined,
   BookOutlined,
@@ -31,7 +45,8 @@ const UserProfileManager: React.FC<UserProfileManagerProps> = ({
   const [activeTab, setActiveTab] = useState("personal");
   const { data: userProfileData } = useUserProfile(mode === "profile");
   const { data: personalDetails } = usePersonalDetail();
-  const { mutateAsync: uploadImage, isPending: isUploadingImage } = useUploadProfileImage();
+  const { mutateAsync: uploadImage, isPending: isUploadingImage } =
+    useUploadProfileImage();
 
   const items = [
     {
@@ -43,7 +58,18 @@ const UserProfileManager: React.FC<UserProfileManagerProps> = ({
     {
       key: "professional",
       label: "Professional Details",
-      icon: <span className="anticon" style={{ display: 'inline-flex', alignItems: 'center', fontSize: '16px' }}><IoBriefcaseOutline /></span>,
+      icon: (
+        <span
+          className="anticon"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            fontSize: "16px",
+          }}
+        >
+          <IoBriefcaseOutline />
+        </span>
+      ),
       children: <ProfessionalSection mode={mode} />,
     },
     {
@@ -75,7 +101,12 @@ const UserProfileManager: React.FC<UserProfileManagerProps> = ({
   };
 
   const renderRegistrationHeader = () => (
-    <div style={{ textAlign: "center", marginBottom: screens.md ? "32px" : "24px" }}>
+    <div
+      style={{
+        textAlign: "center",
+        marginBottom: screens.md ? "32px" : "24px",
+      }}
+    >
       <Title level={screens.md ? 2 : 3} style={{ margin: 0, fontWeight: 700 }}>
         Complete Your Profile
       </Title>
@@ -85,7 +116,7 @@ const UserProfileManager: React.FC<UserProfileManagerProps> = ({
     </div>
   );
 
-  const fullName = userProfileData 
+  const fullName = userProfileData
     ? `${userProfileData.title ? userProfileData.title + " " : ""}${userProfileData.first_name} ${userProfileData.last_name}`
     : "";
 
@@ -111,14 +142,30 @@ const UserProfileManager: React.FC<UserProfileManagerProps> = ({
           }}
         >
           {/* Decorative shapes */}
-          <div style={{
-            position: "absolute", top: "-60px", right: "-60px", width: "250px", height: "250px",
-            borderRadius: "50%", background: "rgba(255,255,255,0.08)", filter: "blur(20px)"
-          }} />
-          <div style={{
-            position: "absolute", bottom: "-40px", left: "15%", width: "180px", height: "180px",
-            borderRadius: "50%", background: "rgba(255,255,255,0.1)", filter: "blur(15px)"
-          }} />
+          <div
+            style={{
+              position: "absolute",
+              top: "-60px",
+              right: "-60px",
+              width: "250px",
+              height: "250px",
+              borderRadius: "50%",
+              background: "rgba(255,255,255,0.08)",
+              filter: "blur(20px)",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              bottom: "-40px",
+              left: "15%",
+              width: "180px",
+              height: "180px",
+              borderRadius: "50%",
+              background: "rgba(255,255,255,0.1)",
+              filter: "blur(15px)",
+            }}
+          />
         </div>
       )}
 
@@ -128,7 +175,8 @@ const UserProfileManager: React.FC<UserProfileManagerProps> = ({
           maxWidth: "1400px",
           margin: "0 auto",
           padding: screens.md ? "0 32px" : "0 16px",
-          marginTop: mode === "profile" ? (screens.md ? "-80px" : "-60px") : "32px",
+          marginTop:
+            mode === "profile" ? (screens.md ? "-80px" : "-60px") : "32px",
           position: "relative",
           zIndex: 10,
         }}
@@ -140,7 +188,7 @@ const UserProfileManager: React.FC<UserProfileManagerProps> = ({
           {mode === "profile" && userProfileData && (
             <Col xs={24} lg={8} xl={6}>
               <Card
-                bordered={false}
+                variant="outlined"
                 style={{
                   borderRadius: "20px",
                   boxShadow: token.boxShadowSecondary,
@@ -149,7 +197,13 @@ const UserProfileManager: React.FC<UserProfileManagerProps> = ({
                   paddingTop: "12px",
                 }}
               >
-                <div style={{ position: "relative", display: "inline-block", marginBottom: "20px" }}>
+                <div
+                  style={{
+                    position: "relative",
+                    display: "inline-block",
+                    marginBottom: "20px",
+                  }}
+                >
                   <Avatar
                     size={screens.md ? 140 : 120}
                     src={userProfileData.profile_image}
@@ -160,10 +214,14 @@ const UserProfileManager: React.FC<UserProfileManagerProps> = ({
                       opacity: isUploadingImage ? 0.6 : 1,
                       backgroundColor: token.colorPrimaryBg,
                       color: token.colorPrimary,
-                      fontSize: screens.md ? "64px" : "54px"
+                      fontSize: screens.md ? "64px" : "54px",
                     }}
                   />
-                  <Upload customRequest={handleImageUpload} showUploadList={false} accept="image/*">
+                  <Upload
+                    customRequest={handleImageUpload}
+                    showUploadList={false}
+                    accept="image/*"
+                  >
                     <div
                       style={{
                         position: "absolute",
@@ -182,16 +240,35 @@ const UserProfileManager: React.FC<UserProfileManagerProps> = ({
                         boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
                         transition: "all 0.3s ease",
                       }}
-                      onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => e.currentTarget.style.transform = "scale(1.1)"}
-                      onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => e.currentTarget.style.transform = "scale(1)"}
+                      onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) =>
+                        (e.currentTarget.style.transform = "scale(1.1)")
+                      }
+                      onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) =>
+                        (e.currentTarget.style.transform = "scale(1)")
+                      }
                     >
                       {isUploadingImage ? (
-                        <div className="ant-spin ant-spin-spinning" style={{ zoom: 0.6 }}>
+                        <div
+                          className="ant-spin ant-spin-spinning"
+                          style={{ zoom: 0.6 }}
+                        >
                           <span className="ant-spin-dot ant-spin-dot-spin">
-                            <i className="ant-spin-dot-item" style={{ backgroundColor: '#fff' }}></i>
-                            <i className="ant-spin-dot-item" style={{ backgroundColor: '#fff' }}></i>
-                            <i className="ant-spin-dot-item" style={{ backgroundColor: '#fff' }}></i>
-                            <i className="ant-spin-dot-item" style={{ backgroundColor: '#fff' }}></i>
+                            <i
+                              className="ant-spin-dot-item"
+                              style={{ backgroundColor: "#fff" }}
+                            ></i>
+                            <i
+                              className="ant-spin-dot-item"
+                              style={{ backgroundColor: "#fff" }}
+                            ></i>
+                            <i
+                              className="ant-spin-dot-item"
+                              style={{ backgroundColor: "#fff" }}
+                            ></i>
+                            <i
+                              className="ant-spin-dot-item"
+                              style={{ backgroundColor: "#fff" }}
+                            ></i>
                           </span>
                         </div>
                       ) : (
@@ -201,59 +278,151 @@ const UserProfileManager: React.FC<UserProfileManagerProps> = ({
                   </Upload>
                 </div>
 
-                <Title level={3} style={{ margin: "0 0 4px 0", fontWeight: 700 }}>
+                <Title
+                  level={3}
+                  style={{ margin: "0 0 4px 0", fontWeight: 700 }}
+                >
                   {fullName}
                 </Title>
-                <Text type="secondary" style={{ fontSize: "16px", display: "block", marginBottom: "24px" }}>
+                <Text
+                  type="secondary"
+                  style={{
+                    fontSize: "16px",
+                    display: "block",
+                    marginBottom: "24px",
+                  }}
+                >
                   {userProfileData.profile_title || "Explorer"}
                 </Text>
 
-                <div style={{
-                  background: token.colorBgLayout,
-                  borderRadius: "16px",
-                  padding: "16px",
-                  marginBottom: "24px",
-                  display: "flex",
-                  justifyContent: "space-around"
-                }}>
-                  <Statistic 
-                    title={<span style={{ fontSize: "13px", fontWeight: 600 }}>FOLLOWERS</span>} 
-                    value={userProfileData.followers_count || 0} 
-                    valueStyle={{ fontSize: 24, fontWeight: 700, color: token.colorPrimary }} 
+                <div
+                  style={{
+                    background: token.colorBgLayout,
+                    borderRadius: "16px",
+                    padding: "16px",
+                    marginBottom: "24px",
+                    display: "flex",
+                    justifyContent: "space-around",
+                  }}
+                >
+                  <Statistic
+                    title={
+                      <span style={{ fontSize: "13px", fontWeight: 600 }}>
+                        FOLLOWERS
+                      </span>
+                    }
+                    value={userProfileData.followers_count || 0}
+                    valueStyle={{
+                      fontSize: 24,
+                      fontWeight: 700,
+                      color: token.colorPrimary,
+                    }}
                   />
-                  <Divider type="vertical" style={{ height: "auto", margin: 0 }} />
-                  <Statistic 
-                    title={<span style={{ fontSize: "13px", fontWeight: 600 }}>FOLLOWING</span>} 
-                    value={userProfileData.following_count || 0} 
-                    valueStyle={{ fontSize: 24, fontWeight: 700, color: token.colorPrimary }} 
+                  <Divider
+                    type="vertical"
+                    style={{ height: "auto", margin: 0 }}
+                  />
+                  <Statistic
+                    title={
+                      <span style={{ fontSize: "13px", fontWeight: 600 }}>
+                        FOLLOWING
+                      </span>
+                    }
+                    value={userProfileData.following_count || 0}
+                    valueStyle={{
+                      fontSize: 24,
+                      fontWeight: 700,
+                      color: token.colorPrimary,
+                    }}
                   />
                 </div>
 
                 {(personalDetails?.x_handle || personalDetails?.linkedin) && (
                   <>
                     <Divider style={{ margin: "16px 0" }}>
-                      <Text type="secondary" style={{ fontSize: "12px", fontWeight: 500 }}>SOCIALS</Text>
+                      <Text
+                        type="secondary"
+                        style={{ fontSize: "12px", fontWeight: 500 }}
+                      >
+                        SOCIALS
+                      </Text>
                     </Divider>
-                    <Space size="middle" style={{ width: "100%", justifyContent: "center", display: "flex" }}>
+                    <Space
+                      size="middle"
+                      style={{
+                        width: "100%",
+                        justifyContent: "center",
+                        display: "flex",
+                      }}
+                    >
                       {personalDetails?.x_handle && (
-                        <a href={`https://x.com/${personalDetails.x_handle.replace('@', '')}`} target="_blank" rel="noopener noreferrer">
-                          <div 
-                            style={{ display: "inline-block", transition: "transform 0.2s" }} 
-                            onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => e.currentTarget.style.transform = "translateY(-3px)"} 
-                            onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => e.currentTarget.style.transform = "translateY(0)"}
+                        <a
+                          href={`https://x.com/${personalDetails.x_handle.replace("@", "")}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <div
+                            style={{
+                              display: "inline-block",
+                              transition: "transform 0.2s",
+                            }}
+                            onMouseEnter={(
+                              e: React.MouseEvent<HTMLDivElement>,
+                            ) =>
+                              (e.currentTarget.style.transform =
+                                "translateY(-3px)")
+                            }
+                            onMouseLeave={(
+                              e: React.MouseEvent<HTMLDivElement>,
+                            ) =>
+                              (e.currentTarget.style.transform =
+                                "translateY(0)")
+                            }
                           >
-                            <Avatar size={42} icon={<FaXTwitter />} style={{ background: "#000", cursor: "pointer" }} />
+                            <Avatar
+                              size={42}
+                              icon={<FaXTwitter />}
+                              style={{ background: "#000", cursor: "pointer" }}
+                            />
                           </div>
                         </a>
                       )}
                       {personalDetails?.linkedin && (
-                        <a href={personalDetails.linkedin.startsWith('http') ? personalDetails.linkedin : `https://${personalDetails.linkedin}`} target="_blank" rel="noopener noreferrer">
-                          <div 
-                            style={{ display: "inline-block", transition: "transform 0.2s" }} 
-                            onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => e.currentTarget.style.transform = "translateY(-3px)"} 
-                            onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => e.currentTarget.style.transform = "translateY(0)"}
+                        <a
+                          href={
+                            personalDetails.linkedin.startsWith("http")
+                              ? personalDetails.linkedin
+                              : `https://${personalDetails.linkedin}`
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <div
+                            style={{
+                              display: "inline-block",
+                              transition: "transform 0.2s",
+                            }}
+                            onMouseEnter={(
+                              e: React.MouseEvent<HTMLDivElement>,
+                            ) =>
+                              (e.currentTarget.style.transform =
+                                "translateY(-3px)")
+                            }
+                            onMouseLeave={(
+                              e: React.MouseEvent<HTMLDivElement>,
+                            ) =>
+                              (e.currentTarget.style.transform =
+                                "translateY(0)")
+                            }
                           >
-                            <Avatar size={42} icon={<FaLinkedin />} style={{ background: "#0077b5", cursor: "pointer" }} />
+                            <Avatar
+                              size={42}
+                              icon={<FaLinkedin />}
+                              style={{
+                                background: "#0077b5",
+                                cursor: "pointer",
+                              }}
+                            />
                           </div>
                         </a>
                       )}
@@ -265,9 +434,13 @@ const UserProfileManager: React.FC<UserProfileManagerProps> = ({
           )}
 
           {/* Main Content Area (Tabs) */}
-          <Col xs={24} lg={mode === "profile" ? 16 : 24} xl={mode === "profile" ? 18 : 24}>
+          <Col
+            xs={24}
+            lg={mode === "profile" ? 16 : 24}
+            xl={mode === "profile" ? 18 : 24}
+          >
             <Card
-              bordered={false}
+              variant="outlined"
               style={{
                 borderRadius: "20px",
                 boxShadow: token.boxShadowSecondary,
@@ -281,10 +454,10 @@ const UserProfileManager: React.FC<UserProfileManagerProps> = ({
                 items={items}
                 size="large"
                 animated={{ inkBar: true, tabPane: true }}
-                tabBarStyle={{ 
-                  marginBottom: "32px", 
+                tabBarStyle={{
+                  marginBottom: "32px",
                   fontWeight: 600,
-                  fontSize: "16px"
+                  fontSize: "16px",
                 }}
               />
             </Card>

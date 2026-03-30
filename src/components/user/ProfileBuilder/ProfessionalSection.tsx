@@ -75,7 +75,10 @@ const ProfessionalSection: React.FC<ProfessionalSectionProps> = ({
   const handleFinish = async (values: UserProfessionalDetailsForm) => {
 
     try {
-      await updateDetails(values);
+      // Backend expects `certifications` as a FileField, not text.
+      // Exclude it from the regular PATCH payload to avoid the encoding error.
+      const { certifications, ...payload } = values;
+      await updateDetails(payload);
       if (mode === "profile") setIsEditing(false);
     } catch (e) {
       console.error(e);
@@ -258,8 +261,8 @@ const ProfessionalSection: React.FC<ProfessionalSectionProps> = ({
         <Form.Item name="languages_spoken" label={<span style={{ fontWeight: 500 }}>Languages Spoken</span>} rules={zodRule("languages_spoken")} hasFeedback>
           <Input placeholder="English, Spanish, Mandarin..." />
         </Form.Item>
-        <Form.Item name="certifications" label={<span style={{ fontWeight: 500 }}>Certifications</span>} rules={zodRule("certifications")} hasFeedback>
-          <TextArea rows={2} placeholder="List major certifications..." />
+        <Form.Item name="certifications" label={<span style={{ fontWeight: 500 }}>Certifications (Optional — file upload coming soon)</span>} hasFeedback>
+          <TextArea rows={2} placeholder="List major certifications..." disabled />
         </Form.Item>
 
         <Divider>Past Experiences</Divider>

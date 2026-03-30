@@ -18,7 +18,9 @@ const Sidebar = ({
 }) => {
   const { dark } = useTheme();
 
-  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth < MD_BREAKPOINT : false);
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth < MD_BREAKPOINT : false,
+  );
 
   // Auto-hide sidebar when viewport shrinks below md and update isMobile state
   useEffect(() => {
@@ -41,7 +43,7 @@ const Sidebar = ({
       mode="inline"
       className="bg-background! h-full border-r-0"
       defaultSelectedKeys={["1"]}
-      items={SIDEBAR_MENU_ITEMS}
+      items={SIDEBAR_MENU_ITEMS({ gatcActive: false })}
     />
   );
 

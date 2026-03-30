@@ -46,6 +46,16 @@ export const resetPassword = async (
   return response.data;
 };
 
+export const updateUserProfile = async (
+  data: Partial<UserProfile>,
+): Promise<UserProfile> => {
+  const response = await axiosInstance.patch<UserProfile>(
+    API_ROUTES.UPDATE_USER_PROFILE,
+    data,
+  );
+  return response.data;
+};
+
 export const logout = async (): Promise<void> => {
   await axiosInstance.post(API_ROUTES.LOGOUT);
 };

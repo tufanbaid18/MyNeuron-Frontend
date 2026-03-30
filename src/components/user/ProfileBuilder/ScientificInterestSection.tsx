@@ -261,10 +261,10 @@ const ScientificInterestSection: React.FC<ScientificInterestSectionProps> = ({
               hasFeedback
             >
               <Select
-                mode="tags"
+                mode="multiple"
                 placeholder="e.g. Oncology, Neurodegeneration"
-                tokenSeparators={[","]}
                 options={MAJOR_FOCUS_OPTIONS}
+                showSearch
               />
             </Form.Item>
           </Col>
@@ -278,10 +278,10 @@ const ScientificInterestSection: React.FC<ScientificInterestSectionProps> = ({
               hasFeedback
             >
               <Select
-                mode="tags"
+                mode="multiple"
                 placeholder="e.g. CRISPR, Gene Editing"
-                tokenSeparators={[","]}
                 options={SPECIFIC_RESEARCH_AREA_OPTIONS}
+                showSearch
               />
             </Form.Item>
           </Col>
@@ -296,10 +296,10 @@ const ScientificInterestSection: React.FC<ScientificInterestSectionProps> = ({
               hasFeedback
             >
               <Select
-                mode="tags"
+                mode="multiple"
                 placeholder="e.g. Brain, Liver"
-                tokenSeparators={[","]}
                 options={ORGAN_SITE_OPTIONS}
+                showSearch
               />
             </Form.Item>
           </Col>
@@ -315,10 +315,10 @@ const ScientificInterestSection: React.FC<ScientificInterestSectionProps> = ({
               hasFeedback
             >
               <Select
-                mode="tags"
+                mode="multiple"
                 placeholder="Any secondary areas..."
-                tokenSeparators={[","]}
                 options={ADDITIONAL_RESEARCH_AREA_OPTIONS}
+                showSearch
               />
             </Form.Item>
           </Col>

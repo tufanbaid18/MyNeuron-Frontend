@@ -1,5 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
-import { getUserProfile } from "../../services/auth/auth.service";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { getUserProfile, updateUserProfile } from "../../services/auth/auth.service";
+import type { UserProfile } from "../../types/user/user.types";
 
 export const USER_PROFILE_QUERY_KEY = ["userProfile"] as const;
 
@@ -12,3 +13,15 @@ export const useUserProfile = (enabled = true) => {
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 };
+
+export const useUpdateUserProfile = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: Partial<UserProfile>) => updateUserProfile(data),
+    onSuccess: (data) => {
+      queryClient.setQueryData(USER_PROFILE_QUERY_KEY, data);
+    },
+  });
+};
+
