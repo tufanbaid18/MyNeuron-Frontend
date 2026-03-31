@@ -4,6 +4,7 @@ import type { SetStateAction } from "jotai";
 import { useEffect, useState, type Dispatch } from "react";
 import { SIDEBAR_MENU_ITEMS } from "../../constants/sidebar.constants";
 import { useTheme } from "../../providers/ThemeProvider";
+import { useUserProfile } from "../../hooks/auth/useUserProfile";
 
 const Sidebar = ({
   sidebarVisible,
@@ -17,7 +18,7 @@ const Sidebar = ({
   MD_BREAKPOINT: number;
 }) => {
   const { dark } = useTheme();
-
+  const isVerified = useUserProfile().data?.is_verified;
   const [isMobile, setIsMobile] = useState(() =>
     typeof window !== "undefined" ? window.innerWidth < MD_BREAKPOINT : false,
   );
@@ -43,7 +44,7 @@ const Sidebar = ({
       mode="inline"
       className="bg-background! h-full border-r-0"
       defaultSelectedKeys={["1"]}
-      items={SIDEBAR_MENU_ITEMS({ gatcActive: false })}
+      items={SIDEBAR_MENU_ITEMS({ gatcActive: isVerified || false })}
     />
   );
 

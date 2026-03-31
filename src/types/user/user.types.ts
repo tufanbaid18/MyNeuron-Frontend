@@ -15,6 +15,8 @@ export type UserProfile = {
   following_count: number;
   is_following: boolean;
   follow_request_status: "none";
+  is_verified: boolean;
+  is_verified_lite: boolean;
 };
 
 export type UserEducation = {
