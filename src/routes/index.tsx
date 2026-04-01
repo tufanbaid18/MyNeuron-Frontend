@@ -17,6 +17,7 @@ import {
 
 import { APP_ROUTES } from "../constants/app.routes";
 import NotFound from "../pages/error/NotFound";
+import { bookshelfIndexRoute, bookshelfRootRoute } from "./bookshelf.routes";
 import {
   gatcIndexRoute,
   gatcMyHandshakesRoute,
@@ -70,6 +71,7 @@ export const routeTree = rootRoute.addChildren([
       gatcMyHandshakesRoute,
     ]),
     userRootRoute.addChildren([userIndexRoute, userProfileRoute]),
+    bookshelfRootRoute.addChildren([bookshelfIndexRoute]),
   ]),
   publicRoute.addChildren([
     eventsInfoRoute,

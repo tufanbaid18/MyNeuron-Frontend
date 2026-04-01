@@ -24,4 +24,9 @@ export const API_ROUTES = {
     `/create-order/${registrationId}/`,
   VERIFY_PAYMENT: "/verify-payment/",
   MANUAL_PAYMENT: "/manual-payment/",
+
+  // ── Bookshelf ──
+  GET_FOLDERS_TREE: "/folders/tree/",
+  CREATE_FOLDER: "/folders/",
+  CREATE_FOLDER_ITEM: "/folder-items/",
 };
