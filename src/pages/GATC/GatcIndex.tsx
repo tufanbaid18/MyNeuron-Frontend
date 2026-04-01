@@ -1,9 +1,22 @@
+import { CheckCircleFilled } from "@ant-design/icons";
 import { useNavigate } from "@tanstack/react-router";
-import { Button } from "antd";
+import { Button, Tag } from "antd";
+
 import { APP_ROUTES } from "../../constants/app.routes";
+import { env } from "../../constants/env";
+import { useUserProfile } from "../../hooks/auth/useUserProfile";
 
 export default function GATC2026() {
   const navigate = useNavigate();
+  const { data: userData } = useUserProfile();
+
+  // Check if user has already paid for the default GATC event
+  const defaultEventId = Number(env.VITE_DEFAULT_GATC_EVENT_ID);
+  const hasAlreadyPaid =
+    userData?.events?.some(
+      (event) => event.id === defaultEventId && event.paid,
+    ) ?? false;
+
   return (
     <section className="bg-white py-10 sm:py-14 lg:py-20 overflow-y-scroll h-full">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -43,22 +56,36 @@ export default function GATC2026() {
                 industry, and policy-makers to converge. Join us as we bridge
                 the gap from discovery to diagnostics, with the forum thrown
                 open to a panel discussion on
-                <strong> “Genomics for Impact: From Bench to Bedside”.</strong>
+                <strong> "Genomics for Impact: From Bench to Bedside".</strong>
               </p>
             </div>
 
             {/* CTA */}
             <div className="mt-6 sm:mt-8">
-              <Button
-                size="large"
-                variant="outlined"
-                type="primary"
-                onClick={() => {
-                  navigate({ to: APP_ROUTES.GATC_REGISTRATION });
-                }}
-              >
-                Register now
-              </Button>
+              {hasAlreadyPaid ? (
+                <Tag
+                  icon={<CheckCircleFilled />}
+                  color="success"
+                  style={{
+                    fontSize: 16,
+                    padding: "8px 20px",
+                    borderRadius: 20,
+                  }}
+                >
+                  Already Registered ✓
+                </Tag>
+              ) : (
+                <Button
+                  size="large"
+                  variant="outlined"
+                  type="primary"
+                  onClick={() => {
+                    navigate({ to: APP_ROUTES.GATC_REGISTRATION });
+                  }}
+                >
+                  Register now
+                </Button>
+              )}
             </div>
           </div>
         </div>

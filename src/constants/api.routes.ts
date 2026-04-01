@@ -16,4 +16,12 @@ export const API_ROUTES = {
   ADD_USER_EDUCATION: "/profile/education/add/",
   UPDATE_USER_EDUCATION: (id: number) => `/profile/education/${id}/update/`,
   DELETE_USER_EDUCATION: (id: number) => `/profile/education/${id}/delete/`,
+
+  // ── GATC Payment ──
+  GET_EVENTS: "/events/",
+  CREATE_REGISTRATION: "/registrations/",
+  CREATE_ORDER: (registrationId: number) =>
+    `/create-order/${registrationId}/`,
+  VERIFY_PAYMENT: "/verify-payment/",
+  MANUAL_PAYMENT: "/manual-payment/",
 };

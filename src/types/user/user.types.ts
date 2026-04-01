@@ -16,7 +16,13 @@ export type UserProfile = {
   is_following: boolean;
   follow_request_status: "none";
   is_verified: boolean;
-  is_verified_lite: boolean;
+  events: UserEventEngagement[] | null;
+};
+
+export type UserEventEngagement = {
+  id: number;
+  name: string;
+  paid: boolean;
 };
 
 export type UserEducation = {

@@ -22,6 +22,7 @@ import {
   useScientificInterest,
   useUpdateScientificInterest,
 } from "../../hooks/user/useUserScientificInterests";
+import type { EventPricing } from "../../types/gatc/gatc.types";
 
 import { type RegistrationFormValues } from "./components/Registration.types";
 import { allRequiredFieldsFilled } from "./components/Registration.utils";
@@ -41,6 +42,12 @@ export default function GatcRegistration() {
   const [currentStep, setCurrentStep] = useState(0);
   const [form] = Form.useForm<RegistrationFormValues>();
   const [isSaving, setIsSaving] = useState(false);
+
+  // ── Payment flow state (shared between CategoryStep & PaymentStep) ──
+  const [selectedPricing, setSelectedPricing] = useState<EventPricing | null>(
+    null,
+  );
+  const [registrationId, setRegistrationId] = useState<number | null>(null);
 
   // ── Data hooks ──────────────────────────────────────────────
   const { data: userData, isLoading: loadingUser } = useUserProfile();
@@ -218,13 +225,22 @@ export default function GatcRegistration() {
           {currentStep === 1 && (
             <CategoryStep
               token={token}
+              selectedPricing={selectedPricing}
+              onPricingSelect={setSelectedPricing}
               onBack={() => setCurrentStep(0)}
               onNext={() => setCurrentStep(2)}
             />
           )}
 
-          {currentStep === 2 && (
-            <PaymentStep token={token} onBack={() => setCurrentStep(1)} />
+          {currentStep === 2 && selectedPricing && (
+            <PaymentStep
+              token={token}
+              selectedPricing={selectedPricing}
+              registrationId={registrationId}
+              setRegistrationId={setRegistrationId}
+              userData={userData}
+              onBack={() => setCurrentStep(1)}
+            />
           )}
         </Card>
       </div>

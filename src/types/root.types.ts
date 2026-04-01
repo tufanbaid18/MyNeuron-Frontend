@@ -7,6 +7,8 @@ export enum AppEnv {
 export type EnvConfig = {
   VITE_API_BASE_URL: string;
   VITE_APP_ENV: AppEnv;
+  VITE_DEFAULT_GATC_EVENT_ID: string;
+  VITE_RAZORPAY_KEY_ID: string;
 };
 
 // 2. Define how each variable should be validated
