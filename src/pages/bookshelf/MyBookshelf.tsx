@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Layout, Button, Typography, message, Space, theme, Grid, Drawer } from "antd";
 import { PlusOutlined, LinkOutlined, MenuOutlined } from "@ant-design/icons";
+import { useNavigate } from "@tanstack/react-router";
+import { bookshelfIndexRoute } from "../../routes/bookshelf.routes";
 import BookshelfSidebar from "../../components/bookshelf/BookshelfSidebar";
 import BookshelfContentArea from "../../components/bookshelf/BookshelfContentArea";
 import CreateFolderModal from "../../components/bookshelf/CreateFolderModal";
@@ -18,10 +20,9 @@ const MyBookshelf: React.FC = () => {
   const screens = useBreakpoint();
   const isMobile = screens.md === false; // If screen is smaller than md (768px)
 
-  const storedFolderId = localStorage.getItem("bookshelf_active_folder");
-  const [activeFolderId, setActiveFolderId] = useState<number | null>(
-    storedFolderId ? Number(storedFolderId) : null
-  );
+  const { folderId } = bookshelfIndexRoute.useSearch();
+  const navigate = useNavigate();
+  const activeFolderId = folderId || null;
 
   const [treeData, setTreeData] = useState<BookshelfFolder[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -48,9 +49,8 @@ const MyBookshelf: React.FC = () => {
   }, []);
 
   // Sync active folder
-  const handleSelectFolder = (id: number) => {
-    setActiveFolderId(id);
-    localStorage.setItem("bookshelf_active_folder", String(id));
+  const handleSelectFolder = (id: number | null) => {
+    navigate({ to: "/my-bookshelf", search: { folderId: id || undefined } });
     if (isMobile) {
       setIsMobileSidebarOpen(false); // Auto close sidebar on mobile when folder selected
     }
@@ -64,8 +64,8 @@ const MyBookshelf: React.FC = () => {
   const findFolderData = (
     folders: BookshelfFolder[],
     targetId: number,
-    path: { id: number; name: string }[] = []
-  ): { folder: BookshelfFolder; path: { id: number; name: string }[] } | null => {
+    path: { id: number | null; name: string }[] = [{ id: null, name: "Bookshelf" }]
+  ): { folder: BookshelfFolder; path: { id: number | null; name: string }[] } | null => {
     for (const folder of folders) {
       const currentPath = [...path, { id: folder.id, name: folder.name }];
       if (folder.id === targetId) {
@@ -80,65 +80,80 @@ const MyBookshelf: React.FC = () => {
   };
 
   const activeFolderData = useMemo(() => {
-    if (!activeFolderId || treeData.length === 0) return null;
+    if (treeData.length === 0 && loading) return null;
+    
+    if (!activeFolderId) {
+      return {
+        folder: {
+          id: 0, // Virtual ID for root display logic
+          name: "My Bookshelf",
+          subfolders: treeData,
+          items: [],
+          parent: null,
+        } as BookshelfFolder,
+        path: [{ id: null, name: "Bookshelf" }]
+      };
+    }
     return findFolderData(treeData, activeFolderId);
-  }, [treeData, activeFolderId]);
+  }, [treeData, activeFolderId, loading]);
 
   return (
     <Layout style={{ height: "calc(100vh - 64px)", background: token.colorBgLayout || "#f0f2f5" }}>
       {/* Top Action Bar */}
       <div
         style={{
-          padding: "16px 24px",
+          padding: "12px 16px",
           background: token.colorBgContainer || "#fff",
           borderBottom: `1px solid ${token.colorBorderSecondary || "#f0f0f0"}`,
           display: "flex",
           flexWrap: "wrap",
-          gap: 16,
+          gap: 12,
           justifyContent: "space-between",
           alignItems: "center",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+          boxShadow: "0 2px 4px rgba(0,0,0,0.02)",
           zIndex: 10,
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Title level={4} style={{ margin: 0, fontWeight: 600 }}>
+            Bookshelf
+          </Title>
+        </div>
+        
+        <Space wrap style={{ flex: isMobile ? 1 : "none", justifyContent: "flex-end", width: isMobile ? "100%" : "auto" }}>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            size={isMobile ? "small" : "middle"}
+            onClick={() => setIsFolderModalOpen(true)}
+            style={{ borderRadius: 6, fontWeight: 500 }}
+          >
+            Folder
+          </Button>
+          {activeFolderId && (
+            <Button
+              size={isMobile ? "small" : "middle"}
+              icon={<LinkOutlined />}
+              style={{ borderRadius: 6, fontWeight: 500 }}
+              onClick={() => {
+                if (!activeFolderData) {
+                  message.warning("Please select a folder first to add a file.");
+                  return;
+                }
+                setIsLinkModalOpen(true);
+              }}
+            >
+              File
+            </Button>
+          )}
           {isMobile && (
             <Button 
               type="text" 
               icon={<MenuOutlined />} 
               onClick={() => setIsMobileSidebarOpen(true)}
-              style={{ fontSize: 18, padding: "0 8px" }}
+              style={{ fontSize: 16, padding: "0 4px", marginLeft: 4 }}
             />
           )}
-          <Title level={3} style={{ margin: 0, fontWeight: 600 }}>
-            Bookshelf
-          </Title>
-        </div>
-        
-        <Space wrap style={{ flex: isMobile ? 1 : "none", justifyContent: isMobile ? "flex-end" : "flex-start", width: isMobile ? "100%" : "auto" }}>
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            size={isMobile ? "middle" : "large"}
-            onClick={() => setIsFolderModalOpen(true)}
-            style={{ borderRadius: 8, fontWeight: 500 }}
-          >
-            Folder
-          </Button>
-          <Button
-            size={isMobile ? "middle" : "large"}
-            icon={<LinkOutlined />}
-            style={{ borderRadius: 8, fontWeight: 500 }}
-            onClick={() => {
-              if (!activeFolderId) {
-                message.warning("Please select a folder first to add a file.");
-                return;
-              }
-              setIsLinkModalOpen(true);
-            }}
-          >
-            File
-          </Button>
         </Space>
       </div>
 
@@ -164,8 +179,11 @@ const MyBookshelf: React.FC = () => {
         {/* Desktop Sidebar */}
         {!isMobile && (
           <Sider
-            width={300}
+            width={260}
             theme="light"
+            collapsible
+            reverseArrow
+            breakpoint="lg"
             style={{ 
               background: token.colorBgContainer || "#fff",
               borderLeft: `1px solid ${token.colorBorderSecondary || "#f0f0f0"}`,
@@ -183,7 +201,7 @@ const MyBookshelf: React.FC = () => {
 
       {/* Mobile Drawer Sidebar */}
       <Drawer
-        title="Bookshelf Navigation"
+        title={<span style={{ fontWeight: 600, fontSize: 16 }}>Bookshelf Navigation</span>}
         placement="right"
         onClose={() => setIsMobileSidebarOpen(false)}
         open={isMobileSidebarOpen}
@@ -201,15 +219,15 @@ const MyBookshelf: React.FC = () => {
       <CreateFolderModal
         open={isFolderModalOpen}
         onClose={() => setIsFolderModalOpen(false)}
-        parentId={activeFolderId}
+        parentId={activeFolderId && activeFolderData ? activeFolderData.folder.id : null}
         onSuccess={handleCreateSuccess}
       />
       
-      {activeFolderId && (
+      {activeFolderData && (
         <AddFileLinkModal
           open={isLinkModalOpen}
           onClose={() => setIsLinkModalOpen(false)}
-          folderId={activeFolderId}
+          folderId={activeFolderData.folder.id}
           onSuccess={handleCreateSuccess}
         />
       )}

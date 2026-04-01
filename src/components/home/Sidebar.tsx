@@ -1,7 +1,9 @@
 import { Menu, Drawer } from "antd";
 import Sider from "antd/es/layout/Sider";
 import type { SetStateAction } from "jotai";
-import { useEffect, useState, type Dispatch } from "react";
+import { useEffect, useState, useMemo, type Dispatch } from "react";
+import { useLocation } from "@tanstack/react-router";
+import { APP_ROUTES } from "../../constants/app.routes";
 import { SIDEBAR_MENU_ITEMS } from "../../constants/sidebar.constants";
 import { useTheme } from "../../providers/ThemeProvider";
 import { useUserProfile } from "../../hooks/auth/useUserProfile";
@@ -38,12 +40,23 @@ const Sidebar = ({
     return () => mql.removeEventListener("change", handler);
   }, [MD_BREAKPOINT, isMobile]);
 
+  const location = useLocation();
+  const pathname = location.pathname;
+
+  const selectedKeys = useMemo(() => {
+    if (pathname.includes(APP_ROUTES.PLASMA)) return ["1"];
+    if (pathname.includes(APP_ROUTES.GATC)) return ["2a"];
+    if (pathname.includes(APP_ROUTES.MY_BOOKSHELF)) return ["3"];
+    if (pathname.includes(APP_ROUTES.IMPULSE)) return ["4"];
+    return ["1"];
+  }, [pathname]);
+
   const menuContent = (
     <Menu
       theme={dark ? "dark" : "light"}
       mode="inline"
       className="bg-background! h-full border-r-0"
-      defaultSelectedKeys={["1"]}
+      selectedKeys={selectedKeys}
       items={SIDEBAR_MENU_ITEMS({ gatcActive: isVerified || false })}
     />
   );
@@ -52,11 +65,22 @@ const Sidebar = ({
     return (
       <Drawer
         placement="left"
-        closable={false}
+        title={
+          <div className="flex items-center">
+            <img src="/header_logo.png" alt="logo" className="h-8" />
+          </div>
+        }
+        closable={true}
         onClose={() => setSidebarVisible(false)}
         open={sidebarVisible}
         width={SIDEBAR_WIDTH}
-        styles={{ body: { padding: 0 } }}
+        styles={{ 
+          body: { padding: 0 }
+        }}
+        classNames={{
+          header: "border-b border-gray-200 dark:border-gray-800",
+          body: "dark:bg-gray-900"
+        }}
         className="dark:bg-gray-900"
       >
         {menuContent}

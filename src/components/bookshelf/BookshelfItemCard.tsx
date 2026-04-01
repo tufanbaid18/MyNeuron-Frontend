@@ -35,42 +35,42 @@ const BookshelfItemCard: React.FC<BookshelfItemCardProps> = ({
         }
       }}
       bodyStyle={{ 
-        padding: "16px 20px",
+        padding: "12px 14px",
         display: "flex",
         alignItems: "center",
         width: "100%",
         overflow: "hidden"
       }}
       style={{
-        borderRadius: 12,
+        borderRadius: 8,
         height: "100%",
         cursor: "pointer",
         minWidth: 0,
-        boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.03)",
         border: `1px solid ${token.colorBorderSecondary}`,
         transition: "all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)",
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = "translateY(-4px)";
-        e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.08)";
+        e.currentTarget.style.boxShadow = "0 8px 16px rgba(0,0,0,0.06)";
         e.currentTarget.style.borderColor = token.colorPrimary;
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = "translateY(0)";
-        e.currentTarget.style.boxShadow = "0 2px 12px rgba(0,0,0,0.04)";
+        e.currentTarget.style.boxShadow = "0 2px 8px rgba(0,0,0,0.03)";
         e.currentTarget.style.borderColor = token.colorBorderSecondary;
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: 14, width: "100%", minWidth: 0 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, width: "100%", minWidth: 0 }}>
         <div 
           style={{ 
-            fontSize: 28, 
+            fontSize: 24, 
             display: "flex", 
             alignItems: "center", 
             justifyContent: "center",
-            width: 40,
-            height: 40,
-            borderRadius: 8,
+            width: 32,
+            height: 32,
+            borderRadius: 6,
             background: isFolder ? `${token.colorPrimary}15` : token.colorBgLayout, // 15 is hex for ~8% opacity
             color: isFolder ? token.colorPrimary : "inherit"
           }}
@@ -89,7 +89,7 @@ const BookshelfItemCard: React.FC<BookshelfItemCardProps> = ({
                 display: "block",
                 fontWeight: isFolder ? 600 : 500,
                 color: token.colorText,
-                fontSize: 15,
+                fontSize: 13,
               }}
             >
               {name || "Untitled"}

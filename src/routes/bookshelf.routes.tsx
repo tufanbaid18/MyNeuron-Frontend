@@ -13,5 +13,10 @@ export const bookshelfRootRoute = createRoute({
 export const bookshelfIndexRoute = createRoute({
   getParentRoute: () => bookshelfRootRoute,
   path: "/",
+  validateSearch: (search: Record<string, unknown>): { folderId?: number } => {
+    return {
+      folderId: search.folderId ? Number(search.folderId) : undefined,
+    };
+  },
   component: () => <MyBookshelf />,
 });

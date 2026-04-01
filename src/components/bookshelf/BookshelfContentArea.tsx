@@ -2,7 +2,7 @@ import React from "react";
 import { Breadcrumb, Row, Col, Empty, Skeleton, Typography, theme } from "antd";
 import BookshelfItemCard from "./BookshelfItemCard";
 import type { BookshelfFolder } from "../../types/bookshelf.types";
-import { FolderOpenOutlined, RightOutlined } from "@ant-design/icons";
+import { RightOutlined } from "@ant-design/icons";
 
 const { Title } = Typography;
 const { useToken } = theme;
@@ -10,8 +10,8 @@ const { useToken } = theme;
 type BookshelfContentAreaProps = {
   activeFolder: BookshelfFolder | null;
   loading: boolean;
-  onSelectFolder: (folderId: number) => void;
-  breadcrumbs: { id: number; name: string }[];
+  onSelectFolder: (folderId: number | null) => void;
+  breadcrumbs: { id: number | null; name: string }[];
 };
 
 const BookshelfContentArea: React.FC<BookshelfContentAreaProps> = ({
@@ -30,25 +30,10 @@ const BookshelfContentArea: React.FC<BookshelfContentAreaProps> = ({
     );
   }
 
-  if (!activeFolder) {
+  if (loading || !activeFolder) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100%",
-          padding: 24,
-        }}
-      >
-        <Empty
-          image={<FolderOpenOutlined style={{ fontSize: 72, color: token.colorBorder }} />}
-          description={
-            <span style={{ color: token.colorTextSecondary, fontSize: 16 }}>
-              Select a folder from the sidebar or create a new one.
-            </span>
-          }
-        />
+      <div style={{ padding: 32 }}>
+        <Skeleton active paragraph={{ rows: 6 }} />
       </div>
     );
   }
@@ -57,10 +42,10 @@ const BookshelfContentArea: React.FC<BookshelfContentAreaProps> = ({
     activeFolder.subfolders.length > 0 || activeFolder.items.length > 0;
 
   return (
-    <div style={{ padding: "32px 40px", height: "100%", overflowY: "auto", position: "relative" }}>
+    <div style={{ padding: "16px 20px", height: "100%", overflowY: "auto", position: "relative" }}>
       {/* Breadcrumbs */}
       <Breadcrumb 
-        style={{ marginBottom: 32, fontSize: 15 }} 
+        style={{ marginBottom: 16, fontSize: 13 }} 
         separator={<RightOutlined style={{ fontSize: 10, color: token.colorTextTertiary }} />}
         items={breadcrumbs.map((bc, index) => {
           const isLast = index === breadcrumbs.length - 1;
@@ -87,7 +72,7 @@ const BookshelfContentArea: React.FC<BookshelfContentAreaProps> = ({
         })}
       />
 
-      <Title level={4} style={{ marginBottom: 32, fontWeight: 700, color: token.colorTextHeading }}>
+      <Title level={5} style={{ marginBottom: 16, fontWeight: 700, color: token.colorTextHeading }}>
         {activeFolder.name}
       </Title>
 
@@ -98,19 +83,19 @@ const BookshelfContentArea: React.FC<BookshelfContentAreaProps> = ({
               This folder is empty
             </span>
           }
-          style={{ marginTop: 80 }}
+          style={{ marginTop: 40 }}
         />
       ) : (
         <>
           {/* Subfolders Grid */}
           {activeFolder.subfolders.length > 0 && (
-            <div style={{ marginBottom: 40 }}>
+            <div style={{ marginBottom: 24 }}>
               <Typography.Text 
                 type="secondary" 
                 style={{ 
                   display: "block", 
-                  marginBottom: 16, 
-                  fontSize: 13, 
+                  marginBottom: 12, 
+                  fontSize: 12, 
                   fontWeight: 600, 
                   textTransform: "uppercase", 
                   letterSpacing: "0.5px"
@@ -118,7 +103,7 @@ const BookshelfContentArea: React.FC<BookshelfContentAreaProps> = ({
               >
                 Folders
               </Typography.Text>
-              <Row gutter={[20, 20]}>
+              <Row gutter={[12, 12]}>
                 {activeFolder.subfolders.map((sf) => (
                   <Col xs={24} sm={12} md={8} lg={6} xl={4} key={`subfolder-${sf.id}`}>
                     <BookshelfItemCard
@@ -139,8 +124,8 @@ const BookshelfContentArea: React.FC<BookshelfContentAreaProps> = ({
                 type="secondary" 
                 style={{ 
                   display: "block", 
-                  marginBottom: 16, 
-                  fontSize: 13, 
+                  marginBottom: 12, 
+                  fontSize: 12, 
                   fontWeight: 600, 
                   textTransform: "uppercase", 
                   letterSpacing: "0.5px" 
@@ -148,7 +133,7 @@ const BookshelfContentArea: React.FC<BookshelfContentAreaProps> = ({
               >
                 Files
               </Typography.Text>
-              <Row gutter={[20, 20]}>
+              <Row gutter={[12, 12]}>
                 {activeFolder.items.map((it) => (
                   <Col xs={24} sm={12} md={8} lg={6} xl={4} key={`item-${it.id}`}>
                     <BookshelfItemCard isFolder={false} item={it} />

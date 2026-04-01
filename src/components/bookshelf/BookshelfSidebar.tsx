@@ -10,7 +10,7 @@ const { useToken } = theme;
 type BookshelfSidebarProps = {
   treeData: BookshelfFolder[];
   selectedFolderId: number | null;
-  onSelectFolder: (id: number) => void;
+  onSelectFolder: (id: number | null) => void;
 };
 
 const BookshelfSidebar: React.FC<BookshelfSidebarProps> = ({
@@ -98,7 +98,7 @@ const BookshelfSidebar: React.FC<BookshelfSidebarProps> = ({
     <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
       <div
         style={{
-          padding: "20px 24px",
+          padding: "12px 16px",
           borderBottom: `1px solid ${token.colorBorderSecondary}`,
         }}
       >
@@ -106,13 +106,13 @@ const BookshelfSidebar: React.FC<BookshelfSidebarProps> = ({
           style={{ width: "100%" }}
           placeholder="Search folders"
           onChange={onChange}
-          size="large"
+          size="middle"
           allowClear
           variant="filled" // updated from flat string "bordered" or default to modern "filled"
         />
       </div>
 
-      <div style={{ flex: 1, overflowY: "auto", padding: "16px 12px" }}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "12px 8px" }}>
         {treeData.length > 0 ? (
           <Tree
             showIcon
@@ -123,6 +123,8 @@ const BookshelfSidebar: React.FC<BookshelfSidebarProps> = ({
             onSelect={(selectedKeys) => {
               if (selectedKeys.length > 0) {
                 onSelectFolder(Number(selectedKeys[0]));
+              } else {
+                onSelectFolder(null);
               }
             }}
             treeData={formattedData}
