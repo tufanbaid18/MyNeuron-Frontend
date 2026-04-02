@@ -2,10 +2,12 @@ export function getAvatarByName({
   firstName,
   lastName,
 }: {
-  firstName: string;
-  lastName: string;
+  firstName: string | undefined;
+  lastName: string | undefined;
 }) {
+  const fullname = (firstName ?? "User") + " " + (lastName ?? "");
+
   return `https://ui-avatars.com/api/?name=${encodeURIComponent(
-    firstName + " " + lastName,
+    fullname,
   )}&background=random&color=fff`;
 }

@@ -22,4 +22,5 @@ export const APP_ROUTES = {
   CONSULTANCY_INFO: "/public/consultancy-info",
   PRODUCTS_INFO: "/public/products-info",
   GATC_REGISTRATION: "/gatc/registration",
+  GATC_VIRTUAL_PASS: "/gatc/virtual-pass",
 };

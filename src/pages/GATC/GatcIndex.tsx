@@ -6,6 +6,7 @@ import { APP_ROUTES } from "../../constants/app.routes";
 import { env } from "../../constants/env";
 import { useUserProfile } from "../../hooks/auth/useUserProfile";
 import { RegisteredEventPaymentStatus } from "../../types/user/user.types";
+import VirtualPassDialog from "./components/GatcVirtualPass";
 
 export default function GATC2026() {
   const navigate = useNavigate();
@@ -66,17 +67,20 @@ export default function GATC2026() {
               (paymentStatus === RegisteredEventPaymentStatus.PAID ||
                 paymentStatus ===
                   RegisteredEventPaymentStatus.MANUAL_VERIFIED) ? (
-                <Tag
-                  icon={<CheckCircleFilled />}
-                  color="success"
-                  style={{
-                    fontSize: 16,
-                    padding: "8px 20px",
-                    borderRadius: 20,
-                  }}
-                >
-                  Already Registered ✓
-                </Tag>
+                <div className="flex flex-col justify-center items-center gap-5">
+                  <Tag
+                    icon={<CheckCircleFilled />}
+                    color="success"
+                    style={{
+                      fontSize: 16,
+                      padding: "8px 20px",
+                      borderRadius: 20,
+                    }}
+                  >
+                    Already Registered ✓
+                  </Tag>
+                  <VirtualPassDialog />
+                </div>
               ) : paymentStatus &&
                 paymentStatus ===
                   RegisteredEventPaymentStatus.MANUAL_PENDING ? (
