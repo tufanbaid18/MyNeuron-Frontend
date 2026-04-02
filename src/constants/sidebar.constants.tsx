@@ -92,7 +92,7 @@ export const SIDEBAR_MENU_ITEMS = ({ gatcActive }: { gatcActive: boolean }) => {
       key: "4",
       icon: <ImpulseIcon />,
       label: (
-        <Link to={APP_ROUTES.IMPULSE} className="block w-full">
+        <Link to={APP_ROUTES.IMPULSE_FEED} className="block w-full">
           Impulse
         </Link>
       ),

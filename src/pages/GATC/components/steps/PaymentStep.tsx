@@ -83,17 +83,7 @@ export const PaymentStep = ({
 
       // Only create registration if we don't have one already
       if (!regId) {
-        const userName = [
-          userData?.first_name,
-          userData?.middle_name,
-          userData?.last_name,
-        ]
-          .filter(Boolean)
-          .join(" ");
-
         const regResult = await registration.mutateAsync({
-          name: userName || "Participant",
-          email: userData?.email || "",
           event: Number(env.VITE_DEFAULT_GATC_EVENT_ID),
           pricing: selectedPricing.id,
         });
@@ -129,9 +119,8 @@ export const PaymentStep = ({
         await openRazorpay(orderResult.order_id, regId);
       } catch (error: unknown) {
         // Check if backend returned "Maximum payment attempts reached"
-        const errData = (
-          error as { response?: { data?: { error?: string } } }
-        )?.response?.data;
+        const errData = (error as { response?: { data?: { error?: string } } })
+          ?.response?.data;
 
         if (errData?.error === MAX_ATTEMPTS_ERROR) {
           setFlowState({
@@ -201,9 +190,8 @@ export const PaymentStep = ({
         },
       };
 
-      const RazorpayConstructor = (
-        window as unknown as Record<string, unknown>
-      ).Razorpay as new (opts: RazorpayOptions) => { open: () => void };
+      const RazorpayConstructor = (window as unknown as Record<string, unknown>)
+        .Razorpay as new (opts: RazorpayOptions) => { open: () => void };
       const rzp = new RazorpayConstructor(options);
       rzp.open();
     },
@@ -351,13 +339,9 @@ export const PaymentStep = ({
       {/* Processing spinner */}
       {isProcessing && (
         <div style={{ textAlign: "center", padding: "60px 0" }}>
-          <Spin
-            indicator={<LoadingOutlined style={{ fontSize: 36 }} spin />}
-          />
+          <Spin indicator={<LoadingOutlined style={{ fontSize: 36 }} spin />} />
           <div style={{ marginTop: 16 }}>
-            <Text type="secondary">
-              {processingMessages[flowState.status]}
-            </Text>
+            <Text type="secondary">{processingMessages[flowState.status]}</Text>
           </div>
         </div>
       )}

@@ -24,6 +24,8 @@ import {
 } from "../../hooks/user/useUserScientificInterests";
 import type { EventPricing } from "../../types/gatc/gatc.types";
 
+import { APP_ROUTES } from "../../constants/app.routes";
+import { RegisteredEventPaymentStatus } from "../../types/user/user.types";
 import { type RegistrationFormValues } from "./components/Registration.types";
 import { allRequiredFieldsFilled } from "./components/Registration.utils";
 import { RegistrationHeroBanner } from "./components/RegistrationHeroBanner";
@@ -42,7 +44,7 @@ export default function GatcRegistration() {
   const [currentStep, setCurrentStep] = useState(0);
   const [form] = Form.useForm<RegistrationFormValues>();
   const [isSaving, setIsSaving] = useState(false);
-
+  const user = useUserProfile().data;
   // ── Payment flow state (shared between CategoryStep & PaymentStep) ──
   const [selectedPricing, setSelectedPricing] = useState<EventPricing | null>(
     null,
@@ -109,6 +111,17 @@ export default function GatcRegistration() {
     scientificData,
     form,
   ]);
+  useEffect(() => {
+    const isRegistered =
+      user?.registered_events.find(
+        (event) =>
+          event.payment_status === RegisteredEventPaymentStatus.PAID ||
+          event.payment_status === RegisteredEventPaymentStatus.MANUAL_VERIFIED,
+      ) !== undefined;
+    if (isRegistered) {
+      window.location.href = APP_ROUTES.GATC;
+    }
+  }, [user]);
 
   // ── Save & Continue handler ─────────────────────────────────
   const handleSaveAndContinue = async () => {

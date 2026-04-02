@@ -16,14 +16,25 @@ export type UserProfile = {
   is_following: boolean;
   follow_request_status: "none";
   is_verified: boolean;
-  events: UserEventEngagement[] | null;
+  registered_events: UserRegisteredEvents[];
 };
 
-export type UserEventEngagement = {
-  id: number;
-  name: string;
-  paid: boolean;
+export type UserRegisteredEvents = {
+  event_id: number;
+  event_name: string;
+  category: string;
+  pricing: number;
+  payment_status: string;
+  manual_payment_status: string | null;
 };
+
+export enum RegisteredEventPaymentStatus {
+  PENDING_PAYMENT = "PENDING_PAYMENT",
+  PAID = "PAID",
+  MANUAL_PENDING = "MANUAL_PENDING",
+  MANUAL_VERIFIED = "MANUAL_VERIFIED",
+  FAILED = "FAILED",
+}
 
 export type UserEducation = {
   id: number;

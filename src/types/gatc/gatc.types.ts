@@ -43,6 +43,11 @@ export type GatcEvent = {
 };
 
 export type GatcRegistrationResponse = {
+  message: string;
+  data: GatcRegistration;
+};
+
+export type GatcRegistration = {
   id: number;
   name: string;
   email: string;
@@ -76,8 +81,6 @@ export type ManualPaymentResponse = {
 // ── Request Payloads ─────────────────────────────────────────
 
 export type GatcRegistrationPayload = {
-  name: string;
-  email: string;
   event: number;
   pricing: number;
 };

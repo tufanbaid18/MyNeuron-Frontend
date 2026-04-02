@@ -9,6 +9,7 @@ export const APP_ROUTES = {
   GATC_MY_HANDSHAKES: "/gatc/my-handshakes",
   MY_BOOKSHELF: "/my-bookshelf",
   IMPULSE: "/impulse",
+  IMPULSE_FEED: "/impulse/feed",
   AUTH: "/auth",
   LOGIN: "/auth/login",
   REGISTER: "/auth/register",

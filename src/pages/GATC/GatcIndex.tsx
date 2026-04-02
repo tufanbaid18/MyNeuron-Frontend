@@ -1,10 +1,11 @@
-import { CheckCircleFilled } from "@ant-design/icons";
+import { CheckCircleFilled, ClockCircleFilled } from "@ant-design/icons";
 import { useNavigate } from "@tanstack/react-router";
 import { Button, Tag } from "antd";
 
 import { APP_ROUTES } from "../../constants/app.routes";
 import { env } from "../../constants/env";
 import { useUserProfile } from "../../hooks/auth/useUserProfile";
+import { RegisteredEventPaymentStatus } from "../../types/user/user.types";
 
 export default function GATC2026() {
   const navigate = useNavigate();
@@ -12,10 +13,9 @@ export default function GATC2026() {
 
   // Check if user has already paid for the default GATC event
   const defaultEventId = Number(env.VITE_DEFAULT_GATC_EVENT_ID);
-  const hasAlreadyPaid =
-    userData?.events?.some(
-      (event) => event.id === defaultEventId && event.paid,
-    ) ?? false;
+  const paymentStatus = userData?.registered_events?.find(
+    (event) => event.event_id === defaultEventId,
+  )?.payment_status;
 
   return (
     <section className="bg-white py-10 sm:py-14 lg:py-20 overflow-y-scroll h-full">
@@ -62,7 +62,10 @@ export default function GATC2026() {
 
             {/* CTA */}
             <div className="mt-6 sm:mt-8">
-              {hasAlreadyPaid ? (
+              {paymentStatus &&
+              (paymentStatus === RegisteredEventPaymentStatus.PAID ||
+                paymentStatus ===
+                  RegisteredEventPaymentStatus.MANUAL_VERIFIED) ? (
                 <Tag
                   icon={<CheckCircleFilled />}
                   color="success"
@@ -73,6 +76,20 @@ export default function GATC2026() {
                   }}
                 >
                   Already Registered ✓
+                </Tag>
+              ) : paymentStatus &&
+                paymentStatus ===
+                  RegisteredEventPaymentStatus.MANUAL_PENDING ? (
+                <Tag
+                  icon={<ClockCircleFilled />}
+                  color="warning"
+                  style={{
+                    fontSize: 16,
+                    padding: "8px 20px",
+                    borderRadius: 20,
+                  }}
+                >
+                  Payment Verification in progress
                 </Tag>
               ) : (
                 <Button

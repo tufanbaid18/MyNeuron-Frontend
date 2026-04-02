@@ -1,12 +1,13 @@
 import { API_ROUTES } from "../../constants/api.routes";
 import axiosInstance from "../../lib/axiosInstance";
 import type {
+  CreateOrderResponse,
   GatcEvent,
+  GatcRegistration,
   GatcRegistrationPayload,
   GatcRegistrationResponse,
-  CreateOrderResponse,
-  VerifyPaymentPayload,
   ManualPaymentResponse,
+  VerifyPaymentPayload,
 } from "../../types/gatc/gatc.types";
 
 // ════════════════════════════════════════════════════════════════
@@ -22,12 +23,12 @@ export const getEvents = async (): Promise<GatcEvent[]> => {
 /** POST /registrations/ — creates a registration entry for payment */
 export const createRegistration = async (
   data: GatcRegistrationPayload,
-): Promise<GatcRegistrationResponse> => {
+): Promise<GatcRegistration> => {
   const res = await axiosInstance.post<GatcRegistrationResponse>(
     API_ROUTES.CREATE_REGISTRATION,
     data,
   );
-  return res.data;
+  return res.data.data;
 };
 
 /** POST /create-order/{registrationId}/ — creates Razorpay order */

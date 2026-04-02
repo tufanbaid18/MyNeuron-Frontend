@@ -7,6 +7,7 @@ import { APP_ROUTES } from "../../constants/app.routes";
 import { SIDEBAR_MENU_ITEMS } from "../../constants/sidebar.constants";
 import { useTheme } from "../../providers/ThemeProvider";
 import { useUserProfile } from "../../hooks/auth/useUserProfile";
+import { RegisteredEventPaymentStatus } from "../../types/user/user.types";
 
 const Sidebar = ({
   sidebarVisible,
@@ -20,7 +21,7 @@ const Sidebar = ({
   MD_BREAKPOINT: number;
 }) => {
   const { dark } = useTheme();
-  const isVerified = useUserProfile().data?.is_verified;
+  const user = useUserProfile().data;
   const [isMobile, setIsMobile] = useState(() =>
     typeof window !== "undefined" ? window.innerWidth < MD_BREAKPOINT : false,
   );
@@ -51,13 +52,27 @@ const Sidebar = ({
     return ["1"];
   }, [pathname]);
 
+  const showGatc = useMemo(() => {
+    if (user) {
+      return (
+        user.registered_events.find(
+          (event) =>
+            event.payment_status === RegisteredEventPaymentStatus.PAID ||
+            event.payment_status ===
+              RegisteredEventPaymentStatus.MANUAL_VERIFIED,
+        ) !== undefined
+      );
+    }
+    return false;
+  }, [user]);
+
   const menuContent = (
     <Menu
       theme={dark ? "dark" : "light"}
       mode="inline"
       className="bg-background! h-full border-r-0"
       selectedKeys={selectedKeys}
-      items={SIDEBAR_MENU_ITEMS({ gatcActive: isVerified || false })}
+      items={SIDEBAR_MENU_ITEMS({ gatcActive: showGatc })}
     />
   );
 
@@ -74,12 +89,12 @@ const Sidebar = ({
         onClose={() => setSidebarVisible(false)}
         open={sidebarVisible}
         width={SIDEBAR_WIDTH}
-        styles={{ 
-          body: { padding: 0 }
+        styles={{
+          body: { padding: 0 },
         }}
         classNames={{
           header: "border-b border-gray-200 dark:border-gray-800",
-          body: "dark:bg-gray-900"
+          body: "dark:bg-gray-900",
         }}
         className="dark:bg-gray-900"
       >
