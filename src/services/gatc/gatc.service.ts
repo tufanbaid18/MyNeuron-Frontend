@@ -7,6 +7,7 @@ import type {
   GatcRegistrationPayload,
   GatcRegistrationResponse,
   ManualPaymentResponse,
+  VerifyPassResponse,
   VerifyPaymentPayload,
 } from "../../types/gatc/gatc.types";
 
@@ -56,6 +57,25 @@ export const submitManualPayment = async (
     API_ROUTES.MANUAL_PAYMENT,
     formData,
     { headers: { "Content-Type": "multipart/form-data" } },
+  );
+  return res.data;
+};
+
+export const verifyVirtualPass = async ({
+  userId,
+  eventId,
+}: {
+  userId: number;
+  eventId: number;
+}): Promise<VerifyPassResponse> => {
+  const res = await axiosInstance.get<VerifyPassResponse>(
+    API_ROUTES.GATC_PASS,
+    {
+      params: {
+        user_id: userId,
+        event_id: eventId,
+      },
+    },
   );
   return res.data;
 };

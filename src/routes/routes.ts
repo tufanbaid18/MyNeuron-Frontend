@@ -22,6 +22,7 @@ export const ROUTER_ROUTES = {
   IMPULSE: "impulse",
   IMPULSE_FEED: "feed",
   GATC_REGISTRATION: "registration",
+  GATC_VIRTUAL_PASS: "gatc/virtual-pass",
   USER: "user",
   PROFILE: "profile",
 };

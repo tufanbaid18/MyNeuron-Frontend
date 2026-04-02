@@ -9,6 +9,7 @@ import {
   getEvents,
   submitManualPayment,
   verifyPayment,
+  verifyVirtualPass,
 } from "../../services/gatc/gatc.service";
 import type {
   GatcEvent,
@@ -75,6 +76,18 @@ export const useManualPayment = () => {
     onError: (error) => {
       toast.error(
         `Manual payment failed: ${error.message || "Please try again."}`,
+      );
+    },
+  });
+};
+
+export const useVerifyVirtualPass = () => {
+  return useMutation({
+    mutationFn: ({ userId, eventId }: { userId: number; eventId: number }) =>
+      verifyVirtualPass({ userId, eventId }),
+    onError: (error) => {
+      toast.error(
+        `Virtual pass verification failed: ${error.message || "Contact support."}`,
       );
     },
   });

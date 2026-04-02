@@ -47,7 +47,8 @@ const GatcVirtualPass: React.FC = () => {
             backgroundColor: "#ffffff",
             quality: 1,
             pixelRatio: 2, // High resolution
-            imagePlaceholder: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+            imagePlaceholder:
+              "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
             fetchRequestInit: { cache: "no-cache" },
             filter: (domNode) => {
               return domNode?.id !== "pass-avatar";

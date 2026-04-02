@@ -32,6 +32,7 @@ import { plasmaIndexRoute, plasmaRootRoute } from "./plasma.routes";
 import {
   consultancyInfoRoute,
   eventsInfoRoute,
+  gatcVirtualPassRoute,
   privacyPolicyRoute,
   productsInfoRoute,
   publicRoute,
@@ -81,6 +82,7 @@ export const routeTree = rootRoute.addChildren([
     consultancyInfoRoute,
     termsAndConditionsRoute,
     privacyPolicyRoute,
+    gatcVirtualPassRoute,
   ]),
 ]);
 

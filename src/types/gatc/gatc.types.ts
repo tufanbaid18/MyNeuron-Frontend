@@ -119,3 +119,24 @@ export type PaymentFlowState = {
   registrationId: number | null;
   errorMessage: string | null;
 };
+
+export type VerifyPassResponse = {
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    profile_image: string | null;
+    profile_title: string | null;
+  };
+  event: {
+    event_id: number;
+    event_name: string;
+    category: string;
+    pricing: number;
+  };
+  payment: {
+    status: string;
+    manual_payment_status: string | null;
+    last_attempt_status: string;
+  };
+};
