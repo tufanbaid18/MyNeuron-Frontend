@@ -21,7 +21,7 @@ const GatcVirtualPass: React.FC = () => {
               RegisteredEventPaymentStatus.MANUAL_VERIFIED,
         )
       ) {
-        return `${env.VITE_APP_FRONTEND_URL}/${APP_ROUTES.GATC_VIRTUAL_PASS}?user_id=${user.id}&event_id=${env.VITE_DEFAULT_GATC_EVENT_ID}`;
+        return `${env.VITE_APP_FRONTEND_URL}${APP_ROUTES.GATC_VIRTUAL_PASS}?user_id=${user.id}&event_id=${env.VITE_DEFAULT_GATC_EVENT_ID}`;
       } else {
         return "";
       }

@@ -17,7 +17,11 @@ export default defineConfig(({ mode }) => {
     plugins: [react(), tailwindcss()],
     server: {
       host: true,
-      allowedHosts: ["0.0.0.0","myneuron.com"],
+      allowedHosts: [
+        "0.0.0.0",
+        "myneuron.com",
+        "doubtable-rudolph-colossally.ngrok-free.dev",
+      ],
     },
   };
 });
