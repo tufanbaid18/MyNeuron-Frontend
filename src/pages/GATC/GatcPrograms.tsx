@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Typography } from "antd";
-import { useGatcPrograms } from "../hooks/gatc/useGatc";
-import { ProgramList } from "../components/gatc/speakers/ProgramList";
+import { useGatcPrograms } from "../../hooks/gatc/useGatc";
+import { ProgramList } from "../../components/gatc/speakers/ProgramList";
 
 const { Title, Paragraph } = Typography;
 

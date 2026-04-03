@@ -156,3 +156,19 @@ export type GatcProgramsItem = {
   start_time: string;
   end_time: string;
 };
+
+export type GatcSpeakersResponse = GatcSpeaker[];
+
+export type GatcSpeaker = {
+  id: number;
+  email: string;
+  title: string | null;
+  first_name: string;
+  middle_name: string | null;
+  last_name: string;
+  profile_title: string | null;
+  profile_image: string | null;
+  role: string;
+  is_verified: boolean;
+  is_verified_lite: boolean;
+};

@@ -3,14 +3,14 @@ import { useState } from "react";
 import { CgBookmark } from "react-icons/cg";
 import { IoOpenOutline } from "react-icons/io5";
 import { RiFilePdf2Fill } from "react-icons/ri";
-import PlasmaDocumentIcon from "../components/icons/PlasmaDocumentIcon";
-import PlasmaPdfIcon from "../components/icons/PlasmaPdfIcon";
-import PlasmaSearchBar from "../components/plasma/PlasmaSearchbar";
-import ErrorComponent from "../components/ui/ErrorComponent";
-import Loading from "../components/ui/Loading";
-import NoData from "../components/ui/NoData";
-import StartSearch from "../components/ui/StartSearch";
-import { usePubMedSearch } from "../hooks/plasma/usePlasma";
+import PlasmaDocumentIcon from "../../components/icons/PlasmaDocumentIcon";
+import PlasmaPdfIcon from "../../components/icons/PlasmaPdfIcon";
+import PlasmaSearchBar from "../../components/plasma/PlasmaSearchbar";
+import ErrorComponent from "../../components/ui/ErrorComponent";
+import Loading from "../../components/ui/Loading";
+import NoData from "../../components/ui/NoData";
+import StartSearch from "../../components/ui/StartSearch";
+import { usePubMedSearch } from "../../hooks/plasma/usePlasma";
 
 const Plasma = () => {
   const [search, setSearch] = useState<string>("");

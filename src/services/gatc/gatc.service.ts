@@ -7,6 +7,7 @@ import type {
   GatcRegistration,
   GatcRegistrationPayload,
   GatcRegistrationResponse,
+  GatcSpeakersResponse,
   ManualPaymentResponse,
   VerifyPassResponse,
   VerifyPaymentPayload,
@@ -84,6 +85,13 @@ export const verifyVirtualPass = async ({
 export const getGatcPrograms = async (): Promise<GatcProgramsResponse> => {
   const res = await axiosInstance.get<GatcProgramsResponse>(
     API_ROUTES.GATC_PROGRAMS,
+  );
+  return res.data;
+};
+
+export const getGatcSpeakers = async (): Promise<GatcSpeakersResponse> => {
+  const res = await axiosInstance.get<GatcSpeakersResponse>(
+    API_ROUTES.GATC_SPEAKERS,
   );
   return res.data;
 };

@@ -29,4 +29,5 @@ export const API_ROUTES = {
   CREATE_FOLDER_ITEM: "/folder-items/",
   GATC_PASS: "/public/payment",
   GATC_PROGRAMS: "/programs/",
+  GATC_SPEAKERS: "/speakers/",
 };

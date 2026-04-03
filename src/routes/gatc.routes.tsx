@@ -1,12 +1,12 @@
 import { createRoute } from "@tanstack/react-router";
 
 import GatcIndex from "../pages/GATC/GatcIndex";
+import GatcMyHandshakes from "../pages/GATC/GatcMyHandshakes";
+import GatcParticipants from "../pages/GATC/GatcParticipants";
+import GatcPrograms from "../pages/GATC/GatcPrograms";
+import GatcRoot from "../pages/GATC/GatcRoot";
+import GatcSpeakers from "../pages/GATC/GatcSpeakers";
 import GatcRegistration from "../pages/GATC/Registration";
-import GatcMyHandshakes from "../pages/GatcMyHandshakes";
-import GatcParticipants from "../pages/GatcParticipants";
-import GatcPrograms from "../pages/GatcPrograms";
-import GatcRoot from "../pages/GatcRoot";
-import GatcSpeakers from "../pages/GatcSpeakers";
 import { appRoute } from "./app.routes";
 import { ROUTER_ROUTES } from "./routes";
 
