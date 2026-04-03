@@ -26,6 +26,7 @@ import {
   gatcRegistrationRoute,
   gatcRootRoute,
   gatcSpeakersRoute,
+  gatcSpeakerDetailsRoute,
 } from "./gatc.routes";
 import { impulseFeedRoute, impulseRootRoute } from "./impulse.routes";
 import { plasmaIndexRoute, plasmaRootRoute } from "./plasma.routes";
@@ -68,6 +69,7 @@ export const routeTree = rootRoute.addChildren([
       gatcRegistrationRoute,
       gatcIndexRoute,
       gatcSpeakersRoute,
+      gatcSpeakerDetailsRoute,
       gatcProgramsRoute,
       gatcParticipantsRoute,
       gatcMyHandshakesRoute,

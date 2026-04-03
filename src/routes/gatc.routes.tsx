@@ -9,6 +9,7 @@ import GatcSpeakers from "../pages/GATC/GatcSpeakers";
 import GatcRegistration from "../pages/GATC/Registration";
 import { appRoute } from "./app.routes";
 import { ROUTER_ROUTES } from "./routes";
+import GatcSpeakerDetails from "../pages/GATC/GatcSpeakerDetails";
 
 export const gatcRootRoute = createRoute({
   getParentRoute: () => appRoute,
@@ -32,6 +33,12 @@ export const gatcSpeakersRoute = createRoute({
   getParentRoute: () => gatcRootRoute,
   path: ROUTER_ROUTES.GATC_SPEAKERS,
   component: () => <GatcSpeakers />,
+});
+
+export const gatcSpeakerDetailsRoute = createRoute({
+  getParentRoute: () => gatcRootRoute,
+  path: `${ROUTER_ROUTES.GATC_SPEAKERS}/$speakerId`,
+  component: () => <GatcSpeakerDetails />,
 });
 
 export const gatcParticipantsRoute = createRoute({

@@ -13,7 +13,7 @@ function GatcPrograms() {
   } = useGatcPrograms();
 
   useEffect(() => {
-    fetchPrograms();
+    fetchPrograms(undefined);
   }, [fetchPrograms]);
 
   return (
