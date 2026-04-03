@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import AuthGlassCard from "../../components/auth/AuthGlassCard";
 import AuthInput from "../../components/auth/AuthInput";
 import { APP_ROUTES } from "../../constants/app.routes";
-import { useVerifyEmail } from "../../hooks/auth/useVerifyEmail";
-import type { VerifyForm } from "../../validations/auth/verify";
+import { useResendVerificationEmail } from "../../hooks/auth/useVerifyEmail";
+import type { EmailForm } from "../../validations/auth/verify";
 import { emailSchema } from "../../validations/auth/verify";
 
 const VerificationMail = () => {
@@ -12,13 +12,13 @@ const VerificationMail = () => {
     register: data,
     handleSubmit,
     formState: { errors },
-  } = useForm<VerifyForm>({
+  } = useForm<EmailForm>({
     resolver: zodResolver(emailSchema),
   });
 
-  const verifyEmailMutation = useVerifyEmail();
+  const verifyEmailMutation = useResendVerificationEmail();
 
-  const onSubmit = async (data: VerifyForm) => {
+  const onSubmit = async (data: EmailForm) => {
     console.log(data);
     verifyEmailMutation.mutate({ email: data.email });
   };
@@ -29,8 +29,8 @@ const VerificationMail = () => {
         Resend Verification Email
       </h2>
       <p className="text-center mb-[25px] text-[0.9rem] text-white">
-        We’ve sent a verification email to your registered address. If it expired
-        or you didn’t receive it, enter your email to resend.
+        We’ve sent a verification email to your registered address. If it
+        expired or you didn’t receive it, enter your email to resend.
       </p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-[14px]">

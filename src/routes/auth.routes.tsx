@@ -1,4 +1,5 @@
 import { createRoute, redirect } from "@tanstack/react-router";
+import z from "zod";
 import { rootRoute } from ".";
 import { APP_ROUTES } from "../constants/app.routes";
 import AuthLayout from "../layouts/AuthLayout";
@@ -7,6 +8,7 @@ import LogIn from "../pages/auth/LogIn";
 import Register from "../pages/auth/Register";
 import ResetPassword from "../pages/auth/ResetPassword";
 import VerificationMail from "../pages/auth/VerificationMail";
+import VerifyEmail from "../pages/auth/VerifyEmail";
 import { getUserProfile } from "../services/auth/auth.service";
 import { appStore, userProfileAtom } from "../store/auth.store";
 import { ROUTER_ROUTES } from "./routes";
@@ -41,7 +43,7 @@ export const registerRoute = createRoute({
   component: () => <Register />,
 });
 
-export const verifyEmailRoute = createRoute({
+export const resendVerificationEmailRoute = createRoute({
   getParentRoute: () => authRoute,
   path: ROUTER_ROUTES.RESEND_EMAIL,
   component: () => <VerificationMail />,
@@ -55,4 +57,13 @@ export const resetPasswordRoute = createRoute({
   getParentRoute: () => authRoute,
   path: ROUTER_ROUTES.RESET_PASSWORD,
   component: () => <ResetPassword />,
+});
+
+export const verifyEmailRoute = createRoute({
+  getParentRoute: () => authRoute,
+  path: ROUTER_ROUTES.VERIFY_EMAIL,
+  validateSearch: z.object({
+    token: z.string(),
+  }),
+  component: () => <VerifyEmail />,
 });

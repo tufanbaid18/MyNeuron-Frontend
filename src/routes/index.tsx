@@ -11,6 +11,7 @@ import {
   forgotPasswordRoute,
   loginRoute,
   registerRoute,
+  resendVerificationEmailRoute,
   resetPasswordRoute,
   verifyEmailRoute,
 } from "./auth.routes";
@@ -25,8 +26,8 @@ import {
   gatcProgramsRoute,
   gatcRegistrationRoute,
   gatcRootRoute,
-  gatcSpeakersRoute,
   gatcSpeakerDetailsRoute,
+  gatcSpeakersRoute,
 } from "./gatc.routes";
 import { impulseFeedRoute, impulseRootRoute } from "./impulse.routes";
 import { plasmaIndexRoute, plasmaRootRoute } from "./plasma.routes";
@@ -58,9 +59,10 @@ export const routeTree = rootRoute.addChildren([
   authRoute.addChildren([
     loginRoute,
     registerRoute,
-    verifyEmailRoute,
+    resendVerificationEmailRoute,
     forgotPasswordRoute,
     resetPasswordRoute,
+    verifyEmailRoute,
   ]),
   appRoute.addChildren([
     indexAppRoute,

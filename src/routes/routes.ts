@@ -25,4 +25,5 @@ export const ROUTER_ROUTES = {
   GATC_VIRTUAL_PASS: "gatc/virtual-pass",
   USER: "user",
   PROFILE: "profile",
+  VERIFY_EMAIL: "/verify-email",
 };
