@@ -3,6 +3,7 @@ import axiosInstance from "../../lib/axiosInstance";
 import type {
   CreateOrderResponse,
   GatcEvent,
+  GatcProgramsResponse,
   GatcRegistration,
   GatcRegistrationPayload,
   GatcRegistrationResponse,
@@ -76,6 +77,13 @@ export const verifyVirtualPass = async ({
         event_id: eventId,
       },
     },
+  );
+  return res.data;
+};
+
+export const getGatcPrograms = async (): Promise<GatcProgramsResponse> => {
+  const res = await axiosInstance.get<GatcProgramsResponse>(
+    API_ROUTES.GATC_PROGRAMS,
   );
   return res.data;
 };

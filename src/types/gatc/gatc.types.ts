@@ -140,3 +140,19 @@ export type VerifyPassResponse = {
     last_attempt_status: string;
   };
 };
+
+export type GatcProgramsResponse = GatcProgramsItem[];
+
+export type GatcProgramsItem = {
+  id: number;
+  event: number;
+  event_name: string;
+  speaker: number | null;
+  speaker_name: string | null;
+  speaker_image: string | null;
+  venue: string;
+  topic: string;
+  date: string;
+  start_time: string;
+  end_time: string;
+};
