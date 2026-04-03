@@ -1,7 +1,7 @@
 export enum AppEnv {
   DEVELOPMENT = "development",
   PRODUCTION = "production",
-  TEST = "test",
+  STAGING = "staging",
 }
 
 export type EnvConfig = {
