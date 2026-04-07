@@ -1,13 +1,13 @@
 import { ArrowLeftOutlined, SendOutlined } from "@ant-design/icons";
 import { Link, useParams, useRouter } from "@tanstack/react-router";
-import { Button, Spin, Tabs } from "antd";
+import { Button, Spin, Tabs, Tag } from "antd";
 import { useAtomValue } from "jotai";
 import { useEffect, useMemo } from "react";
 import { HandshakeButton } from "../../components/gatc/speakers/HandshakeButton";
 import { ProgramCard } from "../../components/gatc/speakers/ProgramCard";
 import { ProgramList } from "../../components/gatc/speakers/ProgramList";
 import { APP_ROUTES } from "../../constants/app.routes";
-import { useGatcPrograms, useGatcSpeakerById } from "../../hooks/gatc/useGatc";
+import { useGatcMemberById, useGatcPrograms } from "../../hooks/gatc/useGatc";
 import {
   useCancelHandshake,
   useCreateHandshake,
@@ -17,14 +17,14 @@ import { userProfileAtom } from "../../store/auth.store";
 import { HandshakeStatus } from "../../types/gatc/handshake.types";
 import { getAvatarByName } from "../../utils/avatar.utils";
 
-const GatcSpeakerDetails = () => {
-  const { speakerId } = useParams({ strict: false });
+const GatcMemberDetails = () => {
+  const { memberId } = useParams({ strict: false });
   const router = useRouter();
-  const user = useAtomValue(userProfileAtom);
+  const currentUser = useAtomValue(userProfileAtom);
 
-  // ── Speaker data ──────────────────────────────────────────
-  const { data: speaker, isLoading: isSpeakerLoading } = useGatcSpeakerById(
-    speakerId as string,
+  // ── Member data (response: { id, user: {...}, event, role, created_at }) ──
+  const { data: member, isLoading: isMemberLoading } = useGatcMemberById(
+    memberId as string,
   );
 
   // ── Programs ──────────────────────────────────────────────
@@ -35,28 +35,29 @@ const GatcSpeakerDetails = () => {
   } = useGatcPrograms();
 
   useEffect(() => {
-    if (speakerId) {
-      fetchPrograms(speakerId);
+    if (memberId) {
+      fetchPrograms(member?.user.id);
     }
-  }, [speakerId, fetchPrograms]);
+  }, [memberId, fetchPrograms]);
 
-  // ── Handshake ─────────────────────────────────────────────
+  // ── Handshake (uses user.id, NOT membership id) ───────────
   const { data: handshakes } = useGetMyHandshakes();
   const createHandshake = useCreateHandshake();
   const cancelHandshake = useCancelHandshake();
 
   const handshake = useMemo(() => {
-    if (!speaker || !handshakes || !user)
+    const userId = member?.user?.id;
+    if (!userId || !handshakes || !currentUser)
       return { status: HandshakeStatus.NONE as const };
 
     return (
       handshakes.find(
         (h) =>
-          (h.sender === user.id && h.receiver === speaker.id) ||
-          (h.receiver === user.id && h.sender === speaker.id),
+          (h.sender === currentUser.id && h.receiver === userId) ||
+          (h.receiver === currentUser.id && h.sender === userId),
       ) ?? { status: HandshakeStatus.NONE as const }
     );
-  }, [speaker, handshakes, user]);
+  }, [member, handshakes, currentUser]);
 
   const handleSendHandshake = (receiverId: number) => {
     createHandshake.mutate({ receiver_id: receiverId });
@@ -67,7 +68,7 @@ const GatcSpeakerDetails = () => {
   };
 
   // ── Loading / Error states ────────────────────────────────
-  if (isSpeakerLoading) {
+  if (isMemberLoading) {
     return (
       <div className="flex h-64 items-center justify-center">
         <Spin size="large" />
@@ -75,13 +76,19 @@ const GatcSpeakerDetails = () => {
     );
   }
 
-  if (!speaker) {
-    return <div className="p-8 text-slate-500">Speaker not found.</div>;
+  if (!member || !member.user) {
+    return <div className="p-8 text-slate-500">Member not found.</div>;
   }
+
+  // Destructure nested user for cleaner JSX
+  const { user } = member;
 
   const handleBack = () => {
     router.history.back();
   };
+
+  const roleLabel = member.role === "speaker" ? "Speaker" : "Participant";
+  const roleColor = member.role === "speaker" ? "green" : "blue";
 
   // ── Tab: Programs ─────────────────────────────────────────
   const programsContent = (
@@ -103,43 +110,46 @@ const GatcSpeakerDetails = () => {
           <div className="h-40 w-40 shrink-0 overflow-hidden rounded-full bg-blue-50 shadow-sm">
             <img
               src={
-                speaker.profile_image ||
+                user.profile_image ||
                 getAvatarByName({
-                  firstName: speaker.first_name,
-                  lastName: speaker.last_name,
+                  firstName: user.first_name,
+                  lastName: user.last_name,
                 })
               }
-              alt={speaker.first_name}
+              alt={user.first_name}
               className="h-full w-full object-cover"
             />
           </div>
 
           {/* Name & Details */}
           <div className="flex flex-1 flex-col gap-2">
-            <h1 className="mt-2 text-3xl font-semibold text-slate-800">
-              {speaker.first_name}{" "}
-              {speaker.middle_name ? `${speaker.middle_name} ` : ""}
-              {speaker.last_name}
-            </h1>
+            <div className="flex items-center gap-3">
+              <h1 className="mt-2 text-3xl font-semibold text-slate-800">
+                {user.first_name}{" "}
+                {user.middle_name ? `${user.middle_name} ` : ""}
+                {user.last_name}
+              </h1>
+            </div>
 
-            {speaker.email && (
-              <p className="text-sm text-slate-500">
-                <span className="mr-2">Email: {speaker.email}</span>
-                <span className="mr-2 text-slate-300">•</span>
-              </p>
+            {user.email && (
+              <p className="text-sm text-slate-500">Email: {user.email}</p>
             )}
 
-            {speaker.profile_title && (
+            <Tag color={roleColor} className="w-max px-3! py-1! font-medium">
+              {roleLabel}
+            </Tag>
+
+            {user.profile_title && (
               <p className="text-sm font-medium text-slate-600">
-                {speaker.profile_title}
+                {user.profile_title}
               </p>
             )}
           </div>
 
-          {/* Handshake Button */}
+          {/* Handshake Button — uses user.id (not member.id) */}
           <div className="shrink-0" key={handshake.status}>
             <HandshakeButton
-              speakerId={speaker.id}
+              userId={user.id}
               handshake={handshake}
               onSend={handleSendHandshake}
               onCancel={handleCancelHandshake}
@@ -153,10 +163,10 @@ const GatcSpeakerDetails = () => {
         <div className="mb-10">
           <h2 className="mb-4 text-xl font-semibold text-slate-800">About</h2>
           <p className="leading-relaxed text-slate-600">
-            {speaker.first_name} {speaker.last_name} is a speaker for the
-            upcoming GATC program. Currently, their full bio is not available.
-            Please reach out or connect via a handshake for more details
-            directly from the speaker.
+            {user.first_name} {user.last_name} is a {roleLabel.toLowerCase()}{" "}
+            for the upcoming GATC program. Currently, their full bio is not
+            available. Please reach out or connect via a handshake for more
+            details.
           </p>
         </div>
 
@@ -179,13 +189,13 @@ const GatcSpeakerDetails = () => {
         </div>
       </div>
 
-      {/* Right Sidebar */}
+      {/* Right Sidebar — inbox uses user.id */}
       <div className="w-full shrink-0 md:w-80">
         <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
           <h3 className="mb-4 text-lg font-semibold text-slate-800">
             Quick Actions
           </h3>
-          <Link to={`${APP_ROUTES.INBOX}/${speaker.id}`}>
+          <Link to={`${APP_ROUTES.INBOX}/${user.id}`}>
             <Button
               block
               icon={<SendOutlined />}
@@ -226,4 +236,4 @@ const GatcSpeakerDetails = () => {
   );
 };
 
-export default GatcSpeakerDetails;
+export default GatcMemberDetails;

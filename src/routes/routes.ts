@@ -15,6 +15,7 @@ export const ROUTER_ROUTES = {
   PLASMA: "plasma",
   GATC: "gatc",
   GATC_SPEAKERS: "speakers",
+  GATC_MEMBERS: "members",
   GATC_PROGRAMS: "programs",
   GATC_PARTICIPANTS: "participants",
   GATC_MY_HANDSHAKES: "my-handshakes",

@@ -31,8 +31,8 @@ export const API_ROUTES = {
   GATC_PASS: "/public/payment",
   GATC_PROGRAMS: "/programs/",
   GATC_SPEAKERS: "/speakers/",
-  GATC_SPEAKER_BY_ID: (id: number | string) => `/speakers/${id}/`,
   GATC_MEMBERS: "/members",
+  GATC_MEMBER_BY_ID: (id: number | string) => `/members/${id}/`,
 
   // ── Handshake ──
   HANDSHAKE_SEND: "/handshake/send/",

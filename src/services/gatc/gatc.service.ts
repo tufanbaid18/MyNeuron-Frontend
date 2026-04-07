@@ -3,16 +3,15 @@ import axiosInstance from "../../lib/axiosInstance";
 import type {
   CreateOrderResponse,
   GatcEvent,
+  GatcParticipantsResponse,
   GatcProgramsResponse,
   GatcRegistration,
   GatcRegistrationPayload,
   GatcRegistrationResponse,
-  GatcSpeakersResponse,
-  GatcSpeaker,
+  GatcParticipant,
   ManualPaymentResponse,
   VerifyPassResponse,
   VerifyPaymentPayload,
-  GatcParticipantsResponse,
 } from "../../types/gatc/gatc.types";
 
 // ════════════════════════════════════════════════════════════════
@@ -95,26 +94,22 @@ export const getGatcPrograms = async (
   return res.data;
 };
 
-export const getGatcSpeakers = async (): Promise<GatcSpeakersResponse> => {
-  const res = await axiosInstance.get<GatcSpeakersResponse>(
-    API_ROUTES.GATC_SPEAKERS,
+export const getGatcMembers = async (params?: {
+  role?: "speaker" | "participant";
+  event?: number;
+}): Promise<GatcParticipantsResponse> => {
+  const res = await axiosInstance.get<GatcParticipantsResponse>(
+    API_ROUTES.GATC_MEMBERS,
+    { params },
   );
   return res.data;
 };
 
-export const getGatcSpeakerById = async (
+export const getGatcMemberById = async (
   id: number | string,
-): Promise<GatcSpeaker> => {
-  const res = await axiosInstance.get<GatcSpeaker>(
-    API_ROUTES.GATC_SPEAKER_BY_ID(id),
+): Promise<GatcParticipant> => {
+  const res = await axiosInstance.get<GatcParticipant>(
+    API_ROUTES.GATC_MEMBER_BY_ID(id),
   );
   return res.data;
 };
-
-export const getGatcParticipants =
-  async (): Promise<GatcParticipantsResponse> => {
-    const res = await axiosInstance.get<GatcParticipantsResponse>(
-      API_ROUTES.GATC_MEMBERS,
-    );
-    return res.data;
-  };

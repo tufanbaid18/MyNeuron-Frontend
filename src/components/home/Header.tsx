@@ -35,7 +35,12 @@ const RootHeader = ({
           icon={<BiMenu size={18} />}
           onClick={() => setSidebarVisible((v) => !v)}
         />
-        <img src="/header_logo.png" alt="logo" className="h-8 sm:h-10" />
+        <img
+          src="/header_logo.png"
+          alt="logo"
+          className="h-8 sm:h-10"
+          onClick={() => (window.location.href = APP_ROUTES.PLASMA)}
+        />
       </div>
 
       {/* Center: search */}

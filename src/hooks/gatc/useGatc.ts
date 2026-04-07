@@ -1,10 +1,9 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import {
-  getGatcParticipants,
+  getGatcMemberById,
+  getGatcMembers,
   getGatcPrograms,
-  getGatcSpeakerById,
-  getGatcSpeakers,
 } from "../../services/gatc/gatc.service";
 
 export const useGatcPrograms = () => {
@@ -18,24 +17,21 @@ export const useGatcPrograms = () => {
   });
 };
 
-export const useGatcSpeakers = () => {
+/** Unified hook to fetch members with optional role/event filter */
+export const useGatcMembers = (params?: {
+  role?: "speaker" | "participant";
+  event?: number;
+}) => {
   return useQuery({
-    queryKey: ["gatc-speakers"],
-    queryFn: () => getGatcSpeakers(),
+    queryKey: ["gatc-members", params?.role, params?.event],
+    queryFn: () => getGatcMembers(params),
   });
 };
 
-export const useGatcSpeakerById = (id: number | string) => {
+export const useGatcMemberById = (id: number | string) => {
   return useQuery({
-    queryKey: ["gatc-speaker", id],
-    queryFn: () => getGatcSpeakerById(id),
+    queryKey: ["gatc-member", id],
+    queryFn: () => getGatcMemberById(id),
     enabled: !!id,
-  });
-};
-
-export const useGatcParticipants = () => {
-  return useQuery({
-    queryKey: ["gatc-participants"],
-    queryFn: () => getGatcParticipants(),
   });
 };

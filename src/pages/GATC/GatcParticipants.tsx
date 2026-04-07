@@ -1,20 +1,39 @@
 import { Link } from "@tanstack/react-router";
-import { useGatcParticipants } from "../../hooks/gatc/useGatc";
+import { Empty, Spin } from "antd";
+import { APP_ROUTES } from "../../constants/app.routes";
+import { env } from "../../constants/env";
+import { useGatcMembers } from "../../hooks/gatc/useGatc";
 import { getAvatarByName } from "../../utils/avatar.utils";
 
 const GatcParticipants = () => {
-  const { data: members, isLoading, error } = useGatcParticipants();
+  const {
+    data: members,
+    isLoading,
+    error,
+  } = useGatcMembers({
+    role: "participant",
+    event: Number(env.VITE_DEFAULT_GATC_EVENT_ID),
+  });
 
   if (isLoading) {
     return (
       <div className="flex h-64 items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-emerald-500 border-t-transparent"></div>
+        <Spin size="large" />
       </div>
     );
   }
 
   if (error) {
-    return <div className="text-red-500">Failed to load participants.</div>;
+    return <div className="p-8 text-red-500">Failed to load participants.</div>;
+  }
+
+  if (!members || members.length === 0) {
+    return (
+      <div className="p-8">
+        <h1 className="mb-10 text-2xl font-bold text-gray-400">Participants</h1>
+        <Empty description="No participants found." />
+      </div>
+    );
   }
 
   return (
@@ -22,10 +41,10 @@ const GatcParticipants = () => {
       <h1 className="mb-10 text-2xl font-bold text-gray-400">Participants</h1>
 
       <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-        {members?.map((member) => (
+        {members.map((member) => (
           <Link
             key={member.id}
-            to={`/gatc/speakers/${member.id}`}
+            to={APP_ROUTES.GATC_MEMBER(member.id)}
             className="group flex flex-col items-center text-center transition-transform hover:-translate-y-1"
           >
             <div className="mb-4 h-32 w-32 overflow-hidden rounded-full bg-slate-100 shadow-sm transition-shadow group-hover:shadow-md">
@@ -48,7 +67,7 @@ const GatcParticipants = () => {
               {member.user.last_name}
             </h3>
 
-            <p className="text-sm font-medium text-slate-400">{member.role}</p>
+            <p className="text-sm font-medium text-slate-400">Participant</p>
           </Link>
         ))}
       </div>

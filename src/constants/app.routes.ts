@@ -6,6 +6,7 @@ export const APP_ROUTES = {
   GATC_SPEAKERS: "/gatc/speakers",
   GATC_PROGRAMS: "/gatc/programs",
   GATC_PARTICIPANTS: "/gatc/participants",
+  GATC_MEMBER: (id: number | string) => `/gatc/members/${id}`,
   GATC_MY_HANDSHAKES: "/gatc/my-handshakes",
   MY_BOOKSHELF: "/my-bookshelf",
   IMPULSE: "/impulse",

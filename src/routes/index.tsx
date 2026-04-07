@@ -21,12 +21,12 @@ import NotFound from "../pages/error/NotFound";
 import { bookshelfIndexRoute, bookshelfRootRoute } from "./bookshelf.routes";
 import {
   gatcIndexRoute,
+  gatcMemberDetailsRoute,
   gatcMyHandshakesRoute,
   gatcParticipantsRoute,
   gatcProgramsRoute,
   gatcRegistrationRoute,
   gatcRootRoute,
-  gatcSpeakerDetailsRoute,
   gatcSpeakersRoute,
 } from "./gatc.routes";
 import { impulseFeedRoute, impulseRootRoute } from "./impulse.routes";
@@ -72,7 +72,7 @@ export const routeTree = rootRoute.addChildren([
       gatcRegistrationRoute,
       gatcIndexRoute,
       gatcSpeakersRoute,
-      gatcSpeakerDetailsRoute,
+      gatcMemberDetailsRoute,
       gatcProgramsRoute,
       gatcParticipantsRoute,
       gatcMyHandshakesRoute,

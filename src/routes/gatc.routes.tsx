@@ -5,11 +5,11 @@ import GatcMyHandshakes from "../pages/GATC/GatcMyHandshakes";
 import GatcParticipants from "../pages/GATC/GatcParticipants";
 import GatcPrograms from "../pages/GATC/GatcPrograms";
 import GatcRoot from "../pages/GATC/GatcRoot";
+import GatcMemberDetails from "../pages/GATC/GatcMemberDetails";
 import GatcSpeakers from "../pages/GATC/GatcSpeakers";
 import GatcRegistration from "../pages/GATC/Registration";
 import { appRoute } from "./app.routes";
 import { ROUTER_ROUTES } from "./routes";
-import GatcSpeakerDetails from "../pages/GATC/GatcSpeakerDetails";
 
 export const gatcRootRoute = createRoute({
   getParentRoute: () => appRoute,
@@ -35,10 +35,10 @@ export const gatcSpeakersRoute = createRoute({
   component: () => <GatcSpeakers />,
 });
 
-export const gatcSpeakerDetailsRoute = createRoute({
+export const gatcMemberDetailsRoute = createRoute({
   getParentRoute: () => gatcRootRoute,
-  path: `${ROUTER_ROUTES.GATC_SPEAKERS}/$speakerId`,
-  component: () => <GatcSpeakerDetails />,
+  path: `${ROUTER_ROUTES.GATC_MEMBERS}/$memberId`,
+  component: () => <GatcMemberDetails />,
 });
 
 export const gatcParticipantsRoute = createRoute({

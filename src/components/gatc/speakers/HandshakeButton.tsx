@@ -13,7 +13,7 @@ import type { Handshake } from "../../../types/gatc/handshake.types";
 // ════════════════════════════════════════════════════════════════
 
 type HandshakeButtonProps = {
-  speakerId: number;
+  userId: number;
   handshake: Handshake | { status: HandshakeStatus.NONE };
   onSend: (receiverId: number) => void;
   onCancel: (handshakeId: number) => void;
@@ -24,7 +24,7 @@ type HandshakeButtonProps = {
 const { Text } = Typography;
 
 export const HandshakeButton = ({
-  speakerId,
+  userId,
   handshake,
   onSend,
   onCancel,
@@ -102,7 +102,7 @@ export const HandshakeButton = ({
         <Button
           type="primary"
           icon={<SendOutlined />}
-          onClick={() => onSend(speakerId)}
+          onClick={() => onSend(userId)}
           className="bg-emerald-600 font-medium hover:bg-emerald-500"
         >
           Send Handshake
