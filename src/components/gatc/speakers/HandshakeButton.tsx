@@ -85,14 +85,14 @@ export const HandshakeButton = ({
         </Tag>
       );
 
-    case HandshakeStatus.REJECTED:
+    case HandshakeStatus.DECLINED:
       return (
         <Tag
           icon={<CloseCircleOutlined />}
           color="error"
           className="rounded-full px-4 py-1 text-sm font-medium"
         >
-          Request <strong>rejected</strong>
+          Request <strong>declined</strong>
         </Tag>
       );
 

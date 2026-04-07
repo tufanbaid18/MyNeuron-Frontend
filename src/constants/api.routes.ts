@@ -38,6 +38,8 @@ export const API_ROUTES = {
   HANDSHAKE_SEND: "/handshake/send/",
   HANDSHAKE_MY: "/handshake/my_handshakes/",
   HANDSHAKE_CANCEL: (id: number) => `/handshake/${id}/cancel/`,
+  HANDSHAKE_ACCEPT: (id: number) => `/handshake/${id}/accept/`,
+  HANDSHAKE_DECLINE: (id: number) => `/handshake/${id}/decline/`,
 
   // ── Inbox / Messages ──
   CONVERSATIONS: "/conversations/",

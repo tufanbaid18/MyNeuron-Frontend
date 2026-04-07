@@ -3,6 +3,7 @@ import axiosInstance from "../../lib/axiosInstance";
 import type {
   CreateHandshakePayload,
   Handshake,
+  MyHandshakesResponse,
 } from "../../types/gatc/handshake.types";
 import { HandshakeDirection } from "../../types/gatc/handshake.types";
 
@@ -23,10 +24,9 @@ export const createHandshake = async (
 
 /** GET /handshake/my_handshakes/ — returns { sent: [], received: [] } */
 export const getMyHandshakes = async (): Promise<Handshake[]> => {
-  const res = await axiosInstance.get<{
-    sent: Handshake[];
-    received: Handshake[];
-  }>(API_ROUTES.HANDSHAKE_MY);
+  const res = await axiosInstance.get<MyHandshakesResponse>(
+    API_ROUTES.HANDSHAKE_MY,
+  );
 
   const payload = res.data ?? { sent: [], received: [] };
 
@@ -50,7 +50,17 @@ export const getMyHandshakes = async (): Promise<Handshake[]> => {
   return combined;
 };
 
-/** POST /handshake/:id/cancel/ — cancel a pending handshake */
+/** POST /handshake/:id/cancel/ — cancel a pending handshake (sender only) */
 export const cancelHandshake = async (id: number): Promise<void> => {
   await axiosInstance.post(API_ROUTES.HANDSHAKE_CANCEL(id));
+};
+
+/** POST /handshake/:id/accept/ — accept a handshake (receiver/speaker only) */
+export const acceptHandshake = async (id: number): Promise<void> => {
+  await axiosInstance.post(API_ROUTES.HANDSHAKE_ACCEPT(id));
+};
+
+/** POST /handshake/:id/decline/ — decline a handshake (receiver/speaker only) */
+export const declineHandshake = async (id: number): Promise<void> => {
+  await axiosInstance.post(API_ROUTES.HANDSHAKE_DECLINE(id));
 };
