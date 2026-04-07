@@ -47,7 +47,7 @@ function Register() {
         </div>
 
         <div>
-          <AuthInput placeholder="Middle Name" {...register("middle_name")} />
+          <AuthInput placeholder="Middle Name (optional)" {...register("middle_name")} />
           {errors.middle_name && (
             <p className="text-error text-sm">{errors.middle_name.message}</p>
           )}

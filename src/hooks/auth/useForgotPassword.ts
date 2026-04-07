@@ -10,8 +10,11 @@ export const useForgotPassword = () => {
   const navigate = useNavigate();
   return useMutation({
     mutationFn: (data: EmailForm) => forgotPassword(data.email),
-    onSuccess: () => {
-      toast.success("Reset link has been sent to your registered email.");
+    onSuccess: (result) => {
+      toast.success(
+        result?.detail ??
+          "If this email is registered, you will receive a reset link.",
+      );
       navigate({ to: APP_ROUTES.LOGIN });
     },
     onError: (error) => {

@@ -9,19 +9,22 @@ export const passwordValidation = z
     "Password must include uppercase, lowercase, number, and special character",
   );
 
+export const nameValidation = z
+  .string()
+  .min(1, "Name is required")
+  .min(2, "At least 2 characters expected")
+  .max(50, "Maximum 50 character")
+  .regex(
+    /^[\p{L}]+([ '-][\p{L}]+)*$/u,
+    "Only letters, spaces, hyphens, and apostrophes are allowed.",
+  )
+  .trim();
+
 export const registerSchema = z
   .object({
-    first_name: z
-      .string()
-      .min(2, "At least 2 characters expected")
-      .max(50, "Maximum 50 character")
-      .trim(),
-    middle_name: z.string().optional(),
-    last_name: z
-      .string()
-      .min(2, "At least 2 characters expected")
-      .max(50, "Maximum 50 character")
-      .trim(),
+    first_name: nameValidation,
+    middle_name: z.string().max(50, "Maximum 50 character").optional(),
+    last_name: nameValidation,
     email: z
       .string()
       .email()

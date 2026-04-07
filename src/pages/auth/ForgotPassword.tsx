@@ -19,7 +19,6 @@ const ForgotPassword = () => {
   const forgotPasswordMutaion = useForgotPassword();
 
   const onSubmit = async (data: EmailForm) => {
-    console.log(data);
     forgotPasswordMutaion.mutate({ email: data.email });
   };
 

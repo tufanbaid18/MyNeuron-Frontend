@@ -39,7 +39,9 @@ export const resendVerificationEmail = async (
   return response.data;
 };
 
-export const forgotPassword = async (email: string): Promise<string> => {
+export const forgotPassword = async (
+  email: string,
+): Promise<{ detail: string }> => {
   const response = await axiosInstance.post(API_ROUTES.FORGOT_PASSWORD, {
     email,
   });
