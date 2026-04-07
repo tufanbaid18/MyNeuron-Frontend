@@ -26,4 +26,5 @@ export const ROUTER_ROUTES = {
   USER: "user",
   PROFILE: "profile",
   VERIFY_EMAIL: "/verify-email",
+  INBOX: "inbox",
 };

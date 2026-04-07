@@ -33,4 +33,16 @@ export const API_ROUTES = {
   GATC_SPEAKERS: "/speakers/",
   GATC_SPEAKER_BY_ID: (id: number | string) => `/speakers/${id}/`,
   GATC_MEMBERS: "/members",
+
+  // ── Handshake ──
+  HANDSHAKE_SEND: "/handshake/send/",
+  HANDSHAKE_MY: "/handshake/my_handshakes/",
+  HANDSHAKE_CANCEL: (id: number) => `/handshake/${id}/cancel/`,
+
+  // ── Inbox / Messages ──
+  CONVERSATIONS: "/conversations/",
+  MESSAGES_SEND: "/messages/",
+  MESSAGES_CHAT: (userId: number) => `/messages/chat/${userId}/`,
+  MESSAGES_MARK_READ: (userId: number) => `/messages/mark-read/${userId}/`,
+  USER_BY_ID: (userId: number) => `/users/${userId}/`,
 };

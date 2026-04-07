@@ -1,4 +1,4 @@
-import { Outlet } from "@tanstack/react-router";
+import { Outlet, useLocation } from "@tanstack/react-router";
 import { Layout } from "antd";
 import { Content } from "antd/es/layout/layout";
 import { useMemo, useState } from "react";
@@ -14,11 +14,11 @@ const RootLayout = () => {
     () => window.innerWidth >= MD_BREAKPOINT,
   );
 
-  const location = window.location.pathname;
+  const { pathname } = useLocation();
 
   const hideSidebar = useMemo(() => {
-    return location.includes("/impulse/feed");
-  }, [location]);
+    return pathname.includes("/impulse/feed") || pathname.includes("/inbox");
+  }, [pathname]);
 
   return (
     <Layout className="w-full h-screen overflow-hidden">
