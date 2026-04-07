@@ -4,7 +4,7 @@ import AuthGlassCard from "../../components/auth/AuthGlassCard";
 import AuthInput from "../../components/auth/AuthInput";
 import { APP_ROUTES } from "../../constants/app.routes";
 import { useForgotPassword } from "../../hooks/auth/useForgotPassword";
-import type { VerifyForm } from "../../validations/auth/verify";
+import type { EmailForm } from "../../validations/auth/verify";
 import { emailSchema } from "../../validations/auth/verify";
 
 const ForgotPassword = () => {
@@ -12,13 +12,13 @@ const ForgotPassword = () => {
     register: data,
     handleSubmit,
     formState: { errors },
-  } = useForm<VerifyForm>({
+  } = useForm<EmailForm>({
     resolver: zodResolver(emailSchema),
   });
 
   const forgotPasswordMutaion = useForgotPassword();
 
-  const onSubmit = async (data: VerifyForm) => {
+  const onSubmit = async (data: EmailForm) => {
     console.log(data);
     forgotPasswordMutaion.mutate({ email: data.email });
   };

@@ -11,6 +11,7 @@ import {
   forgotPasswordRoute,
   loginRoute,
   registerRoute,
+  resendVerificationEmailRoute,
   resetPasswordRoute,
   verifyEmailRoute,
 } from "./auth.routes";
@@ -25,6 +26,7 @@ import {
   gatcProgramsRoute,
   gatcRegistrationRoute,
   gatcRootRoute,
+  gatcSpeakerDetailsRoute,
   gatcSpeakersRoute,
 } from "./gatc.routes";
 import { impulseFeedRoute, impulseRootRoute } from "./impulse.routes";
@@ -57,9 +59,10 @@ export const routeTree = rootRoute.addChildren([
   authRoute.addChildren([
     loginRoute,
     registerRoute,
-    verifyEmailRoute,
+    resendVerificationEmailRoute,
     forgotPasswordRoute,
     resetPasswordRoute,
+    verifyEmailRoute,
   ]),
   appRoute.addChildren([
     indexAppRoute,
@@ -68,6 +71,7 @@ export const routeTree = rootRoute.addChildren([
       gatcRegistrationRoute,
       gatcIndexRoute,
       gatcSpeakersRoute,
+      gatcSpeakerDetailsRoute,
       gatcProgramsRoute,
       gatcParticipantsRoute,
       gatcMyHandshakesRoute,

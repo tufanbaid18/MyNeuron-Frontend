@@ -106,12 +106,15 @@ function Register() {
                   By creating an account, I agree to the{" "}
                   <a
                     className="text-link font-semibold"
-                    href="/Terms&Conditions"
+                    href={APP_ROUTES.TERMS_AND_CONDITIONS}
                   >
                     Terms & Conditions
                   </a>{" "}
                   and{" "}
-                  <a className="text-link font-semibold" href="/PrivacyPolicy">
+                  <a
+                    className="text-link font-semibold"
+                    href={APP_ROUTES.PRIVACY_POLICY}
+                  >
                     Privacy Policy
                   </a>
                   .

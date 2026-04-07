@@ -27,8 +27,15 @@ export const refreshToken = async (): Promise<void> => {
   await axiosInstance.post(API_ROUTES.REFRESH_TOKEN);
 };
 
-export const verifyEmail = async (email: string): Promise<string> => {
-  const response = await axiosInstance.post(API_ROUTES.VERIFY_EMAIL, { email });
+export const verifyEmail = async (token: string): Promise<string> => {
+  const response = await axiosInstance.post(API_ROUTES.VERIFY_EMAIL, { token });
+  return response.data;
+};
+
+export const resendVerificationEmail = async (
+  email: string,
+): Promise<string> => {
+  const response = await axiosInstance.post(API_ROUTES.RESEND_EMAIL, { email });
   return response.data;
 };
 

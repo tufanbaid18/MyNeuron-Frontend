@@ -3,19 +3,24 @@ import { useState } from "react";
 import { CgBookmark } from "react-icons/cg";
 import { IoOpenOutline } from "react-icons/io5";
 import { RiFilePdf2Fill } from "react-icons/ri";
-import PlasmaDocumentIcon from "../components/icons/PlasmaDocumentIcon";
-import PlasmaPdfIcon from "../components/icons/PlasmaPdfIcon";
-import PlasmaSearchBar from "../components/plasma/PlasmaSearchbar";
-import ErrorComponent from "../components/ui/ErrorComponent";
-import Loading from "../components/ui/Loading";
-import NoData from "../components/ui/NoData";
-import StartSearch from "../components/ui/StartSearch";
-import { usePubMedSearch } from "../hooks/plasma/usePlasma";
+import PlasmaDocumentIcon from "../../components/icons/PlasmaDocumentIcon";
+import PlasmaPdfIcon from "../../components/icons/PlasmaPdfIcon";
+import PlasmaSearchBar from "../../components/plasma/PlasmaSearchbar";
+import ErrorComponent from "../../components/ui/ErrorComponent";
+import Loading from "../../components/ui/Loading";
+import NoData from "../../components/ui/NoData";
+import StartSearch from "../../components/ui/StartSearch";
+import { usePubMedSearch } from "../../hooks/plasma/usePlasma";
+import AddToShelfModal from "../../components/plasma/AddToShelfModal";
+import type { SelectedArticleContext } from "../../components/plasma/AddToShelfModal";
 
 const Plasma = () => {
   const [search, setSearch] = useState<string>("");
   const [page, _setPage] = useState(1);
   const PAGE_SIZE = 10;
+  
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState<SelectedArticleContext | null>(null);
 
   const { data, isLoading, isError, isFetching } = usePubMedSearch(
     search.trim() ? search : "",
@@ -113,7 +118,16 @@ const Plasma = () => {
                           View on PubMed
                         </Button>
                       )}
-                      <Button className="bg-primary! text-white!">
+                      <Button 
+                        className="bg-primary! text-white!"
+                        onClick={() => {
+                          setSelectedArticle({
+                            title: article.title,
+                            url: article.pdf || article.pubmed || "",
+                          });
+                          setIsAddModalOpen(true);
+                        }}
+                      >
                         <CgBookmark size={20} />
                         Add to Shelf
                       </Button>
@@ -129,6 +143,12 @@ const Plasma = () => {
           </div>
         )}
       </div>
+      
+      <AddToShelfModal 
+        open={isAddModalOpen} 
+        onClose={() => setIsAddModalOpen(false)} 
+        article={selectedArticle} 
+      />
     </div>
   );
 };

@@ -44,12 +44,22 @@ const Sidebar = ({
   const location = useLocation();
   const pathname = location.pathname;
 
-  const selectedKeys = useMemo(() => {
-    if (pathname.includes(APP_ROUTES.PLASMA)) return ["1"];
-    if (pathname.includes(APP_ROUTES.GATC)) return ["2a"];
-    if (pathname.includes(APP_ROUTES.MY_BOOKSHELF)) return ["3"];
-    if (pathname.includes(APP_ROUTES.IMPULSE)) return ["4"];
-    return ["1"];
+  const { selectedKeys, openKeys } = useMemo(() => {
+    // Specific child routes must check first
+    if (pathname.includes(APP_ROUTES.GATC_PROGRAMS)) return { selectedKeys: ["2a1"], openKeys: ["2", "2a"] };
+    if (pathname.includes(APP_ROUTES.GATC_SPEAKERS)) return { selectedKeys: ["2a2"], openKeys: ["2", "2a"] };
+    if (pathname.includes(APP_ROUTES.GATC_PARTICIPANTS)) return { selectedKeys: ["2a3"], openKeys: ["2", "2a"] };
+    if (pathname.includes(APP_ROUTES.GATC_MY_HANDSHAKES)) return { selectedKeys: ["2a4"], openKeys: ["2", "2a"] };
+    
+    // General GATC route
+    if (pathname.includes(APP_ROUTES.GATC)) return { selectedKeys: ["2a"], openKeys: ["2"] };
+
+    // Other parent routes
+    if (pathname.includes(APP_ROUTES.MY_BOOKSHELF)) return { selectedKeys: ["3"], openKeys: [] };
+    if (pathname.includes(APP_ROUTES.IMPULSE)) return { selectedKeys: ["4"], openKeys: [] };
+    
+    // Default dashboard
+    return { selectedKeys: ["1"], openKeys: [] };
   }, [pathname]);
 
   const showGatc = useMemo(() => {
@@ -72,6 +82,7 @@ const Sidebar = ({
       mode="inline"
       className="bg-background! h-full border-r-0"
       selectedKeys={selectedKeys}
+      defaultOpenKeys={openKeys}
       items={SIDEBAR_MENU_ITEMS({ gatcActive: showGatc })}
     />
   );

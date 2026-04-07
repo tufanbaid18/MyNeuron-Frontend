@@ -6,6 +6,7 @@ export const API_ROUTES = {
   UPDATE_USER_PROFILE: "/user-profile/update-current/",
   REFRESH_TOKEN: "/refresh-token/",
   VERIFY_EMAIL: "/verify-email/",
+  RESEND_EMAIL: "/resend-verification/",
   FORGOT_PASSWORD: "/forgot-password/",
   RESET_PASSWORD: "/reset-password/",
   GET_USER_PERSONAL_PROFILE: "/profile/personal/",
@@ -28,4 +29,7 @@ export const API_ROUTES = {
   CREATE_FOLDER: "/folders/",
   CREATE_FOLDER_ITEM: "/folder-items/",
   GATC_PASS: "/public/payment",
+  GATC_PROGRAMS: "/programs/",
+  GATC_SPEAKERS: "/speakers/",
+  GATC_SPEAKER_BY_ID: (id: number | string) => `/speakers/${id}/`,
 };

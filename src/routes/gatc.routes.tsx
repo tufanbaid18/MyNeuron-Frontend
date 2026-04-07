@@ -1,14 +1,15 @@
 import { createRoute } from "@tanstack/react-router";
 
 import GatcIndex from "../pages/GATC/GatcIndex";
+import GatcMyHandshakes from "../pages/GATC/GatcMyHandshakes";
+import GatcParticipants from "../pages/GATC/GatcParticipants";
+import GatcPrograms from "../pages/GATC/GatcPrograms";
+import GatcRoot from "../pages/GATC/GatcRoot";
+import GatcSpeakers from "../pages/GATC/GatcSpeakers";
 import GatcRegistration from "../pages/GATC/Registration";
-import GatcMyHandshakes from "../pages/GatcMyHandshakes";
-import GatcParticipants from "../pages/GatcParticipants";
-import GatcPrograms from "../pages/GatcPrograms";
-import GatcRoot from "../pages/GatcRoot";
-import GatcSpeakers from "../pages/GatcSpeakers";
 import { appRoute } from "./app.routes";
 import { ROUTER_ROUTES } from "./routes";
+import GatcSpeakerDetails from "../pages/GATC/GatcSpeakerDetails";
 
 export const gatcRootRoute = createRoute({
   getParentRoute: () => appRoute,
@@ -32,6 +33,12 @@ export const gatcSpeakersRoute = createRoute({
   getParentRoute: () => gatcRootRoute,
   path: ROUTER_ROUTES.GATC_SPEAKERS,
   component: () => <GatcSpeakers />,
+});
+
+export const gatcSpeakerDetailsRoute = createRoute({
+  getParentRoute: () => gatcRootRoute,
+  path: `${ROUTER_ROUTES.GATC_SPEAKERS}/$speakerId`,
+  component: () => <GatcSpeakerDetails />,
 });
 
 export const gatcParticipantsRoute = createRoute({

@@ -140,3 +140,35 @@ export type VerifyPassResponse = {
     last_attempt_status: string;
   };
 };
+
+export type GatcProgramsResponse = GatcProgramsItem[];
+
+export type GatcProgramsItem = {
+  id: number;
+  event: number;
+  event_name: string;
+  speaker: number | null;
+  speaker_name: string | null;
+  speaker_image: string | null;
+  venue: string;
+  topic: string;
+  date: string;
+  start_time: string;
+  end_time: string;
+};
+
+export type GatcSpeakersResponse = GatcSpeaker[];
+
+export type GatcSpeaker = {
+  id: number;
+  email: string;
+  title: string | null;
+  first_name: string;
+  middle_name: string | null;
+  last_name: string;
+  profile_title: string | null;
+  profile_image: string | null;
+  role: string;
+  is_verified: boolean;
+  is_verified_lite: boolean;
+};
