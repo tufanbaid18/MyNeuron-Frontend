@@ -23,4 +23,5 @@ export const APP_ROUTES = {
   PRODUCTS_INFO: "/public/products-info",
   GATC_REGISTRATION: "/gatc/registration",
   GATC_VIRTUAL_PASS: "/public/gatc/virtual-pass",
+  INBOX: "/inbox",
 };

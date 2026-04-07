@@ -1,6 +1,11 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getGatcPrograms, getGatcSpeakers, getGatcSpeakerById } from "../../services/gatc/gatc.service";
 import toast from "react-hot-toast";
+import {
+  getGatcParticipants,
+  getGatcPrograms,
+  getGatcSpeakerById,
+  getGatcSpeakers,
+} from "../../services/gatc/gatc.service";
 
 export const useGatcPrograms = () => {
   return useMutation({
@@ -25,5 +30,12 @@ export const useGatcSpeakerById = (id: number | string) => {
     queryKey: ["gatc-speaker", id],
     queryFn: () => getGatcSpeakerById(id),
     enabled: !!id,
+  });
+};
+
+export const useGatcParticipants = () => {
+  return useQuery({
+    queryKey: ["gatc-participants"],
+    queryFn: () => getGatcParticipants(),
   });
 };

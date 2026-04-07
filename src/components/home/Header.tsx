@@ -1,3 +1,4 @@
+import { useNavigate } from "@tanstack/react-router";
 import { Button, Input } from "antd";
 import { Header } from "antd/es/layout/layout";
 import { useAtomValue } from "jotai";
@@ -6,6 +7,7 @@ import { BiArrowBack, BiMenu, BiMessageSquareDots } from "react-icons/bi";
 import { FiSearch } from "react-icons/fi";
 import { GoBook, GoHome, GoPulse } from "react-icons/go";
 import { RiNotification3Line } from "react-icons/ri";
+import { APP_ROUTES } from "../../constants/app.routes";
 import { userProfileAtom } from "../../store/auth.store";
 import HeaderProfile from "./HeaderProfile";
 
@@ -16,6 +18,7 @@ const RootHeader = ({
 }) => {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const user = useAtomValue(userProfileAtom);
+  const navigate = useNavigate();
   return (
     <Header
       className="border-b border-gray-200 dark:border-gray-800 shadow-lg flex items-center justify-between gap-2"
@@ -75,19 +78,34 @@ const RootHeader = ({
 
         {/* Nav icons – hidden below md */}
         <div className="hidden md:flex gap-2 items-center">
-          <button className="rounded-full border border-gray-500 dark:border-gray-600 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+          <button
+            className="rounded-full border border-gray-500 dark:border-gray-600 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            onClick={() => navigate({ to: APP_ROUTES.PLASMA })}
+          >
             <GoHome />
           </button>
-          <button className="rounded-full border border-gray-500 dark:border-gray-600 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+          <button
+            className="rounded-full border border-gray-500 dark:border-gray-600 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            onClick={() => navigate({ to: APP_ROUTES.IMPULSE_FEED })}
+          >
             <GoPulse />
           </button>
-          <button className="rounded-full border border-gray-500 dark:border-gray-600 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+          <button
+            className="rounded-full border border-gray-500 dark:border-gray-600 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            onClick={() => navigate({ to: APP_ROUTES.MY_BOOKSHELF })}
+          >
             <GoBook />
           </button>
-          <button className="rounded-full border border-gray-500 dark:border-gray-600 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+          <button
+            className="rounded-full border border-gray-500 dark:border-gray-600 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            onClick={() => navigate({ to: APP_ROUTES.INBOX })}
+          >
             <BiMessageSquareDots />
           </button>
-          <button className="rounded-full border border-gray-500 dark:border-gray-600 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+          <button
+            className="rounded-full border border-gray-500 dark:border-gray-600 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            onClick={() => navigate({ to: APP_ROUTES.PLASMA })}
+          >
             <RiNotification3Line />
           </button>
         </div>
