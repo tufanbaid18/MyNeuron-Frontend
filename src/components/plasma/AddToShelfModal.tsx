@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, Button, message, TreeSelect } from "antd";
 import { useForm, Controller } from "react-hook-form";
@@ -72,7 +73,7 @@ const AddToShelfModal: React.FC<AddToShelfModalProps> = ({
     setLoading(true);
     try {
       await createFolderItem(data);
-      message.success(`"${data.title || 'Article'}" saved to your Bookshelf`);
+      message.success(`"${data.title || "Article"}" saved to your Bookshelf`);
       reset();
       onClose();
     } catch (error: any) {
@@ -88,7 +89,9 @@ const AddToShelfModal: React.FC<AddToShelfModalProps> = ({
     return folders.map((folder) => ({
       title: folder.name,
       value: folder.id,
-      children: folder.subfolders?.length ? formatTreeData(folder.subfolders) : [],
+      children: folder.subfolders?.length
+        ? formatTreeData(folder.subfolders)
+        : [],
     }));
   };
 
@@ -101,7 +104,7 @@ const AddToShelfModal: React.FC<AddToShelfModalProps> = ({
         onClose();
       }}
       footer={null}
-      destroyOnClose
+      destroyOnHidden
     >
       <Form layout="vertical" onFinish={handleSubmit(onSubmit)}>
         <p className="mb-6 text-sm text-gray-500">
@@ -126,7 +129,7 @@ const AddToShelfModal: React.FC<AddToShelfModalProps> = ({
                 size="large"
                 loading={fetchingFolders}
                 allowClear
-                dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
               />
             )}
           />
@@ -156,13 +159,22 @@ const AddToShelfModal: React.FC<AddToShelfModalProps> = ({
             name="url"
             control={control}
             render={({ field }) => (
-              <Input {...field} placeholder="https://example.com/file.pdf" size="large" />
+              <Input
+                {...field}
+                placeholder="https://example.com/file.pdf"
+                size="large"
+              />
             )}
           />
         </Form.Item>
 
         <div className="mt-8 flex justify-end gap-3">
-          <Button onClick={onClose} disabled={loading} size="large" className="rounded-md">
+          <Button
+            onClick={onClose}
+            disabled={loading}
+            size="large"
+            className="rounded-md"
+          >
             Cancel
           </Button>
           <Button
@@ -176,11 +188,11 @@ const AddToShelfModal: React.FC<AddToShelfModalProps> = ({
             Add to Shelf
           </Button>
         </div>
-        
+
         {treeData.length === 0 && !fetchingFolders && (
-           <p className="mt-4 text-xs text-red-500 text-right">
-             No folders exist! Please create a folder in My Bookshelf first.
-           </p>
+          <p className="mt-4 text-xs text-red-500 text-right">
+            No folders exist! Please create a folder in My Bookshelf first.
+          </p>
         )}
       </Form>
     </Modal>

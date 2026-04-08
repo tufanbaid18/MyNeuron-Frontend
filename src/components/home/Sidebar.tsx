@@ -33,31 +33,34 @@ const Sidebar = ({
       setSidebarVisible(e.matches);
       setIsMobile(!e.matches);
     };
-    // Ensure initial check explicitly aligns
-    if (mql.matches && isMobile) {
-      setIsMobile(false);
-    }
     mql.addEventListener("change", handler);
     return () => mql.removeEventListener("change", handler);
-  }, [MD_BREAKPOINT, isMobile]);
+  }, [MD_BREAKPOINT, setSidebarVisible]);
 
   const location = useLocation();
   const pathname = location.pathname;
 
   const { selectedKeys, openKeys } = useMemo(() => {
     // Specific child routes must check first
-    if (pathname.includes(APP_ROUTES.GATC_PROGRAMS)) return { selectedKeys: ["2a1"], openKeys: ["2", "2a"] };
-    if (pathname.includes(APP_ROUTES.GATC_SPEAKERS)) return { selectedKeys: ["2a2"], openKeys: ["2", "2a"] };
-    if (pathname.includes(APP_ROUTES.GATC_PARTICIPANTS)) return { selectedKeys: ["2a3"], openKeys: ["2", "2a"] };
-    if (pathname.includes(APP_ROUTES.GATC_MY_HANDSHAKES)) return { selectedKeys: ["2a4"], openKeys: ["2", "2a"] };
-    
+    if (pathname.includes(APP_ROUTES.GATC_PROGRAMS))
+      return { selectedKeys: ["2a1"], openKeys: ["2", "2a"] };
+    if (pathname.includes(APP_ROUTES.GATC_SPEAKERS))
+      return { selectedKeys: ["2a2"], openKeys: ["2", "2a"] };
+    if (pathname.includes(APP_ROUTES.GATC_PARTICIPANTS))
+      return { selectedKeys: ["2a3"], openKeys: ["2", "2a"] };
+    if (pathname.includes(APP_ROUTES.GATC_MY_HANDSHAKES))
+      return { selectedKeys: ["2a4"], openKeys: ["2", "2a"] };
+
     // General GATC route
-    if (pathname.includes(APP_ROUTES.GATC)) return { selectedKeys: ["2a"], openKeys: ["2"] };
+    if (pathname.includes(APP_ROUTES.GATC))
+      return { selectedKeys: ["2a"], openKeys: ["2"] };
 
     // Other parent routes
-    if (pathname.includes(APP_ROUTES.MY_BOOKSHELF)) return { selectedKeys: ["3"], openKeys: [] };
-    if (pathname.includes(APP_ROUTES.IMPULSE)) return { selectedKeys: ["4"], openKeys: [] };
-    
+    if (pathname.includes(APP_ROUTES.MY_BOOKSHELF))
+      return { selectedKeys: ["3"], openKeys: [] };
+    if (pathname.includes(APP_ROUTES.IMPULSE))
+      return { selectedKeys: ["4"], openKeys: [] };
+
     // Default dashboard
     return { selectedKeys: ["1"], openKeys: [] };
   }, [pathname]);
@@ -99,7 +102,7 @@ const Sidebar = ({
         closable={true}
         onClose={() => setSidebarVisible(false)}
         open={sidebarVisible}
-        width={SIDEBAR_WIDTH}
+        size={SIDEBAR_WIDTH}
         styles={{
           body: { padding: 0 },
         }}

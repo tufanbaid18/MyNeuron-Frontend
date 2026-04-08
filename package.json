@@ -18,6 +18,8 @@
     "@tanstack/react-router": "^1.166.7",
     "antd": "^6.3.2",
     "axios": "^1.13.6",
+    "dayjs": "^1.11.20",
+    "firebase": "^12.11.0",
     "html-to-image": "^1.11.13",
     "jotai": "^2.18.1",
     "lucide-react": "^0.577.0",

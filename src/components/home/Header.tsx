@@ -1,14 +1,20 @@
 import { useNavigate } from "@tanstack/react-router";
-import { Button, Input } from "antd";
+import { Button, Input, Popover } from "antd";
 import { Header } from "antd/es/layout/layout";
 import { useAtomValue } from "jotai";
 import { useState, type Dispatch, type SetStateAction } from "react";
-import { BiArrowBack, BiMenu, BiMessageSquareDots } from "react-icons/bi";
+import {
+  BiArrowBack,
+  BiGridAlt,
+  BiMenu,
+  BiMessageSquareDots,
+} from "react-icons/bi";
 import { FiSearch } from "react-icons/fi";
 import { GoBook, GoHome, GoPulse } from "react-icons/go";
-import { RiNotification3Line } from "react-icons/ri";
 import { APP_ROUTES } from "../../constants/app.routes";
+import { useFetchNotifications } from "../../hooks/notification/useNotifications";
 import { userProfileAtom } from "../../store/auth.store";
+import { NotificationBell } from "../notifications/NotificationBell";
 import HeaderProfile from "./HeaderProfile";
 
 const RootHeader = ({
@@ -17,8 +23,28 @@ const RootHeader = ({
   setSidebarVisible: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const [navPopoverOpen, setNavPopoverOpen] = useState(false);
   const user = useAtomValue(userProfileAtom);
   const navigate = useNavigate();
+
+  const { data: notifications = [] } = useFetchNotifications(user?.id);
+  const hasUnread = notifications.some((n) => !n.read);
+
+  const navItems = [
+    { label: "Home", icon: <GoHome />, route: APP_ROUTES.PLASMA },
+    { label: "Impulse", icon: <GoPulse />, route: APP_ROUTES.IMPULSE_FEED },
+    { label: "Bookshelf", icon: <GoBook />, route: APP_ROUTES.MY_BOOKSHELF },
+    { label: "Inbox", icon: <BiMessageSquareDots />, route: APP_ROUTES.INBOX },
+  ] as const;
+
+  const handleNavClick = (route: string) => {
+    setNavPopoverOpen(false);
+    navigate({ to: route });
+  };
+
+  const navIconBtn =
+    "rounded-full border border-gray-500 dark:border-gray-600 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors";
+
   return (
     <Header
       className="border-b border-gray-200 dark:border-gray-800 shadow-lg flex items-center justify-between gap-2"
@@ -81,38 +107,52 @@ const RootHeader = ({
           <FiSearch size={16} />
         </button>
 
-        {/* Nav icons – hidden below md */}
+        {/* Mobile nav popover – visible below md */}
+        <Popover
+          trigger="click"
+          open={navPopoverOpen}
+          onOpenChange={setNavPopoverOpen}
+          placement="bottomRight"
+          arrow={false}
+          content={
+            <div className="flex flex-col gap-1 min-w-[160px]">
+              {navItems.map((item) => (
+                <button
+                  key={item.label}
+                  onClick={() => handleNavClick(item.route)}
+                  className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-sm text-left"
+                >
+                  <span className="text-base">{item.icon}</span>
+                  {item.label}
+                </button>
+              ))}
+              <div className="border-t border-gray-200 dark:border-gray-700 my-1" />
+              <div onClick={() => setNavPopoverOpen(false)}>
+                <NotificationBell />
+              </div>
+            </div>
+          }
+        >
+          <button className={`md:hidden relative ${navIconBtn}`}>
+            <BiGridAlt size={18} />
+            {hasUnread && (
+              <span className="absolute top-0.5 right-0.5 h-2 w-2 rounded-full bg-red-500" />
+            )}
+          </button>
+        </Popover>
+
+        {/* Desktop nav icons – visible at md+ */}
         <div className="hidden md:flex gap-2 items-center">
-          <button
-            className="rounded-full border border-gray-500 dark:border-gray-600 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            onClick={() => navigate({ to: APP_ROUTES.PLASMA })}
-          >
-            <GoHome />
-          </button>
-          <button
-            className="rounded-full border border-gray-500 dark:border-gray-600 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            onClick={() => navigate({ to: APP_ROUTES.IMPULSE_FEED })}
-          >
-            <GoPulse />
-          </button>
-          <button
-            className="rounded-full border border-gray-500 dark:border-gray-600 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            onClick={() => navigate({ to: APP_ROUTES.MY_BOOKSHELF })}
-          >
-            <GoBook />
-          </button>
-          <button
-            className="rounded-full border border-gray-500 dark:border-gray-600 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            onClick={() => navigate({ to: APP_ROUTES.INBOX })}
-          >
-            <BiMessageSquareDots />
-          </button>
-          <button
-            className="rounded-full border border-gray-500 dark:border-gray-600 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            onClick={() => navigate({ to: APP_ROUTES.PLASMA })}
-          >
-            <RiNotification3Line />
-          </button>
+          {navItems.map((item) => (
+            <button
+              key={item.label}
+              className={navIconBtn}
+              onClick={() => navigate({ to: item.route })}
+            >
+              {item.icon}
+            </button>
+          ))}
+          <NotificationBell />
         </div>
 
         {user && <HeaderProfile user={user} />}

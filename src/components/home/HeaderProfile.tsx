@@ -23,7 +23,8 @@ const HeaderProfile: React.FC<HeaderProfileProps> = ({ user }) => {
     try {
       await logout();
       navigate({ to: APP_ROUTES.LOGIN });
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_error) {
       toast.error("Failed to log out!");
     }
   };
