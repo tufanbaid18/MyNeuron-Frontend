@@ -5,7 +5,6 @@ import {
   ExclamationCircleOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { useRouter } from "@tanstack/react-router";
 import { Avatar, Button, Empty, Modal, Spin, Tag, Typography } from "antd";
 import { useAtomValue } from "jotai";
 import { useMemo, useState } from "react";
@@ -17,11 +16,11 @@ import {
   useGetMyHandshakes,
 } from "../../hooks/gatc/useHandshake";
 import { userProfileAtom } from "../../store/auth.store";
+import type { Handshake } from "../../types/gatc/handshake.types";
 import {
   HandshakeDirection,
   HandshakeStatus,
 } from "../../types/gatc/handshake.types";
-import type { Handshake } from "../../types/gatc/handshake.types";
 import { getAvatarByName } from "../../utils/avatar.utils";
 
 const { Text, Title } = Typography;
@@ -103,7 +102,7 @@ const STATUS_CONFIG: Record<string, { color: string; label: string }> = {
 // ════════════════════════════════════════════════════════════════
 
 const GatcMyHandshakes = () => {
-  const router = useRouter();
+  // const router = useRouter();
   const user = useAtomValue(userProfileAtom);
 
   const { data: handshakes = [], isLoading } = useGetMyHandshakes();
@@ -155,9 +154,9 @@ const GatcMyHandshakes = () => {
   };
 
   // ── Navigate to profile ───────────────────────────────────
-  const viewProfile = (userId: number) => {
-    router.navigate({ to: `/gatc/speakers/${userId}` });
-  };
+  // const viewProfile = (userId: number) => {
+  //   router.navigate({ to: APP_ROUTES.GATC_MEMBER(userId) });
+  // };
 
   // ── Loading state ─────────────────────────────────────────
   if (isLoading) {
@@ -168,8 +167,10 @@ const GatcMyHandshakes = () => {
     );
   }
 
+  console.log(filtered);
+
   return (
-    <div className="mx-auto max-w-4xl p-6">
+    <div className="mx-auto p-6">
       {/* Header */}
       <Title level={3} className="mb-6! text-slate-800">
         Handshakes
@@ -268,14 +269,14 @@ const GatcMyHandshakes = () => {
 
                 {/* Actions */}
                 <div className="flex items-center gap-2">
-                  <Button
+                  {/* <Button
                     size="small"
                     icon={<UserOutlined />}
                     className="border-slate-300 text-slate-600 hover:border-emerald-500 hover:text-emerald-600"
                     onClick={() => viewProfile(h.otherUser.id)}
                   >
                     View Profile
-                  </Button>
+                  </Button> */}
 
                   {/* Sender can cancel pending */}
                   {h.direction === HandshakeDirection.SENT &&
