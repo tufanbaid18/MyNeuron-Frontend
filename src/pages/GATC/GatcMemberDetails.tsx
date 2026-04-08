@@ -35,10 +35,11 @@ const GatcMemberDetails = () => {
   } = useGatcPrograms();
 
   useEffect(() => {
-    if (memberId) {
-      fetchPrograms(member?.user.id);
+    if (!member) return;
+    if (member.role === "speaker") {
+      fetchPrograms(member.user.id);
     }
-  }, [memberId, fetchPrograms]);
+  }, [member, fetchPrograms]);
 
   // ── Handshake (uses user.id, NOT membership id) ───────────
   const { data: handshakes } = useGetMyHandshakes();
@@ -147,16 +148,18 @@ const GatcMemberDetails = () => {
           </div>
 
           {/* Handshake Button — uses user.id (not member.id) */}
-          <div className="shrink-0" key={handshake.status}>
-            <HandshakeButton
-              userId={user.id}
-              handshake={handshake}
-              onSend={handleSendHandshake}
-              onCancel={handleCancelHandshake}
-              isSending={createHandshake.isPending}
-              isCancelling={cancelHandshake.isPending}
-            />
-          </div>
+          {user.id !== currentUser?.id && (
+            <div className="shrink-0" key={handshake.status}>
+              <HandshakeButton
+                userId={user.id}
+                handshake={handshake}
+                onSend={handleSendHandshake}
+                onCancel={handleCancelHandshake}
+                isSending={createHandshake.isPending}
+                isCancelling={cancelHandshake.isPending}
+              />
+            </div>
+          )}
         </div>
 
         {/* About Section */}
@@ -171,41 +174,45 @@ const GatcMemberDetails = () => {
         </div>
 
         {/* Programs Preview in Profile tab */}
-        <div className="w-full">
-          <h2 className="mb-4 border-b border-gray-100 pb-2 text-xl font-semibold text-slate-800">
-            Programs at GATC
-          </h2>
-          <div className="mt-4 flex flex-col">
-            {programsData && programsData.length > 0 ? (
-              programsData.map((prog) => (
-                <ProgramCard key={prog.id} program={prog} />
-              ))
-            ) : (
-              <span className="text-sm text-slate-500">
-                No specific programs registered yet.
-              </span>
-            )}
+        {member?.role === "speaker" && (
+          <div className="w-full">
+            <h2 className="mb-4 border-b border-gray-100 pb-2 text-xl font-semibold text-slate-800">
+              Programs at GATC
+            </h2>
+            <div className="mt-4 flex flex-col">
+              {programsData && programsData.length > 0 ? (
+                programsData.map((prog) => (
+                  <ProgramCard key={prog.id} program={prog} />
+                ))
+              ) : (
+                <span className="text-sm text-slate-500">
+                  No specific programs registered yet.
+                </span>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Right Sidebar — inbox uses user.id */}
-      <div className="w-full shrink-0 md:w-80">
-        <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-          <h3 className="mb-4 text-lg font-semibold text-slate-800">
-            Quick Actions
-          </h3>
-          <Link to={`${APP_ROUTES.INBOX}/${user.id}`}>
-            <Button
-              block
-              icon={<SendOutlined />}
-              className="border-emerald-600 text-emerald-600 hover:bg-emerald-50"
-            >
-              Send Message
-            </Button>
-          </Link>
+      {user.id !== currentUser?.id && (
+        <div className="w-full shrink-0 md:w-80">
+          <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+            <h3 className="mb-4 text-lg font-semibold text-slate-800">
+              Quick Actions
+            </h3>
+            <Link to={`${APP_ROUTES.INBOX}/${user.id}`}>
+              <Button
+                block
+                icon={<SendOutlined />}
+                className="border-emerald-600 text-emerald-600 hover:bg-emerald-50"
+              >
+                Send Message
+              </Button>
+            </Link>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 
@@ -228,6 +235,7 @@ const GatcMemberDetails = () => {
             key: "programs",
             label: "GATC Programs",
             children: programsContent,
+            disabled: member?.role !== "speaker",
           },
         ]}
         className="gatc-speaker-tabs"
