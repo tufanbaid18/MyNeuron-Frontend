@@ -47,4 +47,13 @@ export const API_ROUTES = {
   MESSAGES_CHAT: (userId: number) => `/messages/chat/${userId}/`,
   MESSAGES_MARK_READ: (userId: number) => `/messages/mark-read/${userId}/`,
   USER_BY_ID: (userId: number) => `/users/${userId}/`,
+
+  // ── Impulse / Posts ──
+  POSTS: "/posts/",
+  POST_BY_ID: (id: number) => `/posts/${id}/`,
+  POST_LIKE: (id: number) => `/posts/${id}/like/`,
+  POST_COMMENT: (id: number) => `/posts/${id}/comment/`,
+  POST_BOOKMARK: (id: number) => `/posts/${id}/bookmark/`,
+  POST_MY_LATEST: "/posts/my_latest/",
+  OG_META: "/og-meta/",
 };

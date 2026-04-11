@@ -1,34 +1,37 @@
-import React, { useState } from "react";
 import {
+  BookOutlined,
+  CameraOutlined,
+  ExperimentOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+import { useRouter } from "@tanstack/react-router";
+import {
+  Avatar,
+  Button,
+  Card,
+  Col,
+  Divider,
+  Grid,
+  Row,
+  Space,
+  Statistic,
   Tabs,
   Typography,
-  Card,
-  Grid,
-  theme,
-  Avatar,
-  Space,
-  Row,
-  Col,
-  Statistic,
   Upload,
   message,
-  Divider,
+  theme,
 } from "antd";
-import {
-  UserOutlined,
-  BookOutlined,
-  ExperimentOutlined,
-  CameraOutlined,
-} from "@ant-design/icons";
-import PersonalSection from "./PersonalSection";
+import { ChevronLeft } from "lucide-react";
+import React, { useState } from "react";
+import { FaLinkedin, FaXTwitter } from "react-icons/fa6";
 import { IoBriefcaseOutline } from "react-icons/io5";
-import ProfessionalSection from "./ProfessionalSection";
-import EducationSection from "./EducationSection";
-import ScientificInterestSection from "./ScientificInterestSection";
 import { useUserProfile } from "../../../hooks/auth/useUserProfile";
 import { usePersonalDetail } from "../../../hooks/user/useUserPersonalDetails";
 import { useUploadProfileImage } from "../../../hooks/user/useUserProfile";
-import { FaXTwitter, FaLinkedin } from "react-icons/fa6";
+import EducationSection from "./EducationSection";
+import PersonalSection from "./PersonalSection";
+import ProfessionalSection from "./ProfessionalSection";
+import ScientificInterestSection from "./ScientificInterestSection";
 
 const { Title, Text } = Typography;
 const { useBreakpoint } = Grid;
@@ -40,6 +43,7 @@ type UserProfileManagerProps = {
 const UserProfileManager: React.FC<UserProfileManagerProps> = ({
   mode = "profile",
 }) => {
+  const router = useRouter();
   const screens = useBreakpoint();
   const { token } = theme.useToken();
   const [activeTab, setActiveTab] = useState("personal");
@@ -141,6 +145,19 @@ const UserProfileManager: React.FC<UserProfileManagerProps> = ({
             boxShadow: "inset 0 -10px 20px rgba(0,0,0,0.05)",
           }}
         >
+          <Button
+            style={{
+              position: "absolute",
+              top: "20px",
+              left: "20px",
+              color: token.colorText,
+              backgroundColor: token.colorBgContainer,
+            }}
+            onClick={() => router.history.back()}
+          >
+            <ChevronLeft />
+            Back
+          </Button>
           {/* Decorative shapes */}
           <div
             style={{

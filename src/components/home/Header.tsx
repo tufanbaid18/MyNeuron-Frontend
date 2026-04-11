@@ -13,6 +13,7 @@ import { FiSearch } from "react-icons/fi";
 import { GoBook, GoHome, GoPulse } from "react-icons/go";
 import { APP_ROUTES } from "../../constants/app.routes";
 import { useFetchNotifications } from "../../hooks/notification/useNotifications";
+import { useConversations } from "../../hooks/inbox/useInbox";
 import { userProfileAtom } from "../../store/auth.store";
 import { NotificationBell } from "../notifications/NotificationBell";
 import HeaderProfile from "./HeaderProfile";
@@ -30,11 +31,13 @@ const RootHeader = ({
   const { data: notifications = [] } = useFetchNotifications(user?.id);
   const hasUnread = notifications.some((n) => !n.read);
 
+  const { data: conversations = [] } = useConversations();
+  const unreadConversations = conversations.filter((c) => c.unread_count > 0).length;
+
   const navItems = [
     { label: "Home", icon: <GoHome />, route: APP_ROUTES.PLASMA },
     { label: "Impulse", icon: <GoPulse />, route: APP_ROUTES.IMPULSE_FEED },
     { label: "Bookshelf", icon: <GoBook />, route: APP_ROUTES.MY_BOOKSHELF },
-    { label: "Inbox", icon: <BiMessageSquareDots />, route: APP_ROUTES.INBOX },
   ] as const;
 
   const handleNavClick = (route: string) => {
@@ -126,6 +129,21 @@ const RootHeader = ({
                   {item.label}
                 </button>
               ))}
+              {/* Inbox with badge */}
+              <button
+                onClick={() => handleNavClick(APP_ROUTES.INBOX)}
+                className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-sm text-left"
+              >
+                <span className="relative">
+                  <BiMessageSquareDots className="text-base" />
+                  {unreadConversations > 0 && (
+                    <span className="absolute -top-1 -right-1 flex items-center justify-center min-w-[14px] h-3.5 px-1 text-[9px] font-semibold rounded-full bg-red-500 text-white leading-none">
+                      {unreadConversations > 99 ? "99+" : unreadConversations}
+                    </span>
+                  )}
+                </span>
+                Inbox
+              </button>
               <div className="border-t border-gray-200 dark:border-gray-700 my-1" />
               <div onClick={() => setNavPopoverOpen(false)}>
                 <NotificationBell />
@@ -152,6 +170,20 @@ const RootHeader = ({
               {item.icon}
             </button>
           ))}
+
+          {/* Inbox — absolute badge so the icon button stays perfectly circular */}
+          <button
+            className={`relative ${navIconBtn}`}
+            onClick={() => navigate({ to: APP_ROUTES.INBOX })}
+          >
+            <BiMessageSquareDots />
+            {unreadConversations > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 flex items-center justify-center min-w-[16px] h-4 px-1 text-[10px] font-semibold rounded-full bg-red-500 text-white leading-none">
+                {unreadConversations > 99 ? "99+" : unreadConversations}
+              </span>
+            )}
+          </button>
+
           <NotificationBell />
         </div>
 

@@ -7,10 +7,10 @@ export type UserProfile = {
   title: string | null;
   profile_title: string | null;
   profile_image: string | null;
-  personal_detail: string | null;
-  professional_detail: string | null;
+  personal_detail: UserPersonalDetails | null;
+  professional_detail: UserProfessionalDetails | null;
   education: UserEducation[];
-  scientific_interest: string | null;
+  scientific_interest: UserScientificInterest | null;
   followers_count: number;
   following_count: number;
   is_following: boolean;
