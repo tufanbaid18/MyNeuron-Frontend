@@ -22,6 +22,7 @@ export default defineConfig(({ mode }) => {
         "myneuron.com",
         "doubtable-rudolph-colossally.ngrok-free.dev",
       ],
+      // watch: null,
     },
   };
 });

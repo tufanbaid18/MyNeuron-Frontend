@@ -1,23 +1,14 @@
 import { useRef, useState } from "react";
 
 import { Editor } from "@tinymce/tinymce-react";
-import DOMPurify from "dompurify";
-import {
-  HiPhoto,
-  HiDocumentText,
-  HiPaperAirplane,
-} from "react-icons/hi2";
-import {
-  Avatar,
-  Button,
-  Card,
-  Input,
-  Modal,
-  Tabs,
-  message,
-} from "antd";
 import type { UploadFile } from "antd";
+import { Avatar, Button, Card, Input, Modal, Tabs, message } from "antd";
 import type { RcFile } from "antd/es/upload";
+import DOMPurify from "dompurify";
+import { Image } from "lucide-react";
+import { BiVideo } from "react-icons/bi";
+import { HiPaperAirplane, HiPhoto, HiVideoCamera } from "react-icons/hi2";
+import { RiArticleLine } from "react-icons/ri";
 import { useCreatePost } from "../../hooks/impulse/useCreatePost";
 import { useUpdatePost } from "../../hooks/impulse/useUpdatePost";
 import { getOgiMeta } from "../../services/impulse/impulse.service";
@@ -35,7 +26,10 @@ interface CreatePostComponentProps {
   user: UserProfile;
 }
 
-const buildOgHtml = (res: { url: string; og: Record<string, string | undefined> }) => {
+const buildOgHtml = (res: {
+  url: string;
+  og: Record<string, string | undefined>;
+}) => {
   const og = res.og;
   return `
     <div class="og-card" contenteditable="false"
@@ -111,14 +105,17 @@ const CreatePostComponent = ({
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = Array.from(e.target.files ?? []);
-    const imageFiles = selected.filter((file) => file.type.startsWith("image/"));
+    const allowedFiles = selected.filter(
+      (file) =>
+        file.type.startsWith("image/") || file.type.startsWith("video/"),
+    );
 
-    if (imageFiles.length !== selected.length) {
-      message.warning("Only images are allowed");
+    if (allowedFiles.length !== selected.length) {
+      message.warning("Only images and videos are allowed");
     }
 
     const existing = fileList.map((f) => f.originFileObj as File);
-    const combined = [...existing, ...imageFiles].slice(0, MAX_IMAGES);
+    const combined = [...existing, ...allowedFiles].slice(0, MAX_IMAGES);
 
     setFileList(
       combined.map((file, idx) => ({
@@ -199,26 +196,36 @@ const CreatePostComponent = ({
           />
         </div>
         <div className="flex justify-around mt-3 px-2">
-          <Button
-            type="text"
-            icon={<HiPhoto className="w-5 h-5 text-blue-500" />}
-            onClick={() => {
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
               setActiveTab("image");
               if (!isEditMode) onOpen();
             }}
+            className="p-3! rounded-full! bg-gray-200! flex! justify-center! items-center!"
           >
-            Media
-          </Button>
-          <Button
-            type="text"
-            icon={<HiDocumentText className="w-5 h-5 text-orange-500" />}
-            onClick={() => {
+            <Image className="w-8 h-8 text-primary " />
+          </div>
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              setActiveTab("video");
+              if (!isEditMode) onOpen();
+            }}
+            className="p-3! rounded-full! bg-gray-200! flex! justify-center! items-center!"
+          >
+            <BiVideo className="w-8 h-8 text-[#dc3545] " />
+          </div>
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
               setActiveTab("article");
               if (!isEditMode) onOpen();
             }}
+            className="p-3! rounded-full! bg-gray-200! flex! justify-center! items-center!"
           >
-            Article
-          </Button>
+            <RiArticleLine className="w-8 h-8 text-[#ffc117]" />
+          </div>
         </div>
       </Card>
 
@@ -234,7 +241,7 @@ const CreatePostComponent = ({
             {isEditMode ? "Edit Post" : "Create Post"}
           </span>
         }
-        destroyOnClose
+        destroyOnHidden
       >
         <Tabs
           activeKey={activeTab}
@@ -275,12 +282,22 @@ const CreatePostComponent = ({
                   />
                   <div className="flex gap-2 flex-wrap">
                     {fileList.map((file) => (
-                      <div key={file.uid} className="relative w-20 h-20">
-                        <img
-                          src={file.url}
-                          alt="preview"
-                          className="w-full h-full object-cover rounded-lg border"
-                        />
+                      <div
+                        key={file.uid}
+                        className="relative w-20 h-20 bg-gray-50 rounded-lg"
+                      >
+                        {file.originFileObj?.type.startsWith("video/") ? (
+                          <video
+                            src={file.url}
+                            className="w-full h-full object-cover rounded-lg border"
+                          />
+                        ) : (
+                          <img
+                            src={file.url}
+                            alt="preview"
+                            className="w-full h-full object-cover rounded-lg border"
+                          />
+                        )}
                         <button
                           type="button"
                           onClick={() => removeImage(file.uid)}
@@ -304,6 +321,61 @@ const CreatePostComponent = ({
               ),
             },
             {
+              key: "video",
+              label: "Video",
+              children: (
+                <div className="flex flex-col gap-3">
+                  <Input.TextArea
+                    rows={3}
+                    placeholder="What do you want to talk about?"
+                    value={form.content}
+                    onChange={(e) =>
+                      setForm({ ...form, content: e.target.value })
+                    }
+                    onPaste={handlePaste}
+                    className="resize-none"
+                  />
+                  <div className="flex gap-2 flex-wrap">
+                    {fileList.map((file) => (
+                      <div
+                        key={file.uid}
+                        className="relative w-20 h-20 bg-gray-50 rounded-lg"
+                      >
+                        {file.originFileObj?.type.startsWith("video/") ? (
+                          <video
+                            src={file.url}
+                            className="w-full h-full object-cover rounded-lg border"
+                          />
+                        ) : (
+                          <img
+                            src={file.url}
+                            alt="preview"
+                            className="w-full h-full object-cover rounded-lg border"
+                          />
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => removeImage(file.uid)}
+                          className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full text-xs flex items-center justify-center"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                    {fileList.length < MAX_IMAGES && (
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="w-20 h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400 hover:border-primary hover:text-primary transition-colors"
+                      >
+                        <HiVideoCamera className="w-8 h-8" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ),
+            },
+            {
               key: "article",
               label: "Article",
               children: (
@@ -319,9 +391,7 @@ const CreatePostComponent = ({
                   <Editor
                     apiKey="gzbaq6k6otgk5w4c2vhnm06gksbkpyt5ahllriq2s49rj3ty"
                     value={form.content}
-                    onEditorChange={(val) =>
-                      setForm({ ...form, content: val })
-                    }
+                    onEditorChange={(val) => setForm({ ...form, content: val })}
                     init={{
                       height: 200,
                       menubar: false,
@@ -349,7 +419,13 @@ const CreatePostComponent = ({
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/*"
+          accept={
+            activeTab === "video"
+              ? "video/*"
+              : activeTab === "image"
+                ? "image/*"
+                : "image/*,video/*"
+          }
           multiple
           hidden
           onChange={handleFileSelect}

@@ -16,6 +16,7 @@ import {
 } from "../../hooks/inbox/useInbox";
 import type { Conversation } from "../../types/inbox/inbox.types";
 import { getAvatarByName } from "../../utils/avatar.utils";
+import { ChevronLeft } from "lucide-react";
 
 const { Text, Title } = Typography;
 
@@ -98,10 +99,7 @@ const Inbox = () => {
   ) => (
     <Avatar
       size={size}
-      src={
-        profileImage ||
-        getAvatarByName({ firstName, lastName })
-      }
+      src={profileImage || getAvatarByName({ firstName, lastName })}
       icon={!profileImage && <UserOutlined />}
       className="shrink-0"
     />
@@ -137,11 +135,14 @@ const Inbox = () => {
         }`}
       >
         {/* Header */}
-        <div className="flex items-center gap-3 border-b border-slate-200 px-5 py-4">
-          <InboxOutlined className="text-xl text-emerald-600" />
-          <Title level={5} className="mb-0! text-slate-800">
-            Inbox
-          </Title>
+        <div className="flex justify-start items-center border-b border-slate-200 px-2">
+          <ChevronLeft onClick={() => router.history.back()} className="cursor-pointer hover:text-primary" />
+          <div className="flex items-center gap-3 py-4 ml-2">
+            <InboxOutlined className="text-xl text-emerald-600" />
+            <Title level={5} className="mb-0! text-slate-800">
+              Inbox
+            </Title>
+          </div>
         </div>
 
         {/* Conversation items */}

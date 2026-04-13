@@ -56,4 +56,5 @@ export const API_ROUTES = {
   POST_BOOKMARK: (id: number) => `/posts/${id}/bookmark/`,
   POST_MY_LATEST: "/posts/my_latest/",
   OG_META: "/og-meta/",
+  MY_ACTIVITY_OVERVIEW: "/my-activity/overview",
 };

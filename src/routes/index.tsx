@@ -29,7 +29,11 @@ import {
   gatcRootRoute,
   gatcSpeakersRoute,
 } from "./gatc.routes";
-import { impulseFeedRoute, impulseRootRoute } from "./impulse.routes";
+import {
+  impulseActivityRoute,
+  impulseFeedRoute,
+  impulseRootRoute,
+} from "./impulse.routes";
 import { inboxRootRoute, inboxUserRoute } from "./inbox.routes";
 import { plasmaIndexRoute, plasmaRootRoute } from "./plasma.routes";
 import {
@@ -79,7 +83,7 @@ export const routeTree = rootRoute.addChildren([
     ]),
     userRootRoute.addChildren([userIndexRoute, userProfileRoute]),
     bookshelfRootRoute.addChildren([bookshelfIndexRoute]),
-    impulseRootRoute.addChildren([impulseFeedRoute]),
+    impulseRootRoute.addChildren([impulseFeedRoute, impulseActivityRoute]),
     inboxRootRoute.addChildren([inboxUserRoute]),
   ]),
   publicRoute.addChildren([

@@ -1,5 +1,6 @@
 import { API_ROUTES } from "../../constants/api.routes";
 import axiosInstance from "../../lib/axiosInstance";
+import type { MyActivityOverview } from "../../types/impulse/feed.types";
 import type { OgMetaResponse, UpdatePostPayload } from "../../types/impulse/post.types";
 
 export const createPost = async ({
@@ -56,5 +57,11 @@ export const getOgiMeta = async (url: string): Promise<OgMetaResponse> => {
   const response = await axiosInstance.post<OgMetaResponse>(API_ROUTES.OG_META, {
     url,
   });
+  return response.data;
+};
+
+
+export const getMyActivityOverview = async (): Promise<MyActivityOverview> => {
+  const response = await axiosInstance.get<MyActivityOverview>(API_ROUTES.MY_ACTIVITY_OVERVIEW);
   return response.data;
 };
