@@ -1,6 +1,7 @@
 import { PhoneOutlined } from "@ant-design/icons";
 import { Col, Divider, Form, Input, Row, Space, Typography } from "antd";
 import type { GlobalToken } from "antd/es/theme/interface";
+import { PhoneValidator } from "../../../../../validations/common.validation";
 
 const { Text } = Typography;
 
@@ -27,9 +28,9 @@ export const ContactDetailsSection = ({
           <Form.Item
             name="contact_number"
             label={<span style={{ fontWeight: 500 }}>Contact Number</span>}
-            rules={[{ required: true, message: "Contact number is required" }]}
+            rules={[{ validator: PhoneValidator({ required: true }) }]}
           >
-            <Input placeholder="+91 98765 43210" />
+            <Input placeholder="+919876543210" />
           </Form.Item>
         </Col>
         <Col xs={24} md={12}>
