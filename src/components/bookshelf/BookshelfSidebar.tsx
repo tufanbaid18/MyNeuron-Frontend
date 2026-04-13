@@ -24,6 +24,7 @@ const BookshelfSidebar: React.FC<BookshelfSidebarProps> = ({
 
   // Convert API BookshelfFolder[] to Ant Design DataNode[] recursively
   const getTreeData = (folders: BookshelfFolder[]): DataNode[] => {
+    console.log("Get tree fuction called, search value=>", searchValue);
     return folders.map((folder) => {
       const isMatch = folder.name
         .toLowerCase()
@@ -64,6 +65,15 @@ const BookshelfSidebar: React.FC<BookshelfSidebarProps> = ({
     () => getTreeData(treeData),
     [treeData, searchValue, token],
   );
+
+  // Recursively check if any folder (or subfolder) matches the search term
+  const hasAnyMatch = (folders: BookshelfFolder[], search: string): boolean => {
+    return folders.some(
+      (f) =>
+        f.name.toLowerCase().includes(search.toLowerCase()) ||
+        (f.subfolders?.length ? hasAnyMatch(f.subfolders, search) : false),
+    );
+  };
 
   // Recursively find keys to expand if search is used
   const filterExpandedKeys = (folders: BookshelfFolder[], search: string) => {
@@ -113,7 +123,29 @@ const BookshelfSidebar: React.FC<BookshelfSidebarProps> = ({
       </div>
 
       <div style={{ flex: 1, overflowY: "auto", padding: "12px 8px" }}>
-        {treeData.length > 0 ? (
+        {treeData.length === 0 ? (
+          <p
+            style={{
+              textAlign: "center",
+              color: token.colorTextSecondary,
+              marginTop: 40,
+              fontSize: 13,
+            }}
+          >
+            No folders found.
+          </p>
+        ) : searchValue && !hasAnyMatch(treeData, searchValue) ? (
+          <p
+            style={{
+              textAlign: "center",
+              color: token.colorTextSecondary,
+              marginTop: 40,
+              fontSize: 13,
+            }}
+          >
+            No result found.
+          </p>
+        ) : (
           <Tree
             showIcon
             blockNode
@@ -130,17 +162,6 @@ const BookshelfSidebar: React.FC<BookshelfSidebarProps> = ({
             treeData={formattedData}
             style={{ background: "transparent" }}
           />
-        ) : (
-          <p
-            style={{
-              textAlign: "center",
-              color: token.colorTextSecondary,
-              marginTop: 40,
-              fontSize: 13,
-            }}
-          >
-            No folders found.
-          </p>
         )}
       </div>
     </div>
