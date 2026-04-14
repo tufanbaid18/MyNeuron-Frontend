@@ -1,4 +1,3 @@
-import CreatePost from "../../components/impulse/CreatePost";
 import Feed from "../../components/impulse/Feed";
 import FeedNews from "../../components/impulse/FeedNews";
 import FeedProfile from "../../components/impulse/FeedProfile";
@@ -15,7 +14,6 @@ const ImpulseFeed = () => {
   if (error) return <ErrorComponent />;
   if (!user) return <ErrorComponent />;
 
-  // user is guaranteed to be UserProfile from here
   return (
     <div className="grid grid-cols-12 gap-5 p-2 md:p-3 lg:p-5 h-full">
       <div className="col-span-3 flex flex-col gap-5">
@@ -24,8 +22,7 @@ const ImpulseFeed = () => {
         <PagesOverview />
       </div>
       <div className="col-span-6 flex flex-col overflow-y-auto">
-        <CreatePost />
-        <Feed />
+        <Feed user={user} />
       </div>
       <div className="col-span-3">
         <FeedNews />

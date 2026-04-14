@@ -1,17 +1,54 @@
-import { Avatar, Button } from "antd";
-import { formatTimeAgo } from "../../../utils/impulse.utils";
+import { Avatar, Button, Input } from "antd";
+import { Send } from "lucide-react";
+import { useRef, useState } from "react";
 import { IMPULSE_CONSTANTS } from "../../../constants/impulse.constants";
 import type { FeedPostComment } from "../../../types/impulse/post.types";
+import { formatTimeAgo } from "../../../utils/impulse.utils";
+
+const { TextArea } = Input;
 
 interface PostCommentsProps {
   comments: FeedPostComment[];
+  postId: number;
+  userId: number;
+  onAddComment: (content: string) => void;
+  isAddingComment?: boolean;
 }
 
-export const PostComments = ({ comments }: PostCommentsProps) => {
-  if (!comments || comments.length === 0) return null;
+export const PostComments = ({
+  comments,
+  userId,
+  onAddComment,
+  isAddingComment,
+}: PostCommentsProps) => {
+  const [showInput, setShowInput] = useState(false);
+  const [commentText, setCommentText] = useState("");
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  const previewComments = comments.slice(0, IMPULSE_CONSTANTS.COMMENTS_PREVIEW_COUNT);
+  const previewComments = comments.slice(
+    0,
+    IMPULSE_CONSTANTS.COMMENTS_PREVIEW_COUNT,
+  );
   const hasMore = comments.length > IMPULSE_CONSTANTS.COMMENTS_PREVIEW_COUNT;
+
+  const handleCommentClick = () => {
+    setShowInput(true);
+    setTimeout(() => inputRef.current?.focus(), 50);
+  };
+
+  const handleSubmit = () => {
+    if (!commentText.trim()) return;
+    onAddComment(commentText.trim());
+    setCommentText("");
+    setShowInput(false);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit();
+    }
+  };
 
   return (
     <div className="px-4 py-3 border-t border-gray-100 bg-gray-50/50">
@@ -29,15 +66,66 @@ export const PostComments = ({ comments }: PostCommentsProps) => {
             </p>
             <div className="flex items-center gap-3 mt-1 text-xs text-gray-400">
               <span>{formatTimeAgo(comment.created_at)}</span>
-              <Button type="link" size="small" className="p-0 h-auto text-xs">Like</Button>
-              <Button type="link" size="small" className="p-0 h-auto text-xs">Reply</Button>
+              {comment.user.id !== userId && (
+                <>
+                  <Button
+                    type="link"
+                    size="small"
+                    className="p-0 h-auto text-xs"
+                  >
+                    Like
+                  </Button>
+                  <Button
+                    type="link"
+                    size="small"
+                    className="p-0 h-auto text-xs"
+                  >
+                    Reply
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>
       ))}
       {hasMore && (
-        <Button type="link" className="text-blue-500 p-0 h-auto text-sm font-medium mt-2">
+        <Button
+          type="link"
+          className="text-blue-500 p-0 h-auto text-sm font-medium mt-2"
+        >
           View all {comments.length} comments
+        </Button>
+      )}
+
+      {/* Comment input */}
+      {showInput ? (
+        <div className="flex items-start gap-2 mt-3">
+          <TextArea
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-expect-error
+            ref={inputRef}
+            value={commentText}
+            onChange={(e) => setCommentText(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Write a comment..."
+            autoSize={{ minRows: 1, maxRows: 4 }}
+            className="flex-1"
+          />
+          <Button
+            type="primary"
+            icon={<Send className="w-4 h-4" />}
+            loading={isAddingComment}
+            onClick={handleSubmit}
+            disabled={!commentText.trim()}
+          />
+        </div>
+      ) : (
+        <Button
+          type="link"
+          className="text-gray-500 p-0 h-auto text-sm font-medium mt-2"
+          onClick={handleCommentClick}
+        >
+          Write a comment...
         </Button>
       )}
     </div>

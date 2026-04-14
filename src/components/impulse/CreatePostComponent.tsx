@@ -7,16 +7,22 @@ import { useUpdatePost } from "../../hooks/impulse/useUpdatePost";
 import { getOgiMeta } from "../../services/impulse/impulse.service";
 import { buildOgHtml } from "../../utils/impulse.utils";
 import { IMPULSE_CONSTANTS } from "../../constants/impulse.constants";
-import type { PostData } from "../../types/impulse/post.types";
 import type { UserProfile } from "../../types/user/user.types";
 import { CreatePostTrigger, CreatePostModal } from "./create-post";
+
+interface EditablePost {
+  id: number;
+  title?: string;
+  content?: string;
+  media?: { file_url: string; is_video: boolean }[];
+}
 
 interface CreatePostComponentProps {
   open: boolean;
   onOpen: () => void;
   onClose: () => void;
   onSuccess: () => void;
-  editingPost?: PostData | null;
+  editingPost?: EditablePost | null;
   user: UserProfile;
 }
 

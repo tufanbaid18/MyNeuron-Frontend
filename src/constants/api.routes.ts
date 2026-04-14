@@ -58,4 +58,5 @@ export const API_ROUTES = {
   OG_META: "/og-meta/",
   MY_ACTIVITY_OVERVIEW: "/my-activity/overview",
   PAGES_OVERVIEW: "/pages/counts",
+  NEWS: "/news/",
 };

@@ -10,6 +10,9 @@ interface PostHeaderProps {
   subtitle: string;
   isUserPost: boolean;
   createdAt: string;
+  isOwnPost?: boolean;
+  onEdit?: () => void;
+  onDelete?: () => void;
 }
 
 export const PostHeader = ({
@@ -18,10 +21,20 @@ export const PostHeader = ({
   subtitle,
   isUserPost,
   createdAt,
+  isOwnPost,
+  onEdit,
+  onDelete,
 }: PostHeaderProps) => {
   const menuItems: MenuProps["items"] = [
     { key: "save", label: "Save post" },
     { key: "hide", label: "Hide post" },
+    ...(isOwnPost
+      ? [
+          { key: "edit", label: "Edit post", onClick: onEdit },
+          { type: "divider" as const },
+          { key: "delete", label: "Delete post", danger: true, onClick: onDelete },
+        ]
+      : []),
     { key: "report", label: "Report", danger: true },
   ];
 

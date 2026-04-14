@@ -86,3 +86,39 @@ export const getPagesOverview = async (): Promise<PagesOverview> => {
   );
   return response.data;
 };
+
+export const likePost = async (postId: number) => {
+  const response = await axiosInstance.post<{
+    id: number;
+    is_liked: boolean;
+    like_count: number;
+  }>(API_ROUTES.POST_LIKE(postId));
+  return response.data;
+};
+
+export const bookmarkPost = async (postId: number) => {
+  const response = await axiosInstance.post<{
+    id: number;
+    is_bookmarked: boolean;
+    bookmark_count: number;
+  }>(API_ROUTES.POST_BOOKMARK(postId));
+  return response.data;
+};
+
+export const addComment = async (postId: number, content: string) => {
+  const response = await axiosInstance.post<{
+    id: number;
+    c_content: string;
+    created_at: string;
+  }>(API_ROUTES.POST_COMMENT(postId), { c_content: content });
+  return response.data;
+};
+
+export const deletePost = async (postId: number) => {
+  await axiosInstance.delete(API_ROUTES.POST_BY_ID(postId));
+};
+
+export const getNews = async () => {
+  const response = await axiosInstance.get(API_ROUTES.NEWS);
+  return response.data;
+};
