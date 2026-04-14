@@ -1,8 +1,8 @@
-import { UserOutlined } from "@ant-design/icons";
-import { Avatar, Empty, Spin } from "antd";
 import { useMemo, useState } from "react";
+import { Empty, Spin, Avatar } from "antd";
 import type { GatcProgramsItem } from "../../../types/gatc/gatc.types";
 import { getAvatarByName } from "../../../utils/avatar.utils";
+import { UserOutlined } from "@ant-design/icons";
 
 interface ProgramListProps {
   programs: GatcProgramsItem[];
@@ -18,7 +18,6 @@ export const ProgramList = ({ programs, isLoading }: ProgramListProps) => {
   }, [programs]);
 
   const [activeEvent, setActiveEvent] = useState<string | null>(null);
-  // const currentEvent = activeEvent || events[0] || null;
   const currentEvent = activeEvent || events[0] || null;
 
   // Filter programs by active event
@@ -51,7 +50,7 @@ export const ProgramList = ({ programs, isLoading }: ProgramListProps) => {
   const datesAscending = Object.keys(groupedPrograms).sort();
   const [activeDate, setActiveDate] = useState<string | null>(null);
 
-  // const currentDate = activeDate || datesAscending[0] || null;
+  const currentDate = activeDate || datesAscending[0] || null;
 
   if (isLoading) {
     return (
@@ -81,11 +80,7 @@ export const ProgramList = ({ programs, isLoading }: ProgramListProps) => {
     return d.toLocaleDateString("en-GB"); // 11/03/2026
   };
 
-  // const programsToDisplay = currentDate ? groupedPrograms[currentDate] : [];
-
-  const programsToDisplay = activeDate
-    ? groupedPrograms[activeDate] || []
-    : Object.values(groupedPrograms).flat();
+  const programsToDisplay = currentDate ? groupedPrograms[currentDate] : [];
 
   // Get unique venues for the current date to display as headers
   const uniqueVenues = Array.from(
@@ -116,18 +111,8 @@ export const ProgramList = ({ programs, isLoading }: ProgramListProps) => {
       {/* Date Radio Buttons */}
       {datesAscending.length > 0 && (
         <div className="mb-8 flex flex-wrap gap-3">
-          <div
-            onClick={() => setActiveDate(null)}
-            className={`cursor-pointer rounded-full px-5 py-2 font-medium transition-colors ${
-              activeDate === null
-                ? "bg-[#64A347] border border-[#64A347] text-white"
-                : "bg-white border border-[#64A347] text-[#64A347] hover:bg-emerald-50"
-            }`}
-          >
-            All
-          </div>
           {datesAscending.map((date) => {
-            const isActive = activeDate === date;
+            const isActive = currentDate === date;
             return (
               <div
                 key={date}
