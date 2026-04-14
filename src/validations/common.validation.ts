@@ -43,3 +43,22 @@ export const PhoneValidator = (options?: PhoneValidatorOptions) => {
     return Promise.resolve();
   };
 };
+
+type MaxLengthValidatorProp = {
+  value: string;
+  maxLength?: number;
+  message?: string;
+};
+
+export const maxLengthValidator = ({
+  maxLength = 50,
+  message,
+  value,
+}: MaxLengthValidatorProp) => {
+  if (value && value.length > maxLength) {
+    return Promise.reject(
+      message || `Value cannot be longer than ${maxLength} characters`,
+    );
+  }
+  return Promise.resolve();
+};

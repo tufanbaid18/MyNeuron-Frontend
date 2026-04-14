@@ -1,7 +1,10 @@
 import { PhoneOutlined } from "@ant-design/icons";
 import { Col, Divider, Form, Input, Row, Space, Typography } from "antd";
 import type { GlobalToken } from "antd/es/theme/interface";
-import { PhoneValidator } from "../../../../../validations/common.validation";
+import {
+  maxLengthValidator,
+  PhoneValidator,
+} from "../../../../../validations/common.validation";
 
 const { Text } = Typography;
 
@@ -48,7 +51,16 @@ export const ContactDetailsSection = ({
           <Form.Item
             name="work_address"
             label={<span style={{ fontWeight: 500 }}>Work Address</span>}
-            rules={[{ required: true, message: "Work address is required" }]}
+            rules={[
+              { required: true, message: "Work address is required" },
+              {
+                validator: (_, value) =>
+                  maxLengthValidator({
+                    value,
+                    maxLength: 100,
+                  }),
+              },
+            ]}
           >
             <Input.TextArea rows={3} placeholder="Full work address" />
           </Form.Item>

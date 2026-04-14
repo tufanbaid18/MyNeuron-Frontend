@@ -1,6 +1,7 @@
 import { Col, Divider, Form, Input, Row, Space, Typography } from "antd";
 import type { GlobalToken } from "antd/es/theme/interface";
 import { IoBriefcaseOutline } from "react-icons/io5";
+import { maxLengthValidator } from "../../../../../validations/common.validation";
 
 const { Text } = Typography;
 
@@ -36,7 +37,12 @@ export const ProfessionalDetailsSection = ({
           <Form.Item
             name="current_organization"
             label={<span style={{ fontWeight: 500 }}>Organization</span>}
-            rules={[{ required: true, message: "Organization is required" }]}
+            rules={[
+              { required: true, message: "Organization is required" },
+              {
+                validator: (_, value) => maxLengthValidator({ value }),
+              },
+            ]}
           >
             <Input placeholder="e.g., Harvard University" />
           </Form.Item>
@@ -45,7 +51,12 @@ export const ProfessionalDetailsSection = ({
           <Form.Item
             name="current_role"
             label={<span style={{ fontWeight: 500 }}>Role</span>}
-            rules={[{ required: true, message: "Role is required" }]}
+            rules={[
+              { required: true, message: "Role is required" },
+              {
+                validator: (_, value) => maxLengthValidator({ value }),
+              },
+            ]}
           >
             <Input placeholder="e.g., Principal Investigator" />
           </Form.Item>
@@ -54,7 +65,13 @@ export const ProfessionalDetailsSection = ({
           <Form.Item
             name="current_department"
             label={<span style={{ fontWeight: 500 }}>Department</span>}
-            rules={[{ required: true, message: "Department is required" }]}
+            rules={[
+              { required: true, message: "Department is required" },
+              {
+                validator: (_, value) =>
+                  maxLengthValidator({ value, maxLength: 100 }),
+              },
+            ]}
           >
             <Input placeholder="e.g., Neuroscience" />
           </Form.Item>

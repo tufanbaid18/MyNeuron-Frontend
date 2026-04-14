@@ -1,3 +1,4 @@
+import { IdcardOutlined } from "@ant-design/icons";
 import {
   Col,
   DatePicker,
@@ -9,9 +10,9 @@ import {
   Space,
   Typography,
 } from "antd";
-import { IdcardOutlined } from "@ant-design/icons";
-import dayjs from "dayjs";
 import type { GlobalToken } from "antd/es/theme/interface";
+import dayjs from "dayjs";
+import { maxLengthValidator } from "../../../../../validations/common.validation";
 
 const { Text } = Typography;
 
@@ -52,7 +53,15 @@ export const PersonalDetailsSection = ({
           <Form.Item
             name="first_name"
             label={<span style={{ fontWeight: 500 }}>First Name</span>}
-            rules={[{ required: true, message: "First name is required" }]}
+            rules={[
+              { required: true, message: "First name is required" },
+              {
+                validator: (_, value) =>
+                  maxLengthValidator({
+                    value,
+                  }),
+              },
+            ]}
           >
             <Input placeholder="First name" />
           </Form.Item>
@@ -61,6 +70,14 @@ export const PersonalDetailsSection = ({
           <Form.Item
             name="middle_name"
             label={<span style={{ fontWeight: 500 }}>Middle Name</span>}
+            rules={[
+              {
+                validator: (_, value) =>
+                  maxLengthValidator({
+                    value,
+                  }),
+              },
+            ]}
           >
             <Input placeholder="Optional" />
           </Form.Item>
@@ -69,7 +86,15 @@ export const PersonalDetailsSection = ({
           <Form.Item
             name="last_name"
             label={<span style={{ fontWeight: 500 }}>Last Name</span>}
-            rules={[{ required: true, message: "Last name is required" }]}
+            rules={[
+              { required: true, message: "Last name is required" },
+              {
+                validator: (_, value) =>
+                  maxLengthValidator({
+                    value,
+                  }),
+              },
+            ]}
           >
             <Input placeholder="Last name" />
           </Form.Item>
@@ -110,7 +135,15 @@ export const PersonalDetailsSection = ({
           <Form.Item
             name="city"
             label={<span style={{ fontWeight: 500 }}>City</span>}
-            rules={[{ required: true, message: "City is required" }]}
+            rules={[
+              { required: true, message: "City is required" },
+              {
+                validator: (_, value) =>
+                  maxLengthValidator({
+                    value,
+                  }),
+              },
+            ]}
           >
             <Input placeholder="e.g., New York" />
           </Form.Item>
@@ -119,7 +152,15 @@ export const PersonalDetailsSection = ({
           <Form.Item
             name="country"
             label={<span style={{ fontWeight: 500 }}>Country</span>}
-            rules={[{ required: true, message: "Country is required" }]}
+            rules={[
+              { required: true, message: "Country is required" },
+              {
+                validator: (_, value) =>
+                  maxLengthValidator({
+                    value,
+                  }),
+              },
+            ]}
           >
             <Input placeholder="e.g., India" />
           </Form.Item>

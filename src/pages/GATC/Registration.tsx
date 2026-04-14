@@ -163,7 +163,9 @@ export default function GatcRegistration() {
     } catch (error: unknown) {
       // Ant Design validateFields throws when fields fail — that's UI-level
       if (error && typeof error === "object" && "errorFields" in error) {
-        message.error("Please complete all required fields.");
+        message.error(
+          "Please complete all required fields or check the validation errors.",
+        );
         return;
       }
       console.error("Save failed:", error);
