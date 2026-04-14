@@ -200,8 +200,8 @@ export const ProgramList = ({ programs, isLoading }: ProgramListProps) => {
 
                       {/* Footer: Venue & Date */}
                       <div className="flex items-center justify-between gap-4">
-                        <div className="rounded bg-blue-50/70 px-2 py-1 flex-1 min-w-0">
-                          <span className="text-[10px] font-semibold text-blue-800 uppercase tracking-wide truncate block">
+                        <div className="rounded bg-blue-50/70 px-2 py-1 max-w-full min-w-0">
+                          <span className="text-[10px] font-bold text-blue-800 uppercase tracking-wide truncate block w-fit">
                             {program.venue}
                           </span>
                         </div>
