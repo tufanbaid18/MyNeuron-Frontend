@@ -1,8 +1,8 @@
+import { UserOutlined } from "@ant-design/icons";
+import { Avatar, Empty, Spin } from "antd";
 import { useMemo, useState } from "react";
-import { Empty, Spin, Avatar } from "antd";
 import type { GatcProgramsItem } from "../../../types/gatc/gatc.types";
 import { getAvatarByName } from "../../../utils/avatar.utils";
-import { UserOutlined } from "@ant-design/icons";
 
 interface ProgramListProps {
   programs: GatcProgramsItem[];
