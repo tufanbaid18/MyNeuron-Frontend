@@ -1,7 +1,17 @@
 import { API_ROUTES } from "../../constants/api.routes";
 import axiosInstance from "../../lib/axiosInstance";
 import type { MyActivityOverview } from "../../types/impulse/feed.types";
-import type { OgMetaResponse, UpdatePostPayload } from "../../types/impulse/post.types";
+import type { PagesOverview } from "../../types/impulse/page.types";
+import type {
+  FeedPost,
+  OgMetaResponse,
+  UpdatePostPayload,
+} from "../../types/impulse/post.types";
+
+export const getFeedPosts = async (): Promise<FeedPost[]> => {
+  const response = await axiosInstance.get<FeedPost[]>(API_ROUTES.POSTS);
+  return response.data;
+};
 
 export const createPost = async ({
   title,
@@ -54,14 +64,25 @@ export const updatePost = async ({
 };
 
 export const getOgiMeta = async (url: string): Promise<OgMetaResponse> => {
-  const response = await axiosInstance.post<OgMetaResponse>(API_ROUTES.OG_META, {
-    url,
-  });
+  const response = await axiosInstance.post<OgMetaResponse>(
+    API_ROUTES.OG_META,
+    {
+      url,
+    },
+  );
   return response.data;
 };
 
-
 export const getMyActivityOverview = async (): Promise<MyActivityOverview> => {
-  const response = await axiosInstance.get<MyActivityOverview>(API_ROUTES.MY_ACTIVITY_OVERVIEW);
+  const response = await axiosInstance.get<MyActivityOverview>(
+    API_ROUTES.MY_ACTIVITY_OVERVIEW,
+  );
+  return response.data;
+};
+
+export const getPagesOverview = async (): Promise<PagesOverview> => {
+  const response = await axiosInstance.get<PagesOverview>(
+    API_ROUTES.PAGES_OVERVIEW,
+  );
   return response.data;
 };

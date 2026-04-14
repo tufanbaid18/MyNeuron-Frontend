@@ -3,6 +3,7 @@ import Feed from "../../components/impulse/Feed";
 import FeedNews from "../../components/impulse/FeedNews";
 import FeedProfile from "../../components/impulse/FeedProfile";
 import MyActivityOverview from "../../components/impulse/MyActivityOverview";
+import PagesOverview from "../../components/impulse/PagesOverview";
 import ErrorComponent from "../../components/ui/ErrorComponent";
 import Loading from "../../components/ui/Loading";
 import { useUserProfile } from "../../hooks/auth/useUserProfile";
@@ -20,6 +21,7 @@ const ImpulseFeed = () => {
       <div className="col-span-3 flex flex-col gap-5">
         <FeedProfile user={user} />
         <MyActivityOverview />
+        <PagesOverview />
       </div>
       <div className="col-span-6 flex flex-col overflow-y-auto">
         <CreatePost />

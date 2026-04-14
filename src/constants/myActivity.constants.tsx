@@ -1,6 +1,6 @@
 import { Clock3, UserCheck, UserPlus, Users } from "lucide-react";
+import { CgSpinner } from "react-icons/cg";
 import { RiUserFollowLine } from "react-icons/ri";
-import Loading from "../components/ui/Loading";
 import {
   MyActivityTypes,
   type MyActivityOverview,
@@ -22,7 +22,15 @@ export const getMyActivityOverviewItems = ({
         {
           icon: <RiUserFollowLine />,
           heading: "Activity",
-          data: 0,
+          data: (
+            <div className="flex justify-center items-center rounded-full w-8 h-8 bg-primary text-white">
+              {isLoading || isFetching ? (
+                <CgSpinner className="w-2 h-2 animate-spin" />
+              ) : (
+                0
+              )}
+            </div>
+          ),
           type: MyActivityTypes.FOLLOW_REQUESTS,
         },
       ]
@@ -33,7 +41,7 @@ export const getMyActivityOverviewItems = ({
           data: (
             <div className="flex justify-center items-center rounded-full w-8 h-8 bg-primary text-white">
               {isLoading || isFetching ? (
-                <Loading className="w-2 h-2" />
+                <CgSpinner className="w-2 h-2 animate-spin" />
               ) : (
                 data?.follow_requests
               )}
@@ -47,7 +55,7 @@ export const getMyActivityOverviewItems = ({
           data: (
             <div className="flex justify-center items-center rounded-full w-8 h-8 bg-primary text-white">
               {isLoading || isFetching ? (
-                <Loading className="w-2 h-2" />
+                <CgSpinner className="w-2 h-2 animate-spin" />
               ) : (
                 data?.pending_requests
               )}
@@ -61,7 +69,7 @@ export const getMyActivityOverviewItems = ({
           data: (
             <div className="flex justify-center items-center rounded-full w-8 h-8 bg-primary text-white">
               {isLoading || isFetching ? (
-                <Loading className="w-2 h-2" />
+                <CgSpinner className="w-2 h-2 animate-spin" />
               ) : (
                 data?.following
               )}
@@ -75,7 +83,7 @@ export const getMyActivityOverviewItems = ({
           data: (
             <div className="flex justify-center items-center rounded-full w-8 h-8 bg-primary text-white">
               {isLoading || isFetching ? (
-                <Loading className="w-2 h-2" />
+                <CgSpinner className="w-2 h-2 animate-spin" />
               ) : (
                 data?.followers
               )}
