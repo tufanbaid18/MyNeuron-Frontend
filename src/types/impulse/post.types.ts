@@ -42,6 +42,10 @@ export interface OgMetaResponse {
     "og:image"?: string;
     "og:site_name"?: string;
   };
+  type?: string;
+  embed_url?: string;
+  thumbnail?: string;
+  video_id?: string;
 }
 
 export type FeedPosts = FeedPost[];

@@ -2,7 +2,7 @@ import { useFeedPosts } from "../../hooks/impulse/useFeed";
 import ErrorComponent from "../ui/ErrorComponent";
 import Loading from "../ui/Loading";
 import NoData from "../ui/NoData";
-import { PostCard } from "./PostCard";
+import PostCard from "./PostCard";
 
 const Feed = () => {
   const { data, isFetching, isLoading, error } = useFeedPosts();
