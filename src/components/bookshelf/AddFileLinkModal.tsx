@@ -64,11 +64,17 @@ const AddFileLinkModal: React.FC<AddFileLinkModalProps> = ({
         onClose();
       }}
       footer={null}
-      destroyOnClose
+      destroyOnHidden
     >
       <Form layout="vertical" onFinish={handleSubmit(onSubmit)}>
         {/* Ant Design Alert or help text could be here for the complex validation rule */}
-        <p style={{ color: token.colorTextSecondary, marginBottom: 24, fontSize: 14 }}>
+        <p
+          style={{
+            color: token.colorTextSecondary,
+            marginBottom: 24,
+            fontSize: 14,
+          }}
+        >
           Provide the Name of the file, its URL, or both.
         </p>
 
@@ -81,13 +87,20 @@ const AddFileLinkModal: React.FC<AddFileLinkModalProps> = ({
             name="title"
             control={control}
             render={({ field }) => (
-              <Input {...field} placeholder="Enter file name" autoFocus size="large" />
+              <Input
+                {...field}
+                placeholder="Enter file name"
+                autoFocus
+                size="large"
+              />
             )}
           />
         </Form.Item>
 
         <Form.Item
-          label={<span style={{ fontWeight: 500 }}>File URL / Action Link</span>}
+          label={
+            <span style={{ fontWeight: 500 }}>File URL / Action Link</span>
+          }
           validateStatus={errors.url ? "error" : ""}
           help={errors.url?.message}
           required
@@ -96,16 +109,38 @@ const AddFileLinkModal: React.FC<AddFileLinkModalProps> = ({
             name="url"
             control={control}
             render={({ field }) => (
-              <Input {...field} placeholder="https://example.com/file.pdf" size="large" />
+              <Input
+                {...field}
+                placeholder="https://example.com/file.pdf"
+                size="large"
+              />
             )}
           />
         </Form.Item>
 
-        <div style={{ display: "flex", justifyContent: "flex-end", gap: 12, marginTop: 32 }}>
-          <Button onClick={onClose} disabled={loading} size="large" style={{ borderRadius: 6 }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            gap: 12,
+            marginTop: 32,
+          }}
+        >
+          <Button
+            onClick={onClose}
+            disabled={loading}
+            size="large"
+            style={{ borderRadius: 6 }}
+          >
             Cancel
           </Button>
-          <Button type="primary" htmlType="submit" loading={loading} size="large" style={{ borderRadius: 6, fontWeight: 500 }}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={loading}
+            size="large"
+            style={{ borderRadius: 6, fontWeight: 500 }}
+          >
             Add File
           </Button>
         </div>

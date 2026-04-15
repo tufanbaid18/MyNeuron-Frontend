@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { Modal, Form, Input, Button, message } from "antd";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createFolderSchema, type CreateFolderForm } from "../../validations/bookshelf/bookshelf.schemas";
+import {
+  createFolderSchema,
+  type CreateFolderForm,
+} from "../../validations/bookshelf/bookshelf.schemas";
 import { createFolder } from "../../services/bookshelf/bookshelf.service";
 
 type CreateFolderModalProps = {
@@ -59,7 +62,7 @@ const CreateFolderModal: React.FC<CreateFolderModalProps> = ({
         onClose();
       }}
       footer={null}
-      destroyOnClose
+      destroyOnHidden
     >
       <Form layout="vertical" onFinish={handleSubmit(onSubmit)}>
         <Form.Item
@@ -71,11 +74,7 @@ const CreateFolderModal: React.FC<CreateFolderModalProps> = ({
             name="name"
             control={control}
             render={({ field }) => (
-              <Input
-                {...field}
-                placeholder="Enter folder name"
-                autoFocus
-              />
+              <Input {...field} placeholder="Enter folder name" autoFocus />
             )}
           />
         </Form.Item>

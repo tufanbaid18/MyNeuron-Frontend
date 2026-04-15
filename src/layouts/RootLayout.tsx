@@ -17,7 +17,7 @@ const RootLayout = () => {
   const { pathname } = useLocation();
 
   const hideSidebar = useMemo(() => {
-    return pathname.includes("/impulse/feed") || pathname.includes("/inbox");
+    return pathname.includes("/impulse") || pathname.includes("/inbox");
   }, [pathname]);
 
   return (

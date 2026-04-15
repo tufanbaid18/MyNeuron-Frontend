@@ -25,4 +25,6 @@ export const APP_ROUTES = {
   GATC_REGISTRATION: "/gatc/registration",
   GATC_VIRTUAL_PASS: "/public/gatc/virtual-pass",
   INBOX: "/inbox",
+  MY_ACTIVITY: "/impulse/my-activity",
+  
 };
