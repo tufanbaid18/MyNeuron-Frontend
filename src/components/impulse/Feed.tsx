@@ -70,7 +70,7 @@ const Feed = ({ user }: FeedProps) => {
 
   if (isLoading || isFetching) return <Loading />;
   if (error) return <ErrorComponent />;
-  if (data && data.length === 0) return <NoData title="No posts found" />;
+  // if (data && data.length === 0) return <NoData title="No posts found" />;
 
   return (
     <>
@@ -84,7 +84,13 @@ const Feed = ({ user }: FeedProps) => {
         }}
         user={user}
       />
-      <div ref={containerRef} className="flex flex-col gap-4 my-5 items-center w-full">
+
+      {data && data.length === 0 && <NoData title="No post found" />}
+
+      <div
+        ref={containerRef}
+        className="flex flex-col gap-4 my-5 items-center w-full"
+      >
         {data?.map((post) => (
           <PostCard
             key={post.created_at + post.id}
