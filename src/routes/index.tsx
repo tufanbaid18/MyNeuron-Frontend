@@ -43,6 +43,7 @@ import {
   privacyPolicyRoute,
   productsInfoRoute,
   publicRoute,
+  publicUserRoute,
   termsAndConditionsRoute,
 } from "./public.routes";
 import { userIndexRoute, userProfileRoute, userRootRoute } from "./user.routes";
@@ -93,6 +94,7 @@ export const routeTree = rootRoute.addChildren([
     termsAndConditionsRoute,
     privacyPolicyRoute,
     gatcVirtualPassRoute,
+    publicUserRoute,
   ]),
 ]);
 

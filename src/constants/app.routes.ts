@@ -26,5 +26,5 @@ export const APP_ROUTES = {
   GATC_VIRTUAL_PASS: "/public/gatc/virtual-pass",
   INBOX: "/inbox",
   MY_ACTIVITY: "/impulse/my-activity",
-  
+  PUBLIC_USER: "/public/user/$userId",
 };

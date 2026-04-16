@@ -2,7 +2,13 @@ import { useNavigate } from "@tanstack/react-router";
 import { Button, Input, Popover } from "antd";
 import { Header } from "antd/es/layout/layout";
 import { useAtomValue } from "jotai";
-import { useState, type Dispatch, type SetStateAction } from "react";
+import {
+  useState,
+  type Dispatch,
+  type SetStateAction,
+  useRef,
+  useEffect,
+} from "react";
 import {
   BiArrowBack,
   BiGridAlt,
@@ -17,6 +23,10 @@ import { useConversations } from "../../hooks/inbox/useInbox";
 import { userProfileAtom } from "../../store/auth.store";
 import { NotificationBell } from "../notifications/NotificationBell";
 import HeaderProfile from "./HeaderProfile";
+import { useUserSearch } from "../../hooks/user/useUserProfile";
+import { useDebounce } from "../../hooks/useDebounce";
+import UserSearchDropdown from "../ui/UserSearchDropdown";
+import type { UserProfile } from "../../types/user/user.types";
 
 const RootHeader = ({
   setSidebarVisible,
@@ -25,6 +35,27 @@ const RootHeader = ({
 }) => {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [navPopoverOpen, setNavPopoverOpen] = useState(false);
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showSearchResults, setShowSearchResults] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+  const debouncedSearchQuery = useDebounce(searchQuery, 400);
+  const { data: searchedUserList = [], isLoading: isSearching } =
+    useUserSearch(debouncedSearchQuery);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(event.target as Node)
+      ) {
+        setShowSearchResults(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const user = useAtomValue(userProfileAtom);
   const navigate = useNavigate();
 
@@ -32,7 +63,9 @@ const RootHeader = ({
   const hasUnread = notifications.some((n) => !n.read);
 
   const { data: conversations = [] } = useConversations();
-  const unreadConversations = conversations.filter((c) => c.unread_count > 0).length;
+  const unreadConversations = conversations.filter(
+    (c) => c.unread_count > 0,
+  ).length;
 
   const navItems = [
     { label: "Home", icon: <GoHome />, route: APP_ROUTES.PLASMA },
@@ -43,6 +76,15 @@ const RootHeader = ({
   const handleNavClick = (route: string) => {
     setNavPopoverOpen(false);
     navigate({ to: route });
+  };
+
+  const handleSearchedUserClick = (user: UserProfile) => {
+    navigate({
+      to: APP_ROUTES.PUBLIC_USER,
+      params: { userId: user.id.toString() },
+    });
+    setShowSearchResults(false);
+    setSearchQuery("");
   };
 
   const navIconBtn =
@@ -74,7 +116,8 @@ const RootHeader = ({
 
       {/* Center: search */}
       <div
-        className={`flex-1 mx-2 sm:max-w-sm gap-2 items-center ${
+        ref={searchRef}
+        className={`flex-1 mx-2 sm:max-w-sm gap-2 items-center relative ${
           mobileSearchOpen ? "flex" : "hidden sm:flex"
         }`}
       >
@@ -89,11 +132,24 @@ const RootHeader = ({
         <Input
           size="large"
           placeholder="Search users"
+          value={searchQuery}
+          onChange={(e) => {
+            setSearchQuery(e.target.value);
+            setShowSearchResults(true);
+          }}
+          onFocus={() => setShowSearchResults(true)}
           prefix={<FiSearch />}
           autoFocus={mobileSearchOpen}
-          onBlur={() => setMobileSearchOpen(false)}
           className="w-full"
         />
+
+        {showSearchResults && searchQuery.trim().length > 0 && (
+          <UserSearchDropdown
+            isSearching={isSearching}
+            searchedUserList={searchedUserList}
+            onUserClick={handleSearchedUserClick}
+          />
+        )}
       </div>
 
       {/* Right: actions + profile */}

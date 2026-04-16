@@ -94,3 +94,8 @@ export const uploadProfileImage = async (formData: FormData) => {
   });
   return res.data;
 };
+
+export const publicUserSearch = async (query: string) => {
+  const res = await axiosInstance.get(API_ROUTES.USER_SEARCH(query));
+  return res.data;
+};

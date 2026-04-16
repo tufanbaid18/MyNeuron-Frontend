@@ -8,6 +8,7 @@ import ConsultancyInfo from "../components/public/CosultancyInfo";
 import EventsInfo from "../components/public/EventsInfo";
 import PrivacyPolicy from "../components/public/PrivacyPolicy";
 import ProductInfo from "../components/public/ProductInfo";
+import PublicUserInfo from "../components/public/PublicUserInfo";
 import TermsConditions from "../components/public/TermConditions";
 import VirtualPassVerification from "../pages/GATC/VirtualPassVerification";
 
@@ -56,4 +57,10 @@ export const gatcVirtualPassRoute = createRoute({
   }),
   path: ROUTER_ROUTES.GATC_VIRTUAL_PASS,
   component: () => <VirtualPassVerification />,
+});
+
+export const publicUserRoute = createRoute({
+  getParentRoute: () => publicRoute,
+  path: ROUTER_ROUTES.PUBLIC_USER,
+  component: () => <PublicUserInfo />,
 });
