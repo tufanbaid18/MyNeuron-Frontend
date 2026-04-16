@@ -28,5 +28,6 @@ export const ROUTER_ROUTES = {
   PROFILE: "profile",
   VERIFY_EMAIL: "/verify-email",
   INBOX: "inbox",
-  ACTIVITY:"my-activity"
+  ACTIVITY: "my-activity",
+  POST_DETAILS: "$postId",
 };

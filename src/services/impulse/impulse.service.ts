@@ -122,3 +122,8 @@ export const getNews = async () => {
   const response = await axiosInstance.get(API_ROUTES.NEWS);
   return response.data;
 };
+
+export const getPostDetails = async (postId: number) => {
+  const response = await axiosInstance.get(API_ROUTES.POST_BY_ID(postId));
+  return response.data;
+};
