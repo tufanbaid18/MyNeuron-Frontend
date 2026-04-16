@@ -118,7 +118,7 @@ export const PostCard = ({
   return (
     <>
       <Card
-        className="w-full!"
+        style={{ width: "100%", overflow: "hidden" }}
         styles={{ body: { padding: 0 } }}
         data-post-id={post.id}
       >

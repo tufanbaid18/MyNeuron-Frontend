@@ -9,12 +9,18 @@ interface MediaItemProps {
 const MediaItem = ({ item }: MediaItemProps) => {
   if (item.is_video) {
     return (
-      <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
+      <div style={{ position: "relative", width: "100%", paddingTop: "56.25%" }}>
         <video
           src={item.file_url}
           controls
-          className="absolute inset-0 w-full h-full object-cover"
           preload="metadata"
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+          }}
         />
       </div>
     );
@@ -24,7 +30,7 @@ const MediaItem = ({ item }: MediaItemProps) => {
     <Image
       src={item.file_url}
       alt="Post media"
-      className="w-full max-h-[500px] object-cover"
+      style={{ width: "100%", maxHeight: 500, objectFit: "cover", display: "block" }}
       preview={false}
       loading="lazy"
     />
@@ -42,7 +48,7 @@ export const PostMedia = ({ media }: MediaGridProps) => {
 
   if (count === 1) {
     return (
-      <div className="relative w-full mt-3">
+      <div style={{ position: "relative", width: "100%", marginTop: 12 }}>
         <MediaItem item={media[0]} />
       </div>
     );
@@ -50,7 +56,14 @@ export const PostMedia = ({ media }: MediaGridProps) => {
 
   if (count === 2) {
     return (
-      <div className="grid grid-cols-2 gap-0.5 mt-3">
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 2,
+          marginTop: 12,
+        }}
+      >
         {media.map((item) => (
           <MediaItem key={item.id} item={item} />
         ))}
@@ -60,9 +73,16 @@ export const PostMedia = ({ media }: MediaGridProps) => {
 
   if (count === 3) {
     return (
-      <div className="grid grid-cols-2 gap-0.5 mt-3">
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 2,
+          marginTop: 12,
+        }}
+      >
         <MediaItem item={media[0]} />
-        <div className="grid grid-rows-2 gap-0.5">
+        <div style={{ display: "grid", gridTemplateRows: "1fr 1fr", gap: 2 }}>
           {[1, 2].map((idx) => (
             <MediaItem key={media[idx].id} item={media[idx]} />
           ))}
@@ -76,13 +96,37 @@ export const PostMedia = ({ media }: MediaGridProps) => {
   const hasMore = count > visibleCount;
 
   return (
-    <div className="grid grid-cols-2 gap-0.5 mt-3">
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        gap: 2,
+        marginTop: 12,
+      }}
+    >
       {media.slice(0, visibleCount).map((item, idx) => (
-        <div key={item.id} className="relative">
+        <div key={item.id} style={{ position: "relative" }}>
           <MediaItem item={item} />
           {idx === 3 && hasMore && (
-            <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-              <span className="text-white text-2xl font-semibold">+{count - visibleCount}</span>
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                background: "rgba(0,0,0,0.5)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <span
+                style={{
+                  color: "#fff",
+                  fontSize: 24,
+                  fontWeight: 600,
+                }}
+              >
+                +{count - visibleCount}
+              </span>
             </div>
           )}
         </div>

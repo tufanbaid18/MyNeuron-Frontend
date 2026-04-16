@@ -1,5 +1,8 @@
+import { Tooltip, Typography } from "antd";
 import { Video } from "lucide-react";
 import type { FeedLinkPreview } from "../../../types/impulse/post.types";
+
+const { Text } = Typography;
 
 interface LinkPreviewProps {
   linkPreview: FeedLinkPreview;
@@ -8,11 +11,23 @@ interface LinkPreviewProps {
 export const LinkPreview = ({ linkPreview }: LinkPreviewProps) => {
   if (linkPreview.type === "youtube" && linkPreview.embed_url) {
     return (
-      <div className="relative w-full mt-3">
-        <div className="relative bg-black" style={{ paddingTop: "56.25%" }}>
+      <div style={{ position: "relative", width: "100%", marginTop: 12 }}>
+        <div
+          style={{
+            position: "relative",
+            background: "#000",
+            paddingTop: "56.25%",
+          }}
+        >
           <iframe
             src={linkPreview.embed_url}
-            className="absolute inset-0 w-full h-full"
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              border: "none",
+            }}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
             title="YouTube video"
@@ -28,14 +43,54 @@ export const LinkPreview = ({ linkPreview }: LinkPreviewProps) => {
       href={linkPreview.watch_url}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center gap-3 p-3 mt-3 border rounded-lg hover:bg-gray-50 transition-colors"
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 12,
+        padding: 12,
+        marginTop: 12,
+        border: "1px solid #e5e7eb",
+        borderRadius: 8,
+        textDecoration: "none",
+        transition: "background 0.2s",
+      }}
     >
-      <div className="w-12 h-12 bg-blue-50 rounded flex items-center justify-center shrink-0">
-        <Video className="w-5 h-5 text-blue-500" />
+      <div
+        style={{
+          width: 48,
+          height: 48,
+          background: "#eff6ff",
+          borderRadius: 8,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexShrink: 0,
+          aspectRatio: "1 / 1",
+        }}
+      >
+        <Video style={{ width: 20, height: 20, color: "#3b82f6" }} />
       </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium truncate">{linkPreview.watch_url}</p>
-        <p className="text-xs text-gray-500 truncate">Video</p>
+      <div style={{ flex: 1, minWidth: 0, overflow: "hidden" }}>
+        <Tooltip title={linkPreview.watch_url}>
+          <Text
+            ellipsis
+            style={{
+              display: "block",
+              fontSize: 13,
+              fontWeight: 500,
+              maxWidth: "100%",
+            }}
+          >
+            {linkPreview.watch_url}
+          </Text>
+        </Tooltip>
+        <Text
+          type="secondary"
+          ellipsis
+          style={{ display: "block", fontSize: 12 }}
+        >
+          Video
+        </Text>
       </div>
     </a>
   );

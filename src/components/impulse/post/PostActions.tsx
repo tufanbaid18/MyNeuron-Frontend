@@ -62,90 +62,165 @@ export const PostActions = ({
     }
   };
 
+  const iconSize = { width: 18, height: 18, flexShrink: 0 };
+
   return (
     <div>
-      <div className="flex items-center justify-between px-4 py-2 border-t border-gray-100">
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "6px 8px",
+          borderTop: "1px solid #f3f4f6",
+          gap: 4,
+          flexWrap: "nowrap",
+        }}
+      >
         {/* Like + count */}
         <Button
           type="text"
           loading={isLoading}
           onClick={onLike}
-          className="w-full flex justify-center items-center"
+          style={{
+            flex: 1,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 4,
+            minWidth: 0,
+            padding: "4px 6px",
+          }}
         >
           <ThumbsUp
-            className={`w-5 h-5 ${isLiked ? "fill-blue-500 text-blue-500" : "text-gray-500"}`}
+            style={{
+              ...iconSize,
+              fill: isLiked ? "#3b82f6" : "none",
+              color: isLiked ? "#3b82f6" : "#6b7280",
+            }}
           />
           {likeCount > 0 && (
             <span
-              className={`text-xs mt-0.5 ${isLiked ? "text-blue-500" : "text-gray-500"}`}
+              style={{
+                fontSize: 12,
+                color: isLiked ? "#3b82f6" : "#6b7280",
+                whiteSpace: "nowrap",
+              }}
             >
               {formatCount(likeCount)}
             </span>
           )}
         </Button>
-        <Divider orientation="vertical" />
+        <Divider type="vertical" style={{ margin: "0 2px" }} />
 
         {/* Comment + count */}
         <Button
           type="text"
           onClick={handleCommentClick}
-          className="w-full flex justify-center items-center"
+          style={{
+            flex: 1,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 4,
+            minWidth: 0,
+            padding: "4px 6px",
+          }}
         >
           <MessageCircle
-            className={`w-5 h-5 ${showCommentInput ? "text-blue-500" : "text-gray-500"}`}
+            style={{
+              ...iconSize,
+              color: showCommentInput ? "#3b82f6" : "#6b7280",
+            }}
           />
           {commentCount > 0 && (
             <span
-              className={`text-xs mt-0.5 ${showCommentInput ? "text-blue-500" : "text-gray-500"}`}
+              style={{
+                fontSize: 12,
+                color: showCommentInput ? "#3b82f6" : "#6b7280",
+                whiteSpace: "nowrap",
+              }}
             >
               {formatCount(commentCount)}
             </span>
           )}
         </Button>
-        <Divider orientation="vertical" />
+        <Divider type="vertical" style={{ margin: "0 2px" }} />
 
         {/* Bookmark + count */}
         <Button
           type="text"
           loading={isLoading}
           onClick={onBookmark}
-          className="w-full flex justify-center items-center"
+          style={{
+            flex: 1,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 4,
+            minWidth: 0,
+            padding: "4px 6px",
+          }}
         >
           {isBookmarked ? (
-            <BookmarkCheck className="w-5 h-5 text-blue-500 fill-blue-500" />
+            <BookmarkCheck
+              style={{
+                ...iconSize,
+                color: "#3b82f6",
+                fill: "#3b82f6",
+              }}
+            />
           ) : (
-            <Bookmark className="w-5 h-5 text-gray-500" />
+            <Bookmark style={{ ...iconSize, color: "#6b7280" }} />
           )}
           {bookmarkCount > 0 && (
             <span
-              className={`text-xs mt-0.5 ${isBookmarked ? "text-blue-500" : "text-gray-500"}`}
+              style={{
+                fontSize: 12,
+                color: isBookmarked ? "#3b82f6" : "#6b7280",
+                whiteSpace: "nowrap",
+              }}
             >
               {formatCount(bookmarkCount)}
             </span>
           )}
         </Button>
-        <Divider orientation="vertical" />
+        <Divider type="vertical" style={{ margin: "0 2px" }} />
 
         {/* Share */}
         <Button
           type="text"
           onClick={onShare}
-          className="w-full flex justify-center items-center"
+          style={{
+            flex: 1,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minWidth: 0,
+            padding: "4px 6px",
+          }}
         >
-          <Share2 className="w-5 h-5 text-gray-500" />
+          <Share2 style={{ ...iconSize, color: "#6b7280" }} />
         </Button>
       </div>
 
       {/* Comment input */}
       {showCommentInput && (
-        <div className="flex items-start gap-2 px-4 pb-3">
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-start",
+            gap: 8,
+            padding: "8px 16px 12px",
+          }}
+        >
           <TextArea
             value={commentText}
             onChange={(e) => setCommentText(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Write a comment..."
             autoSize={{ minRows: 1, maxRows: 4 }}
-            className="flex-1"
+            style={{ flex: 1 }}
           />
           <Button
             type="primary"

@@ -1,4 +1,4 @@
-import { Modal, Tabs, Button } from "antd";
+import { Avatar, Modal, Tabs, Button, Typography, Tooltip } from "antd";
 import { HiPaperAirplane } from "react-icons/hi2";
 import type { UploadFile } from "antd";
 import type { UserProfile } from "../../../types/user/user.types";
@@ -6,6 +6,8 @@ import { PostTab } from "./PostTab";
 import { ImageTab } from "./ImageTab";
 import { VideoTab } from "./VideoTab";
 import { ArticleTab } from "./ArticleTab";
+
+const { Text } = Typography;
 
 interface CreatePostModalProps {
   open: boolean;
@@ -53,13 +55,28 @@ export const CreatePostModal = ({
   onSubmit,
   onClose,
 }: CreatePostModalProps) => {
+  const fullName = `${user?.first_name ?? ""} ${user?.last_name ?? ""}`.trim();
+
   const userAvatar = user?.profile_image ? (
-    <img src={user.profile_image} alt="" className="w-12 h-12 rounded-full" />
+    <Avatar
+      src={user.profile_image}
+      size={44}
+      style={{ flexShrink: 0, aspectRatio: "1 / 1" }}
+    />
   ) : (
-    <div className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-semibold">
+    <Avatar
+      size={44}
+      className="bg-primary"
+      style={{
+        flexShrink: 0,
+        aspectRatio: "1 / 1",
+        color: "#fff",
+        fontWeight: 600,
+      }}
+    >
       {user?.first_name?.[0]}
       {user?.last_name?.[0]}
-    </div>
+    </Avatar>
   );
 
   const handleClose = () => {
@@ -125,22 +142,44 @@ export const CreatePostModal = ({
         open={open}
         onCancel={handleClose}
         footer={null}
-        width={680}
+        width="90vw"
+        style={{ maxWidth: 680 }}
         centered
         title={
-          <span className="text-lg font-semibold">
+          <Text strong style={{ fontSize: 17 }}>
             {isEditMode ? "Edit Post" : "Create Post"}
-          </span>
+          </Text>
         }
         destroyOnClose
       >
-        <div className="flex items-center gap-3 mb-4">
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+            marginBottom: 16,
+          }}
+        >
           {userAvatar}
-          <div>
-            <p className="font-semibold">
-              {user?.first_name} {user?.last_name}
-            </p>
-            <p className="text-sm text-gray-500">{user?.email}</p>
+          <div style={{ minWidth: 0, flex: 1, overflow: "hidden" }}>
+            <Tooltip title={fullName}>
+              <Text
+                strong
+                ellipsis
+                style={{ display: "block", maxWidth: "100%" }}
+              >
+                {fullName}
+              </Text>
+            </Tooltip>
+            <Tooltip title={user?.email}>
+              <Text
+                type="secondary"
+                ellipsis
+                style={{ display: "block", maxWidth: "100%", fontSize: 13 }}
+              >
+                {user?.email}
+              </Text>
+            </Tooltip>
           </div>
         </div>
 
@@ -149,7 +188,8 @@ export const CreatePostModal = ({
         {/* OG Preview */}
         {ogPreview && (
           <div
-            className="mt-3 og-preview"
+            style={{ marginTop: 12 }}
+            className="og-preview"
             dangerouslySetInnerHTML={{ __html: ogPreview }}
           />
         )}
@@ -171,11 +211,19 @@ export const CreatePostModal = ({
         />
 
         {/* Footer */}
-        <div className="flex justify-end mt-4 gap-2">
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginTop: 16,
+            gap: 8,
+            flexWrap: "wrap",
+          }}
+        >
           <Button onClick={handleClose}>Cancel</Button>
           <Button
             type="primary"
-            icon={<HiPaperAirplane className="w-4 h-4" />}
+            icon={<HiPaperAirplane style={{ width: 16, height: 16 }} />}
             loading={isLoading}
             disabled={isEmpty}
             onClick={onSubmit}

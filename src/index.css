@@ -88,3 +88,29 @@ button {
 ::-webkit-scrollbar-corner {
   background: transparent;
 }
+
+/* ── Avatar Protection: prevent ovals on all screen sizes ── */
+.ant-avatar {
+  aspect-ratio: 1 / 1 !important;
+  flex-shrink: 0 !important;
+  overflow: hidden !important;
+}
+
+.ant-avatar > img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  aspect-ratio: 1 / 1 !important;
+}
+
+/* ── Impulse Feed responsive helpers ── */
+.ant-card {
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.ant-card-body {
+  overflow: hidden;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}

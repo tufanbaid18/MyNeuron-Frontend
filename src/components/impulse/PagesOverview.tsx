@@ -1,5 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
-import { Button, Card, Typography } from "antd";
+import { Button, Card, Tooltip, Typography } from "antd";
 import { ChevronRight } from "lucide-react";
 import { useMemo } from "react";
 import { APP_ROUTES } from "../../constants/app.routes";
@@ -10,6 +10,8 @@ import {
   PageOverviewTypes,
 } from "../../types/impulse/page.types";
 import ErrorComponent from "../ui/ErrorComponent";
+
+const { Text } = Typography;
 
 const PagesOverview = () => {
   const { data, isLoading, isFetching, error } = usePagesOverview();
@@ -31,34 +33,86 @@ const PagesOverview = () => {
 
   return (
     <Card>
-      <div className="w-full flex justify-between items-center ">
-        <Typography className="font-semibold">Pages</Typography>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Text strong>Pages</Text>
         <Button
-          className="border-none!  p-0! m-0!"
+          type="text"
+          size="small"
           title="View all activity"
+          icon={<ChevronRight style={{ width: 18, height: 18 }} />}
           onClick={() =>
             handleOnClickViewAll({ type: PageOverviewTypes.MY_PAGES })
           }
-        >
-          <ChevronRight />
-        </Button>
+          style={{ padding: 0 }}
+        />
       </div>
       <div>
         {error ? (
           <ErrorComponent />
         ) : (
-          <div className="flex flex-col items-stretch">
+          <div style={{ display: "flex", flexDirection: "column" }}>
             {pages.map((item: PageOverviewItem, index: number) => (
               <div
                 key={index}
-                className="flex justify-between rounded-lg items-center p-3 cursor-pointer hover:bg-gray-100"
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: "10px 12px",
+                  borderRadius: 8,
+                  cursor: "pointer",
+                  gap: 8,
+                  minWidth: 0,
+                }}
+                className="hover:bg-gray-100"
                 onClick={() => handleOnClickViewAll({ type: item.type })}
               >
-                <div className="flex gap-2 justify-center items-center">
-                  <Typography className="text-primary!">{item.icon}</Typography>
-                  <Typography>{item.heading}</Typography>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: 8,
+                    alignItems: "center",
+                    minWidth: 0,
+                    flex: 1,
+                    overflow: "hidden",
+                  }}
+                >
+                  <span
+                    style={{
+                      flexShrink: 0,
+                      color: "var(--primary)",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    {item.icon}
+                  </span>
+                  <Tooltip title={item.heading}>
+                    <Text
+                      ellipsis
+                      style={{
+                        display: "block",
+                        minWidth: 0,
+                        flex: 1,
+                        fontSize: 14,
+                      }}
+                    >
+                      {item.heading}
+                    </Text>
+                  </Tooltip>
                 </div>
-                <Typography>{item.data}</Typography>
+                <Text
+                  style={{ flexShrink: 0, fontWeight: 500, fontSize: 14 }}
+                >
+                  {item.data}
+                </Text>
               </div>
             ))}
           </div>

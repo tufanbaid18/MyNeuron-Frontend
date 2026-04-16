@@ -15,9 +15,22 @@ export const CreatePostTrigger = ({
   onTabChange,
 }: CreatePostTriggerProps) => {
   const userAvatar = user?.profile_image ? (
-    <Avatar src={user.profile_image} size={48} />
+    <Avatar
+      src={user.profile_image}
+      size={44}
+      style={{ flexShrink: 0, aspectRatio: "1 / 1" }}
+    />
   ) : (
-    <Avatar size={48} className="bg-primary text-white font-semibold">
+    <Avatar
+      size={44}
+      className="bg-primary"
+      style={{
+        flexShrink: 0,
+        aspectRatio: "1 / 1",
+        color: "#fff",
+        fontWeight: 600,
+      }}
+    >
       {user?.first_name?.[0]}
       {user?.last_name?.[0]}
     </Avatar>
@@ -25,19 +38,35 @@ export const CreatePostTrigger = ({
 
   return (
     <Card
-      className="mb-3 cursor-pointer hover:border-primary transition-colors"
+      hoverable
+      style={{ marginBottom: 12, cursor: "pointer" }}
       onClick={onOpen}
     >
-      <div className="flex items-center gap-3">
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 12,
+        }}
+      >
         {userAvatar}
         <Input
           readOnly
           placeholder="Start a post"
-          className="rounded-full cursor-pointer"
+          style={{ borderRadius: 9999, cursor: "pointer" }}
           onClick={onOpen}
         />
       </div>
-      <div className="flex justify-around mt-3 px-2">
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-around",
+          marginTop: 12,
+          padding: "0 8px",
+          gap: 8,
+          flexWrap: "wrap",
+        }}
+      >
         <button
           type="button"
           onClick={(e) => {
@@ -45,9 +74,26 @@ export const CreatePostTrigger = ({
             onTabChange("image");
             onOpen();
           }}
-          className="p-3 rounded-full bg-gray-200 flex justify-center items-center"
+          style={{
+            padding: 10,
+            borderRadius: "50%",
+            backgroundColor: "#e5e7eb",
+            border: "none",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            cursor: "pointer",
+            flexShrink: 0,
+          }}
         >
-          <Image className="w-8 h-8 text-primary" />
+          <Image
+            style={{
+              width: 24,
+              height: 24,
+              color: "var(--primary)",
+              flexShrink: 0,
+            }}
+          />
         </button>
         <button
           type="button"
@@ -56,9 +102,26 @@ export const CreatePostTrigger = ({
             onTabChange("video");
             onOpen();
           }}
-          className="p-3 rounded-full bg-gray-200 flex justify-center items-center"
+          style={{
+            padding: 10,
+            borderRadius: "50%",
+            backgroundColor: "#e5e7eb",
+            border: "none",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            cursor: "pointer",
+            flexShrink: 0,
+          }}
         >
-          <Video className="w-8 h-8 text-[#dc3545]" />
+          <Video
+            style={{
+              width: 24,
+              height: 24,
+              color: "#dc3545",
+              flexShrink: 0,
+            }}
+          />
         </button>
         <button
           type="button"
@@ -67,9 +130,26 @@ export const CreatePostTrigger = ({
             onTabChange("article");
             onOpen();
           }}
-          className="p-3 rounded-full bg-gray-200 flex justify-center items-center"
+          style={{
+            padding: 10,
+            borderRadius: "50%",
+            backgroundColor: "#e5e7eb",
+            border: "none",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            cursor: "pointer",
+            flexShrink: 0,
+          }}
         >
-          <RiArticleLine className="w-8 h-8 text-[#ffc117]" />
+          <RiArticleLine
+            style={{
+              width: 24,
+              height: 24,
+              color: "#ffc117",
+              flexShrink: 0,
+            }}
+          />
         </button>
       </div>
     </Card>

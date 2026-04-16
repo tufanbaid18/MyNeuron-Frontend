@@ -15,7 +15,12 @@ export const OgPreview = ({ content, hasLinkPreview }: OgPreviewProps) => {
 
   return (
     <div
-      className="mt-3 rounded-lg overflow-hidden border"
+      style={{
+        marginTop: 12,
+        borderRadius: 8,
+        overflow: "hidden",
+        border: "1px solid #e5e7eb",
+      }}
       dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(ogHtml) }}
     />
   );

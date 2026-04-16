@@ -17,7 +17,7 @@ const Feed = ({ user }: FeedProps) => {
   const { data, isFetching, isLoading, error, dataUpdatedAt } = useFeedPosts();
   const queryClient = useQueryClient();
   const containerRef = useRef<HTMLDivElement>(null);
-  const scroll记忆Ref = useRef<{ postId: number | null; offset: number }>({
+  const scroll記憶Ref = useRef<{ postId: number | null; offset: number }>({
     postId: null,
     offset: 0,
   });
@@ -35,7 +35,7 @@ const Feed = ({ user }: FeedProps) => {
     const container = containerRef.current;
     if (!container) return;
 
-    const { postId, offset } = scroll记忆Ref.current;
+    const { postId, offset } = scroll記憶Ref.current;
     if (postId !== null) {
       const el = container.querySelector(`[data-post-id="${postId}"]`);
       if (el) {
@@ -46,7 +46,7 @@ const Feed = ({ user }: FeedProps) => {
       } else {
         window.scrollTo({ top: 0, behavior: "instant" });
       }
-      scroll记忆Ref.current = { postId: null, offset: 0 };
+      scroll記憶Ref.current = { postId: null, offset: 0 };
     }
 
     lastFetchTimeRef.current = dataUpdatedAt;
@@ -58,12 +58,12 @@ const Feed = ({ user }: FeedProps) => {
     if (firstVisible) {
       const rect = firstVisible.getBoundingClientRect();
       const firstId = Number(firstVisible.getAttribute("data-post-id"));
-      scroll记忆Ref.current = {
+      scroll記憶Ref.current = {
         postId: firstId,
         offset: window.scrollY - rect.top,
       };
     } else {
-      scroll记忆Ref.current = { postId: null, offset: 0 };
+      scroll記憶Ref.current = { postId: null, offset: 0 };
     }
     queryClient.invalidateQueries({ queryKey: ["get-feed-posts"] });
   };
@@ -89,7 +89,15 @@ const Feed = ({ user }: FeedProps) => {
 
       <div
         ref={containerRef}
-        className="flex flex-col gap-4 my-5 items-center w-full"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 16,
+          marginTop: 20,
+          marginBottom: 20,
+          alignItems: "center",
+          width: "100%",
+        }}
       >
         {data?.map((post) => (
           <PostCard

@@ -1,5 +1,7 @@
-import { Avatar, Card } from "antd";
+import { Avatar, Card, Typography } from "antd";
 import type { FeedNewsItem } from "../../types/impulse/news.types";
+
+const { Paragraph, Text } = Typography;
 
 type FeedNewsCardProps = {
   item: FeedNewsItem;
@@ -11,33 +13,44 @@ function FeedNewsCard({ item, onClick }: FeedNewsCardProps) {
     <Card
       onClick={() => onClick(item.link)}
       key={item.title}
-      bodyStyle={{ padding: "12px" }}
-      className="
-            bg-gray-50
-              cursor-pointer 
-              transition-all duration-200
-              hover:shadow-md 
-              dark:hover:shadow-gray-800
-              dark:bg-neutral-900
-              border border-gray-200 dark:border-neutral-800
-            "
+      styles={{ body: { padding: 12 } }}
+      style={{
+        cursor: "pointer",
+        transition: "all 0.2s",
+        border: "1px solid #e5e7eb",
+        background: "#fafafa",
+      }}
+      hoverable
     >
-      {/* THIS is the actual flex container */}
-      <div className="flex items-center gap-3">
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 12,
+        }}
+      >
         <Avatar
           src={item.thumbnail}
           shape="square"
           size={48}
-          className="shrink-0"
+          style={{ flexShrink: 0, aspectRatio: "1 / 1" }}
         />
 
-        <div className="min-w-0">
-          <p className="font-semibold text-sm line-clamp-2 text-gray-900 dark:text-gray-100">
+        <div style={{ minWidth: 0, flex: 1, overflow: "hidden" }}>
+          <Paragraph
+            ellipsis={{ rows: 2, tooltip: item.title }}
+            strong
+            style={{
+              fontSize: 13,
+              color: "#1a1a1a",
+              marginBottom: 0,
+            }}
+          >
             {item.title}
-          </p>
-          <span className="text-xs text-gray-500 dark:text-gray-400">
+          </Paragraph>
+          <Text type="secondary" style={{ fontSize: 12, display: "block" }}>
             {item.source}
-          </span>
+          </Text>
         </div>
       </div>
     </Card>

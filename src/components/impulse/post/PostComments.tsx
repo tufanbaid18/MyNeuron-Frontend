@@ -1,4 +1,4 @@
-import { Avatar, Button, Input } from "antd";
+import { Avatar, Button, Input, Typography } from "antd";
 import { Send } from "lucide-react";
 import { useRef, useState } from "react";
 import { IMPULSE_CONSTANTS } from "../../../constants/impulse.constants";
@@ -6,6 +6,7 @@ import type { FeedPostComment } from "../../../types/impulse/post.types";
 import { formatTimeAgo } from "../../../utils/impulse.utils";
 
 const { TextArea } = Input;
+const { Text } = Typography;
 
 interface PostCommentsProps {
   comments: FeedPostComment[];
@@ -51,34 +52,71 @@ export const PostComments = ({
   };
 
   return (
-    <div className="px-4 py-3 border-t border-gray-100 bg-gray-50/50">
+    <div
+      style={{
+        padding: "12px 16px",
+        borderTop: "1px solid #f3f4f6",
+        background: "rgba(249,250,251,0.5)",
+      }}
+    >
       {previewComments.map((comment) => (
-        <div key={comment.id} className="flex items-start gap-2 mb-2 last:mb-0">
-          <Avatar src={comment.user.profile_image_url} size={28}>
+        <div
+          key={comment.id}
+          style={{
+            display: "flex",
+            alignItems: "flex-start",
+            gap: 8,
+            marginBottom: 8,
+          }}
+        >
+          <Avatar
+            src={comment.user.profile_image_url}
+            size={28}
+            style={{ flexShrink: 0, aspectRatio: "1 / 1" }}
+          >
             {!comment.user.profile_image_url && comment.user.first_name?.[0]}
           </Avatar>
-          <div className="flex-1 bg-white p-2 rounded-lg border border-gray-100">
-            <p className="text-sm m-0">
-              <span className="font-semibold text-gray-900">
+          <div
+            style={{
+              flex: 1,
+              minWidth: 0,
+              background: "#fff",
+              padding: 8,
+              borderRadius: 8,
+              border: "1px solid #f3f4f6",
+            }}
+          >
+            <div style={{ fontSize: 13, margin: 0, wordBreak: "break-word", overflowWrap: "break-word" }}>
+              <Text strong style={{ color: "#1a1a1a", fontSize: 13 }}>
                 {comment.user.first_name} {comment.user.last_name}
-              </span>
-              <span className="text-gray-700 ml-2">{comment.c_content}</span>
-            </p>
-            <div className="flex items-center gap-3 mt-1 text-xs text-gray-400">
+              </Text>
+              <span style={{ color: "#374151", marginLeft: 8 }}>{comment.c_content}</span>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+                marginTop: 4,
+                fontSize: 12,
+                color: "#9ca3af",
+                flexWrap: "wrap",
+              }}
+            >
               <span>{formatTimeAgo(comment.created_at)}</span>
               {comment.user.id !== userId && (
                 <>
                   <Button
                     type="link"
                     size="small"
-                    className="p-0 h-auto text-xs"
+                    style={{ padding: 0, height: "auto", fontSize: 12 }}
                   >
                     Like
                   </Button>
                   <Button
                     type="link"
                     size="small"
-                    className="p-0 h-auto text-xs"
+                    style={{ padding: 0, height: "auto", fontSize: 12 }}
                   >
                     Reply
                   </Button>
@@ -91,7 +129,14 @@ export const PostComments = ({
       {hasMore && (
         <Button
           type="link"
-          className="text-blue-500 p-0 h-auto text-sm font-medium mt-2"
+          style={{
+            color: "#3b82f6",
+            padding: 0,
+            height: "auto",
+            fontSize: 13,
+            fontWeight: 500,
+            marginTop: 8,
+          }}
         >
           View all {comments.length} comments
         </Button>
@@ -99,7 +144,14 @@ export const PostComments = ({
 
       {/* Comment input */}
       {showInput ? (
-        <div className="flex items-start gap-2 mt-3">
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-start",
+            gap: 8,
+            marginTop: 12,
+          }}
+        >
           <TextArea
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             //@ts-expect-error
@@ -109,11 +161,11 @@ export const PostComments = ({
             onKeyDown={handleKeyDown}
             placeholder="Write a comment..."
             autoSize={{ minRows: 1, maxRows: 4 }}
-            className="flex-1"
+            style={{ flex: 1 }}
           />
           <Button
             type="primary"
-            icon={<Send className="w-4 h-4" />}
+            icon={<Send style={{ width: 16, height: 16 }} />}
             loading={isAddingComment}
             onClick={handleSubmit}
             disabled={!commentText.trim()}
@@ -122,7 +174,14 @@ export const PostComments = ({
       ) : (
         <Button
           type="link"
-          className="text-gray-500 p-0 h-auto text-sm font-medium mt-2"
+          style={{
+            color: "#6b7280",
+            padding: 0,
+            height: "auto",
+            fontSize: 13,
+            fontWeight: 500,
+            marginTop: 8,
+          }}
           onClick={handleCommentClick}
         >
           Write a comment...

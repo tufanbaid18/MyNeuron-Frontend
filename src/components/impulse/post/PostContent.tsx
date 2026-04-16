@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { Typography } from "antd";
 import { sanitizePostContent } from "../../../utils/impulse.utils";
 import { IMPULSE_CONSTANTS } from "../../../constants/impulse.constants";
+
+const { Text } = Typography;
 
 interface PostContentProps {
   title?: string | null;
@@ -25,16 +28,44 @@ export const PostContent = ({
   const sanitizedContent = sanitizePostContent(displayContent || "");
 
   return (
-    <div className="px-4 pb-2">
+    <div style={{ padding: "0 16px 8px" }}>
       {title && (
-        <h3 className="text-lg font-semibold text-gray-900 mb-1">{title}</h3>
+        <Text
+          strong
+          style={{
+            display: "block",
+            fontSize: 17,
+            color: "#1a1a1a",
+            marginBottom: 4,
+            wordBreak: "break-word",
+            overflowWrap: "break-word",
+          }}
+        >
+          {title}
+        </Text>
       )}
-      <div className="text-gray-700 leading-relaxed">
+      <div
+        style={{
+          color: "#374151",
+          lineHeight: 1.6,
+          wordBreak: "break-word",
+          overflowWrap: "break-word",
+        }}
+      >
         <span dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
         {shouldTruncate && (
           <button
             onClick={() => setShowFull(!showFull)}
-            className="text-blue-500 hover:text-blue-600 text-sm font-medium ml-1"
+            style={{
+              color: "#3b82f6",
+              fontSize: 13,
+              fontWeight: 500,
+              marginLeft: 4,
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              padding: 0,
+            }}
           >
             {showFull ? "see less" : "see more"}
           </button>
