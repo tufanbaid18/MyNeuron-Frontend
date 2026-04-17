@@ -142,7 +142,7 @@ export type UserMiniProfile = {
   is_following: boolean;
 };
 
-export type FollowRequestResponse = {
+export type MyActivityUserResponse = {
   id: number;
   follower: UserMiniProfile;
   following: UserMiniProfile;

@@ -1,49 +1,47 @@
 import { Button, Modal } from "antd";
-import { useAtomValue } from "jotai";
 import React from "react";
-import { useGetMyFollowers } from "../../../hooks/user/useUserProfile";
-import { userProfileAtom } from "../../../store/auth.store";
+import { useOutgoingFollowRequests } from "../../../hooks/user/useUserProfile";
 import { MyActivityTypes } from "../../../types/impulse/feed.types";
 import type { MyActivityUserResponse } from "../../../types/user/user.types";
 import ErrorComponent from "../../ui/ErrorComponent";
-import Loading from "../../ui/Loading";
 import Followers from "./Followers";
 
-type FollowersModelProps = {
+type PendingRequestsModelProps = {
   open: boolean;
   onCancel: () => void;
 };
-const FollowersModel: React.FC<FollowersModelProps> = ({ open, onCancel }) => {
-  const user = useAtomValue(userProfileAtom);
 
-  const { data, isLoading, error } = useGetMyFollowers(user?.id ?? 0);
+const PendingRequestsModel: React.FC<PendingRequestsModelProps> = ({
+  open,
+  onCancel,
+}) => {
+  const { data, isLoading, error } = useOutgoingFollowRequests();
+  console.log("data ==========> ", data);
 
   return (
     <>
       <Modal
-        title={<p>Followers</p>}
+        title={<p>Pending Requests</p>}
         footer={
           <Button type="primary" onClick={onCancel}>
             Close
           </Button>
         }
-        loading={isLoading}
         open={open}
         onCancel={onCancel}
+        loading={isLoading}
       >
-        {isLoading ? (
-          <Loading />
-        ) : error ? (
+        {error ? (
           <ErrorComponent />
         ) : data?.length === 0 ? (
-          <p className="text-center">No followers found</p>
+          <p className="text-center">No pending requests found</p>
         ) : (
           <div className="flex flex-col gap-4">
             {data?.map((user: MyActivityUserResponse) => (
               <Followers
-                type={MyActivityTypes.FOLLOWERS}
+                type={MyActivityTypes.PENDING_REQUESTS}
                 key={user.id}
-                user={user.follower}
+                user={user.following}
               />
             ))}
           </div>
@@ -53,4 +51,4 @@ const FollowersModel: React.FC<FollowersModelProps> = ({ open, onCancel }) => {
   );
 };
 
-export default FollowersModel;
+export default PendingRequestsModel;

@@ -8,6 +8,9 @@ import {
 } from "../../types/impulse/feed.types";
 import ErrorComponent from "../ui/ErrorComponent";
 import FollowersModel from "../user/MyActivity/FollowersModel";
+import FollowingModel from "../user/MyActivity/FollowingModel";
+import FollowRequestsModel from "../user/MyActivity/FollowRequestsModel";
+import PendingRequestsModel from "../user/MyActivity/PendingRequestsModel";
 
 const { Text } = Typography;
 
@@ -23,9 +26,7 @@ const MyActivityOverview = () => {
   };
 
   const handleOnClickViewAll = ({ type }: { type: MyActivityTypes }) => {
-    // if (!type) {
-    //   type = MyActivityTypes.FOLLOW_REQUESTS;
-    // }
+    console.log("type ==========> ", type);
     setModelType(type);
     setOpenModel(true);
   };
@@ -119,11 +120,18 @@ const MyActivityOverview = () => {
           </div>
         )}
       </div>
-      <FollowersModel
-        open={openModel}
-        onCancel={handleCloseModel}
-        type={modelType}
-      />
+      {modelType === MyActivityTypes.FOLLOWERS && (
+        <FollowersModel open={openModel} onCancel={handleCloseModel} />
+      )}
+      {modelType === MyActivityTypes.FOLLOWING && (
+        <FollowingModel open={openModel} onCancel={handleCloseModel} />
+      )}
+      {modelType === MyActivityTypes.FOLLOW_REQUESTS && (
+        <FollowRequestsModel open={openModel} onCancel={handleCloseModel} />
+      )}
+      {modelType === MyActivityTypes.PENDING_REQUESTS && (
+        <PendingRequestsModel open={openModel} onCancel={handleCloseModel} />
+      )}
     </Card>
   );
 };

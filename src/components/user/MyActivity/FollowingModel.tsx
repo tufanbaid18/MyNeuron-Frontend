@@ -1,49 +1,46 @@
 import { Button, Modal } from "antd";
-import { useAtomValue } from "jotai";
 import React from "react";
-import { useGetMyFollowers } from "../../../hooks/user/useUserProfile";
-import { userProfileAtom } from "../../../store/auth.store";
+import { useGetMyFollowing } from "../../../hooks/user/useUserProfile";
 import { MyActivityTypes } from "../../../types/impulse/feed.types";
 import type { MyActivityUserResponse } from "../../../types/user/user.types";
 import ErrorComponent from "../../ui/ErrorComponent";
 import Loading from "../../ui/Loading";
 import Followers from "./Followers";
 
-type FollowersModelProps = {
+type FollowingModelProps = {
   open: boolean;
   onCancel: () => void;
 };
-const FollowersModel: React.FC<FollowersModelProps> = ({ open, onCancel }) => {
-  const user = useAtomValue(userProfileAtom);
 
-  const { data, isLoading, error } = useGetMyFollowers(user?.id ?? 0);
+const FollowingModel: React.FC<FollowingModelProps> = ({ open, onCancel }) => {
+  const { data, isLoading, error } = useGetMyFollowing();
 
   return (
     <>
       <Modal
-        title={<p>Followers</p>}
+        title={<p>Following</p>}
         footer={
           <Button type="primary" onClick={onCancel}>
             Close
           </Button>
         }
-        loading={isLoading}
         open={open}
         onCancel={onCancel}
+        loading={isLoading}
       >
         {isLoading ? (
           <Loading />
         ) : error ? (
           <ErrorComponent />
         ) : data?.length === 0 ? (
-          <p className="text-center">No followers found</p>
+          <p className="text-center">Not following anyone yet</p>
         ) : (
           <div className="flex flex-col gap-4">
             {data?.map((user: MyActivityUserResponse) => (
               <Followers
-                type={MyActivityTypes.FOLLOWERS}
+                type={MyActivityTypes.FOLLOWING}
                 key={user.id}
-                user={user.follower}
+                user={user.following}
               />
             ))}
           </div>
@@ -53,4 +50,4 @@ const FollowersModel: React.FC<FollowersModelProps> = ({ open, onCancel }) => {
   );
 };
 
-export default FollowersModel;
+export default FollowingModel;

@@ -11,7 +11,7 @@ import {
   uploadProfileImage,
 } from "../../services/user/user.service";
 import type {
-  FollowRequestResponse,
+  MyActivityUserResponse,
   UserProfile,
 } from "../../types/user/user.types";
 
@@ -58,7 +58,7 @@ export const useUserSearchById = (id: number) => {
 
 export const useSendFollowRequest = (id: number) => {
   const queryClient = useQueryClient();
-  return useMutation<FollowRequestResponse>({
+  return useMutation<MyActivityUserResponse>({
     mutationFn: () => sendFollowRequest(id),
     retry: false,
     onSuccess: () => {
@@ -71,7 +71,7 @@ export const useSendFollowRequest = (id: number) => {
 };
 
 export const useGetMyFollowing = () => {
-  return useQuery<UserProfile[]>({
+  return useQuery<MyActivityUserResponse[]>({
     queryKey: ["getMyFollowing"],
     queryFn: () => getMyFollowing(),
     staleTime: 2 * 60 * 1000, // 2 minutes
@@ -80,7 +80,7 @@ export const useGetMyFollowing = () => {
 
 export const useAcceptFollowRequest = (requestId: string) => {
   const queryClient = useQueryClient();
-  return useMutation<FollowRequestResponse>({
+  return useMutation<MyActivityUserResponse[]>({
     mutationFn: () => acceptFollowRequest(requestId),
     retry: false,
     onSuccess: () => {
@@ -95,7 +95,7 @@ export const useAcceptFollowRequest = (requestId: string) => {
 };
 
 export const useOutgoingFollowRequests = () => {
-  return useQuery<UserProfile[]>({
+  return useQuery<MyActivityUserResponse[]>({
     queryKey: ["outgoingFollowRequests"],
     queryFn: () => outgoingFollowRequests(),
     // staleTime: 2 * 60 * 1000, // 2 minutes
@@ -103,7 +103,7 @@ export const useOutgoingFollowRequests = () => {
 };
 
 export const useIncomingFollowRequests = () => {
-  return useQuery<UserProfile[]>({
+  return useQuery<MyActivityUserResponse[]>({
     queryKey: ["incomingFollowRequests"],
     queryFn: () => incomingFollowRequests(),
     // staleTime: 2 * 60 * 1000, // 2 minutes
@@ -111,7 +111,7 @@ export const useIncomingFollowRequests = () => {
 };
 
 export const useGetMyFollowers = (userId: number) => {
-  return useQuery<UserProfile[]>({
+  return useQuery<MyActivityUserResponse[]>({
     queryKey: ["getMyFollowers", userId],
     queryFn: () => getMyFollowers(userId),
   });
