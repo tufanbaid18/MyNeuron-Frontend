@@ -1,5 +1,8 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getUserProfile, updateUserProfile } from "../../services/auth/auth.service";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  getUserProfile,
+  updateUserProfile,
+} from "../../services/auth/auth.service";
 import type { UserProfile } from "../../types/user/user.types";
 
 export const USER_PROFILE_QUERY_KEY = ["userProfile"] as const;
@@ -24,4 +27,5 @@ export const useUpdateUserProfile = () => {
     },
   });
 };
+
 

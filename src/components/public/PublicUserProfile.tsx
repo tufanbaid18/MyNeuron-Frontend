@@ -1,9 +1,15 @@
-import { useParams } from "@tanstack/react-router";
+import { useParams, useRouter } from "@tanstack/react-router";
 import { Avatar, Button } from "antd";
 import { MapPin, Send } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { FaLinkedin, FaXTwitter } from "react-icons/fa6";
-import { useUserSearchById } from "../../hooks/user/useUserProfile";
+import {
+  useGetMyFollowing,
+  useSendFollowRequest,
+  useUserSearchById,
+} from "../../hooks/user/useUserProfile";
+import { FollowingStatus } from "../../types/user/user.types";
 import { getAvatarByName } from "../../utils/avatar.utils";
 import ErrorComponent from "../ui/ErrorComponent";
 import Loading from "../ui/Loading";
@@ -36,11 +42,29 @@ const Label: React.FC<{ label: string; value?: any }> = ({ label, value }) => {
 const PublicUserProfile: React.FC = () => {
   const { userId } = useParams({ strict: false });
   const { data: user, isLoading, error } = useUserSearchById(userId);
+  const { mutateAsync: sendFollowRequest } = useSendFollowRequest(userId);
+  const [follwingStatus, setFollowingStatus] = useState<string | null>(null);
+  // const loggedUser = useAtomValue(userProfileAtom);
+
+  const { data: myFollowing } = useGetMyFollowing();
+  console.log("============>", myFollowing);
+
+  const router = useRouter();
+
+  // React.useEffect(() => {
+  //   if (myFollowing && user) {
+  //     const isFollowing = myFollowers.some(
+  //       (follower) => follower.id === user.id,
+  //     );
+  //     setFollowingStatus(isFollowing ? FollowingStatus.ACCEPTED : null);
+  //   }
+  // }, [myFollowers, user]);
+
   if (isLoading) return <Loading />;
   if (error || !user) return <ErrorComponent />;
 
   const fullName = [
-    `${user.title}.`,
+    `${user.title ? user.title + "." : ""}`,
     user.first_name,
     user.middle_name,
     user.last_name,
@@ -48,8 +72,22 @@ const PublicUserProfile: React.FC = () => {
     .filter(Boolean)
     .join(" ");
 
+  const handleFollowRequest = async () => {
+    try {
+      const response = await sendFollowRequest();
+      setFollowingStatus(response.status);
+      toast.success("Follow request sent successfully");
+    } catch (error) {
+      toast.error("Failed to send follow request");
+    }
+  };
+
+  const handleMessageClick = () => {
+    router.navigate({ to: `/inbox/${userId}` });
+  };
+
   return (
-    <div className="w-full h-full mx-auto p-4 sm:p-6 space-y-6">
+    <div className="w-full h-full mx-auto p-4 sm:p-6 space-y-6 overflow-y-auto">
       {/* Header */}
 
       <div className="relative flex flex-col md:flex-row items-center md:items-start gap-6 lg:gap-8 bg-white dark:bg-zinc-900 shadow-sm rounded-3xl p-6 md:p-8 border border-gray-100 dark:border-zinc-800/50 overflow-hidden isolate">
@@ -82,7 +120,8 @@ const PublicUserProfile: React.FC = () => {
                   {fullName}
                 </h1>
                 <h2 className="text-lg md:text-xl font-medium text-gray-600 dark:text-gray-300 mt-1">
-                  {user.professional_detail?.current_role}
+                  {user.professional_detail?.current_role ??
+                    "Role: Not provided"}
                   {user.professional_detail?.current_organization && (
                     <>
                       <span className="text-gray-300 dark:text-zinc-600 mx-2">
@@ -119,16 +158,25 @@ const PublicUserProfile: React.FC = () => {
                 size="large"
                 className="bg-zinc-900 hover:bg-zinc-800! dark:bg-white dark:text-zinc-900 dark:hover:bg-gray-100! border-none shadow-sm font-semibold rounded-full px-6 flex items-center justify-center h-11"
               >
-                <div className="flex items-center gap-2">
+                <div
+                  onClick={handleMessageClick}
+                  className="flex items-center gap-2"
+                >
                   <Send size={18} />
                   <span>Message</span>
                 </div>
               </Button>
               <Button
+                onClick={handleFollowRequest}
+                disabled={follwingStatus === FollowingStatus.PENDING}
                 size="large"
                 className="bg-white dark:bg-zinc-900 border-gray-300 dark:border-zinc-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50! dark:hover:bg-zinc-800! shadow-sm font-semibold rounded-full px-6 h-11"
               >
-                Follow
+                {follwingStatus === FollowingStatus.PENDING
+                  ? "Requested"
+                  : follwingStatus === FollowingStatus.ACCEPTED
+                    ? "Following"
+                    : "Follow"}
               </Button>
 
               {(user.personal_detail?.x_handle ||

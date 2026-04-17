@@ -62,4 +62,19 @@ export const API_ROUTES = {
   MY_ACTIVITY_OVERVIEW: "/my-activity/overview",
   PAGES_OVERVIEW: "/pages/counts",
   NEWS: "/news/",
+
+  //------- public User ---------
+  PUBLIC_USER_FOLLOW_REQUESTS: "/follows/",
+
+  //------------ MY Activity ---------------------
+  MY_FOLLOWING: "follows/my-following/",
+  OUTGOING_FOLLOW_REQUESTS: "follows/outgoing/",
+  INCOMING_FOLLOW_REQUESTS: "follows/incoming/",
+  FOLLOW_REQUEST_ACCEPTED: (requestId: string) =>
+    `/follows/${requestId}/accept/`,
+  FOLLOW_REQUEST_REJECTED: (requestId: string) =>
+    `/follows/${requestId}/reject/`,
+  GET_FOLLOWERS: (userId: number) =>
+    `/usersfollow/${userId}/followers/`,
+  PUBLIC_USER_FOLLOWING: (userId: number) => `/users/${userId}/following/`,
 };

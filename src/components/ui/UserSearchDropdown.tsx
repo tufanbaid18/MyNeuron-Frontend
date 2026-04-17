@@ -14,7 +14,7 @@ const UserSearchDropdown = ({
   onUserClick,
 }: UserSearchDropdownProps) => {
   return (
-    <div className="absolute top-full left-0 right-0 mt-2 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border border-gray-200 dark:border-gray-800 rounded-2xl shadow-2xl overflow-hidden z-[1000] search-results-animation">
+    <div className="absolute top-full left-0 right-0 mt-2 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border border-gray-200 dark:border-gray-800 rounded-2xl shadow-2xl overflow-hidden z-999 search-results-animation">
       <div className="max-h-[400px] overflow-y-auto p-2 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-700">
         {isSearching ? (
           <div className="p-4 text-center text-gray-500 text-sm">

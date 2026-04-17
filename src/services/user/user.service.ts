@@ -104,3 +104,45 @@ export const publicUserSearchById = async (id: number) => {
   const res = await axiosInstance.get(API_ROUTES.GET_SEARCH_USER_BY_ID(id));
   return res.data;
 };
+
+export const sendFollowRequest = async (id: number) => {
+  const res = await axiosInstance.post(API_ROUTES.PUBLIC_USER_FOLLOW_REQUESTS, {
+    following: id,
+  });
+  return res.data;
+};
+
+export const getMyFollowing = async () => {
+  const res = await axiosInstance.get(API_ROUTES.MY_FOLLOWING);
+  return res.data;
+};
+
+export const acceptFollowRequest = async (requestId: string) => {
+  const res = await axiosInstance.post(
+    API_ROUTES.FOLLOW_REQUEST_ACCEPTED(requestId),
+  );
+  return res.data;
+};
+
+export const rejectFollowRequest = async (requestId: string) => {
+  const res = await axiosInstance.post(
+    API_ROUTES.FOLLOW_REQUEST_REJECTED(requestId),
+  );
+  return res.data;
+};
+
+export const getMyFollowers = async (userId: number) => {
+  const res = await axiosInstance.get(API_ROUTES.GET_FOLLOWERS(userId));
+  return res.data;
+};
+
+export const outgoingFollowRequests = async () => {
+  const res = await axiosInstance.get(API_ROUTES.OUTGOING_FOLLOW_REQUESTS);
+  return res.data;
+};
+
+export const incomingFollowRequests = async () => {
+  const res = await axiosInstance.get(API_ROUTES.INCOMING_FOLLOW_REQUESTS);
+  return res.data;
+};
+

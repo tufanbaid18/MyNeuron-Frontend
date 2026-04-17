@@ -1,8 +1,5 @@
-import { useNavigate } from "@tanstack/react-router";
-import { Button, Card, Tooltip, Typography } from "antd";
-import { ChevronRight } from "lucide-react";
-import { useMemo } from "react";
-import { APP_ROUTES } from "../../constants/app.routes";
+import { Card, Tooltip, Typography } from "antd";
+import React, { useMemo } from "react";
 import { getMyActivityOverviewItems } from "../../constants/myActivity.constants";
 import { useMyActivityOverview } from "../../hooks/impulse/useMyActivity";
 import {
@@ -10,21 +7,27 @@ import {
   type MyActivityOverviewItem,
 } from "../../types/impulse/feed.types";
 import ErrorComponent from "../ui/ErrorComponent";
+import FollowersModel from "../user/MyActivity/FollowersModel";
 
 const { Text } = Typography;
 
 const MyActivityOverview = () => {
   const { data, isLoading, isFetching, error } = useMyActivityOverview();
-  const navigate = useNavigate();
+  const [openModel, setOpenModel] = React.useState<boolean>(false);
+  const [modelType, setModelType] = React.useState<MyActivityTypes | null>(
+    null,
+  );
 
-  const handleOnClickViewAll = ({ type }: { type?: MyActivityTypes }) => {
-    if (!type) {
-      type = MyActivityTypes.FOLLOW_REQUESTS;
-    }
-    navigate({
-      to: APP_ROUTES.MY_ACTIVITY,
-      search: { filter: type },
-    });
+  const handleCloseModel = () => {
+    setOpenModel(false);
+  };
+
+  const handleOnClickViewAll = ({ type }: { type: MyActivityTypes }) => {
+    // if (!type) {
+    //   type = MyActivityTypes.FOLLOW_REQUESTS;
+    // }
+    setModelType(type);
+    setOpenModel(true);
   };
 
   const activity: MyActivityOverviewItem[] = useMemo(() => {
@@ -42,7 +45,7 @@ const MyActivityOverview = () => {
         }}
       >
         <Text strong>My Activity</Text>
-        <Button
+        {/* <Button
           type="text"
           size="small"
           title="View all activity"
@@ -51,7 +54,7 @@ const MyActivityOverview = () => {
             handleOnClickViewAll({ type: MyActivityTypes.FOLLOW_REQUESTS })
           }
           style={{ padding: 0 }}
-        />
+        /> */}
       </div>
       <div>
         {error ? (
@@ -108,9 +111,7 @@ const MyActivityOverview = () => {
                     </Text>
                   </Tooltip>
                 </div>
-                <Text
-                  style={{ flexShrink: 0, fontWeight: 500, fontSize: 14 }}
-                >
+                <Text style={{ flexShrink: 0, fontWeight: 500, fontSize: 14 }}>
                   {item.data}
                 </Text>
               </div>
@@ -118,6 +119,11 @@ const MyActivityOverview = () => {
           </div>
         )}
       </div>
+      <FollowersModel
+        open={openModel}
+        onCancel={handleCloseModel}
+        type={modelType}
+      />
     </Card>
   );
 };
