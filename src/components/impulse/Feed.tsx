@@ -1,12 +1,12 @@
+import { useQueryClient } from "@tanstack/react-query";
+import { Card, Skeleton } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { useFeedPosts } from "../../hooks/impulse/useFeed";
-import ErrorComponent from "../ui/ErrorComponent";
-import Loading from "../ui/Loading";
-import NoData from "../ui/NoData";
-import PostCard from "./PostCard";
-import { useQueryClient } from "@tanstack/react-query";
 import type { UserProfile } from "../../types/user/user.types";
+import ErrorComponent from "../ui/ErrorComponent";
+import NoData from "../ui/NoData";
 import CreatePostComponent from "./CreatePostComponent";
+import PostCard from "./PostCard";
 
 interface FeedProps {
   user: UserProfile;
@@ -68,7 +68,42 @@ const Feed = ({ user }: FeedProps) => {
     queryClient.invalidateQueries({ queryKey: ["get-feed-posts"] });
   };
 
-  if (isLoading || isFetching) return <Loading />;
+  if (isLoading || isFetching) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 16,
+          marginTop: 20,
+          marginBottom: 20,
+          alignItems: "center",
+          width: "100%",
+        }}
+      >
+        {[1, 2, 3].map((key) => (
+          <Card
+            key={key}
+            style={{ width: "100%", maxWidth: 680, borderRadius: 8 }}
+          >
+            <div style={{ display: "flex", gap: 12 }}>
+              <Skeleton.Avatar active size={48} shape="circle" />
+              <div style={{ flex: 1 }}>
+                <Skeleton
+                  active
+                  title={{ width: "40%" }}
+                  paragraph={{ rows: 1, width: ["20%"] }}
+                />
+              </div>
+            </div>
+            <div style={{ marginTop: 16 }}>
+              <Skeleton active title={false} paragraph={{ rows: 3 }} />
+            </div>
+          </Card>
+        ))}
+      </div>
+    );
+  }
   if (error) return <ErrorComponent />;
   // if (data && data.length === 0) return <NoData title="No posts found" />;
 

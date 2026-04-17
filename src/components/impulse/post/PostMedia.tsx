@@ -9,7 +9,9 @@ interface MediaItemProps {
 const MediaItem = ({ item }: MediaItemProps) => {
   if (item.is_video) {
     return (
-      <div style={{ position: "relative", width: "100%", paddingTop: "56.25%" }}>
+      <div
+        style={{ position: "relative", width: "100%", paddingTop: "56.25%" }}
+      >
         <video
           src={item.file_url}
           controls
@@ -30,7 +32,12 @@ const MediaItem = ({ item }: MediaItemProps) => {
     <Image
       src={item.file_url}
       alt="Post media"
-      style={{ width: "100%", maxHeight: 500, objectFit: "cover", display: "block" }}
+      style={{
+        width: "100%",
+        maxHeight: 500,
+        objectFit: "cover",
+        display: "block",
+      }}
       preview={false}
       loading="lazy"
     />
@@ -48,7 +55,10 @@ export const PostMedia = ({ media }: MediaGridProps) => {
 
   if (count === 1) {
     return (
-      <div style={{ position: "relative", width: "100%", marginTop: 12 }}>
+      <div
+        style={{ position: "relative", width: "100%", marginTop: 12 }}
+        className="flex justify-center items-center bg-gray-100"
+      >
         <MediaItem item={media[0]} />
       </div>
     );
