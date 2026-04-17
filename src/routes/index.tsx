@@ -43,10 +43,14 @@ import {
   privacyPolicyRoute,
   productsInfoRoute,
   publicRoute,
-  publicUserRoute,
   termsAndConditionsRoute,
 } from "./public.routes";
-import { userIndexRoute, userProfileRoute, userRootRoute } from "./user.routes";
+import {
+  publicUserRoute,
+  userIndexRoute,
+  userProfileRoute,
+  userRootRoute,
+} from "./user.routes";
 
 export const rootRoute = createRootRoute({
   component: () => <Outlet />,
@@ -82,7 +86,11 @@ export const routeTree = rootRoute.addChildren([
       gatcParticipantsRoute,
       gatcMyHandshakesRoute,
     ]),
-    userRootRoute.addChildren([userIndexRoute, userProfileRoute]),
+    userRootRoute.addChildren([
+      userIndexRoute,
+      userProfileRoute,
+      publicUserRoute,
+    ]),
     bookshelfRootRoute.addChildren([bookshelfIndexRoute]),
     impulseRootRoute.addChildren([impulseFeedRoute, impulseActivityRoute]),
     inboxRootRoute.addChildren([inboxUserRoute]),
@@ -94,7 +102,6 @@ export const routeTree = rootRoute.addChildren([
     termsAndConditionsRoute,
     privacyPolicyRoute,
     gatcVirtualPassRoute,
-    publicUserRoute,
   ]),
 ]);
 

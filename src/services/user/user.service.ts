@@ -99,3 +99,8 @@ export const publicUserSearch = async (query: string) => {
   const res = await axiosInstance.get(API_ROUTES.USER_SEARCH(query));
   return res.data;
 };
+
+export const publicUserSearchById = async (id: number) => {
+  const res = await axiosInstance.get(API_ROUTES.GET_SEARCH_USER_BY_ID(id));
+  return res.data;
+};

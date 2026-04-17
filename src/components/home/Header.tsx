@@ -79,10 +79,7 @@ const RootHeader = ({
   };
 
   const handleSearchedUserClick = (user: UserProfile) => {
-    navigate({
-      to: APP_ROUTES.PUBLIC_USER,
-      params: { userId: user.id.toString() },
-    });
+    navigate({ to: APP_ROUTES.USER, params: { userId: user.id } });
     setShowSearchResults(false);
     setSearchQuery("");
   };

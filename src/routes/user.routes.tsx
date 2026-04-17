@@ -1,5 +1,6 @@
 import { createRoute } from "@tanstack/react-router";
 import { z } from "zod";
+import PublicUserInfo from "../components/public/PublicUserInfo";
 import UserIndex from "../pages/user/UserIndex";
 import UserProfile from "../pages/user/UserProfile";
 import UserRoot from "../pages/user/UserRoot";
@@ -25,4 +26,10 @@ export const userProfileRoute = createRoute({
     userId: z.string(),
   }),
   component: () => <UserProfile />,
+});
+
+export const publicUserRoute = createRoute({
+  getParentRoute: () => userRootRoute,
+  path: "$userId",
+  component: () => <PublicUserInfo />,
 });

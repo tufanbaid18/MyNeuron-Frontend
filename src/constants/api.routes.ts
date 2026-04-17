@@ -19,6 +19,7 @@ export const API_ROUTES = {
   DELETE_USER_EDUCATION: (id: number) => `/profile/education/${id}/delete/`,
 
   USER_SEARCH: (query: string) => `/public/users/search/?q=${query}`,
+  GET_SEARCH_USER_BY_ID: (id: number) => `/public/users/${id}/`,
   // ── GATC Payment ──
   GET_EVENTS: "/events/",
   CREATE_REGISTRATION: "/registrations/",
