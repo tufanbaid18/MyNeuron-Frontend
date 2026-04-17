@@ -1,7 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
 import { Button, Card, Tooltip, Typography } from "antd";
-import { ChevronRight } from "lucide-react";
-import { useMemo } from "react";
+import { Plus } from "lucide-react";
+import { useMemo, useState } from "react";
 import { APP_ROUTES } from "../../constants/app.routes";
 import { getPagesOverviewItems } from "../../constants/pages.constants";
 import { usePagesOverview } from "../../hooks/impulse/usePages";
@@ -10,12 +10,14 @@ import {
   PageOverviewTypes,
 } from "../../types/impulse/page.types";
 import ErrorComponent from "../ui/ErrorComponent";
+import AddPageModal from "./pages/AddPageModal";
 
 const { Text } = Typography;
 
 const PagesOverview = () => {
   const { data, isLoading, isFetching, error } = usePagesOverview();
   const navigate = useNavigate();
+  const [openAddPage, setOpenAddPage] = useState<boolean>(false);
 
   const handleOnClickViewAll = ({ type }: { type?: PageOverviewTypes }) => {
     if (!type) {
@@ -45,11 +47,11 @@ const PagesOverview = () => {
         <Button
           type="text"
           size="small"
-          title="View all activity"
-          icon={<ChevronRight style={{ width: 18, height: 18 }} />}
-          onClick={() =>
-            handleOnClickViewAll({ type: PageOverviewTypes.MY_PAGES })
-          }
+          title="Add Page"
+          icon={<Plus style={{ width: 18, height: 18 }} />}
+          onClick={() => {
+            setOpenAddPage(!openAddPage);
+          }}
           style={{ padding: 0 }}
         />
       </div>
@@ -108,9 +110,7 @@ const PagesOverview = () => {
                     </Text>
                   </Tooltip>
                 </div>
-                <Text
-                  style={{ flexShrink: 0, fontWeight: 500, fontSize: 14 }}
-                >
+                <Text style={{ flexShrink: 0, fontWeight: 500, fontSize: 14 }}>
                   {item.data}
                 </Text>
               </div>
@@ -118,6 +118,11 @@ const PagesOverview = () => {
           </div>
         )}
       </div>
+
+      <AddPageModal
+        open={openAddPage}
+        onCancel={() => setOpenAddPage(!openAddPage)}
+      />
     </Card>
   );
 };

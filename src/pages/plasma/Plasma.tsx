@@ -16,7 +16,7 @@ import type { SelectedArticleContext } from "../../components/plasma/AddToShelfM
 
 const Plasma = () => {
   const [search, setSearch] = useState<string>("");
-  const [page, _setPage] = useState(1);
+  const [page] = useState(1);
   const PAGE_SIZE = 10;
   
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);

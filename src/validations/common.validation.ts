@@ -13,7 +13,7 @@ export const PhoneValidator = (options?: PhoneValidatorOptions) => {
     maxLength = 15,
   } = options || {};
 
-  return async (_: any, value?: string) => {
+  return async (_: unknown, value?: string) => {
     if (!value) {
       if (required) {
         return Promise.reject(new Error("Contact number is required"));

@@ -22,7 +22,9 @@ export const authRoute = createRoute({
       const profile = await getUserProfile();
       appStore.set(userProfileAtom, profile);
       isAuthenticated = true;
-    } catch (error) {}
+    } catch {
+      // User is not authenticated — proceed to auth pages
+    }
 
     if (isAuthenticated) {
       throw redirect({ to: APP_ROUTES.ROOT });

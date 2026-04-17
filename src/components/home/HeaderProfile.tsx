@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { BiChevronDown, BiSolidMoon, BiSolidSun } from "react-icons/bi";
 import { APP_ROUTES } from "../../constants/app.routes";
 import { getHeaderProfileItems } from "../../constants/root.constants";
-import { useTheme } from "../../providers/ThemeProvider";
+import { useTheme } from "../../providers/useTheme";
 import { logout } from "../../services/auth/auth.service";
 import type { UserProfile } from "../../types/user/user.types";
 import { getAvatarByName } from "../../utils/avatar.utils";

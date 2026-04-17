@@ -8,8 +8,10 @@ export const userPersonalDetailsSchema = z.object({
   city: z.string().min(1, "City is required"),
   country: z.string().min(1, "Country is required"),
   gender: z.string().min(1, "Gender is required"),
-  dob: z.string().min(1, "Date of birth is required"),
-  articles_journals: z.string().min(1, "Articles/Journals information is required"),
+  dob: z.string().min(1, "Date of birth is required").nullable(),
+  articles_journals: z
+    .string()
+    .min(1, "Articles/Journals information is required"),
   book_chapters: z.string().min(1, "Book chapters information is required"),
 });
 
@@ -27,7 +29,9 @@ export const userPastProfessionalDetailsSchema = z.object({
   description: z.string().min(1, "Description is required"),
 });
 
-export type UserPastProfessionalDetailsForm = z.infer<typeof userPastProfessionalDetailsSchema>;
+export type UserPastProfessionalDetailsForm = z.infer<
+  typeof userPastProfessionalDetailsSchema
+>;
 
 export const userProfessionalDetailsSchema = z.object({
   current_role: z.string().min(1, "Current role is required"),
@@ -36,7 +40,10 @@ export const userProfessionalDetailsSchema = z.object({
   current_start_month: z.number().min(1, "Start month is required").max(12),
   current_start_year: z.number().min(1900, "Start year is required"),
   current_description: z.string().min(1, "Description is required"),
-  work_email: z.string().email("Invalid email address").min(1, "Work email is required"),
+  work_email: z
+    .string()
+    .email("Invalid email address")
+    .min(1, "Work email is required"),
   contact_number: z.string().min(1, "Contact number is required"),
   emergency_contact_number: z.string().min(1, "Emergency contact is required"),
   website: z.string().optional().or(z.literal("")),
@@ -48,7 +55,9 @@ export const userProfessionalDetailsSchema = z.object({
   past_experiences: z.array(userPastProfessionalDetailsSchema).optional(),
 });
 
-export type UserProfessionalDetailsForm = z.infer<typeof userProfessionalDetailsSchema>;
+export type UserProfessionalDetailsForm = z.infer<
+  typeof userProfessionalDetailsSchema
+>;
 
 export const userEducationSchema = z.object({
   id: z.number().optional(),
@@ -73,12 +82,22 @@ export type UserEducationForm = z.infer<typeof userEducationSchema>;
 
 export const userScientificInterestSchema = z.object({
   id: z.number().optional(),
-  research_area_of_expertise: z.string().min(1, "Research area of expertise is required"),
-  major_focus: z.array(z.string()).min(1, "At least one major focus is required"),
-  specific_research_areas: z.array(z.string()).min(1, "At least one specific research area is required"),
-  organ_sites: z.array(z.string()).min(1, "At least one organ site is required"),
+  research_area_of_expertise: z
+    .string()
+    .min(1, "Research area of expertise is required"),
+  major_focus: z
+    .array(z.string())
+    .min(1, "At least one major focus is required"),
+  specific_research_areas: z
+    .array(z.string())
+    .min(1, "At least one specific research area is required"),
+  organ_sites: z
+    .array(z.string())
+    .min(1, "At least one organ site is required"),
   additional_research_areas: z.array(z.string()).optional(),
   brief_description: z.string().min(1, "Brief description is required"),
 });
 
-export type UserScientificInterestForm = z.infer<typeof userScientificInterestSchema>;
+export type UserScientificInterestForm = z.infer<
+  typeof userScientificInterestSchema
+>;

@@ -77,7 +77,8 @@ const ProfessionalSection: React.FC<ProfessionalSectionProps> = ({
     try {
       // Backend expects `certifications` as a FileField, not text.
       // Exclude it from the regular PATCH payload to avoid the encoding error.
-      const { certifications, ...payload } = values;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { certifications: _, ...payload } = values;
       await updateDetails(payload);
       if (mode === "profile") setIsEditing(false);
     } catch (e) {

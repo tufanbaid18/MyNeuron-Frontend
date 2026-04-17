@@ -1,7 +1,10 @@
 import { API_ROUTES } from "../../constants/api.routes";
 import axiosInstance from "../../lib/axiosInstance";
 import type { MyActivityOverview } from "../../types/impulse/feed.types";
-import type { PagesOverview } from "../../types/impulse/page.types";
+import type {
+  CreatePagePayload,
+  PagesOverview,
+} from "../../types/impulse/page.types";
 import type {
   FeedPost,
   OgMetaResponse,
@@ -84,6 +87,29 @@ export const getPagesOverview = async (): Promise<PagesOverview> => {
   const response = await axiosInstance.get<PagesOverview>(
     API_ROUTES.PAGES_OVERVIEW,
   );
+  return response.data;
+};
+
+export const createPage = async (payload: CreatePagePayload) => {
+  const formData = new FormData();
+
+  for (const [key, value] of Object.entries(payload)) {
+    if (value === "" || value === undefined || value === null) continue;
+
+    if (value instanceof File) {
+      formData.append(key, value);
+    } else if (Array.isArray(value)) {
+      if (value.length === 0) continue;
+      // Tags: append each item individually so backend receives a list
+      value.forEach((item) => formData.append(key, item));
+    } else {
+      formData.append(key, String(value));
+    }
+  }
+
+  const response = await axiosInstance.post(API_ROUTES.PAGES, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
   return response.data;
 };
 

@@ -1,14 +1,8 @@
 import { ConfigProvider, theme } from "antd";
-import { createContext, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { ThemeContext } from "./ThemeContext";
 
 const { defaultAlgorithm, darkAlgorithm } = theme;
-
-const ThemeContext = createContext({
-  dark: false,
-  toggleTheme: () => {},
-});
-
-export const useTheme = () => useContext(ThemeContext);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [dark, setDark] = useState(() => {

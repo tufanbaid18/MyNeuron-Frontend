@@ -5,7 +5,7 @@ import { useEffect, useState, useMemo, type Dispatch } from "react";
 import { useLocation } from "@tanstack/react-router";
 import { APP_ROUTES } from "../../constants/app.routes";
 import { SIDEBAR_MENU_ITEMS } from "../../constants/sidebar.constants";
-import { useTheme } from "../../providers/ThemeProvider";
+import { useTheme } from "../../providers/useTheme";
 import { useUserProfile } from "../../hooks/auth/useUserProfile";
 import { RegisteredEventPaymentStatus } from "../../types/user/user.types";
 

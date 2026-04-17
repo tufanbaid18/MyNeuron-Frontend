@@ -90,7 +90,11 @@ const UserProfileManager: React.FC<UserProfileManagerProps> = ({
     },
   ];
 
-  const handleImageUpload = async (options: any) => {
+  const handleImageUpload = async (options: {
+    file: File | Blob | string;
+    onSuccess?: (body: unknown) => void;
+    onError?: (err: Error) => void;
+  }) => {
     const { file, onSuccess, onError } = options;
     const formData = new FormData();
     formData.append("profile_image", file);
