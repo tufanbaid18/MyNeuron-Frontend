@@ -1,5 +1,14 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { Layout, Button, Typography, message, Space, theme, Grid, Drawer } from "antd";
+import {
+  Layout,
+  Button,
+  Typography,
+  message,
+  Space,
+  theme,
+  Grid,
+  Drawer,
+} from "antd";
 import { PlusOutlined, LinkOutlined, MenuOutlined } from "@ant-design/icons";
 import { useNavigate } from "@tanstack/react-router";
 import { bookshelfIndexRoute } from "../../routes/bookshelf.routes";
@@ -64,8 +73,13 @@ const MyBookshelf: React.FC = () => {
   const findFolderData = (
     folders: BookshelfFolder[],
     targetId: number,
-    path: { id: number | null; name: string }[] = [{ id: null, name: "Bookshelf" }]
-  ): { folder: BookshelfFolder; path: { id: number | null; name: string }[] } | null => {
+    path: { id: number | null; name: string }[] = [
+      { id: null, name: "Bookshelf" },
+    ],
+  ): {
+    folder: BookshelfFolder;
+    path: { id: number | null; name: string }[];
+  } | null => {
     for (const folder of folders) {
       const currentPath = [...path, { id: folder.id, name: folder.name }];
       if (folder.id === targetId) {
@@ -81,7 +95,7 @@ const MyBookshelf: React.FC = () => {
 
   const activeFolderData = useMemo(() => {
     if (treeData.length === 0 && loading) return null;
-    
+
     if (!activeFolderId) {
       return {
         folder: {
@@ -91,7 +105,7 @@ const MyBookshelf: React.FC = () => {
           items: [],
           parent: null,
         } as BookshelfFolder,
-        path: [{ id: null, name: "Bookshelf" }]
+        path: [{ id: null, name: "Bookshelf" }],
       };
     }
     return findFolderData(treeData, activeFolderId);
@@ -99,7 +113,12 @@ const MyBookshelf: React.FC = () => {
   }, [treeData, activeFolderId, loading]);
 
   return (
-    <Layout style={{ height: "calc(100vh - 64px)", background: token.colorBgLayout || "#f0f2f5" }}>
+    <Layout
+      style={{
+        height: "calc(100vh - 64px)",
+        background: token.colorBgLayout || "#f0f2f5",
+      }}
+    >
       {/* Top Action Bar */}
       <div
         style={{
@@ -120,8 +139,15 @@ const MyBookshelf: React.FC = () => {
             Bookshelf
           </Title>
         </div>
-        
-        <Space wrap style={{ flex: isMobile ? 1 : "none", justifyContent: "flex-end", width: isMobile ? "100%" : "auto" }}>
+
+        <Space
+          wrap
+          style={{
+            flex: isMobile ? 1 : "none",
+            justifyContent: "flex-end",
+            width: isMobile ? "100%" : "auto",
+          }}
+        >
           <Button
             type="primary"
             icon={<PlusOutlined />}
@@ -138,7 +164,9 @@ const MyBookshelf: React.FC = () => {
               style={{ borderRadius: 6, fontWeight: 500 }}
               onClick={() => {
                 if (!activeFolderData) {
-                  message.warning("Please select a folder first to add a file.");
+                  message.warning(
+                    "Please select a folder first to add a file.",
+                  );
                   return;
                 }
                 setIsLinkModalOpen(true);
@@ -148,9 +176,9 @@ const MyBookshelf: React.FC = () => {
             </Button>
           )}
           {isMobile && (
-            <Button 
-              type="text" 
-              icon={<MenuOutlined />} 
+            <Button
+              type="text"
+              icon={<MenuOutlined />}
               onClick={() => setIsMobileSidebarOpen(true)}
               style={{ fontSize: 16, padding: "0 4px", marginLeft: 4 }}
             />
@@ -160,8 +188,8 @@ const MyBookshelf: React.FC = () => {
 
       <Layout hasSider={!isMobile} style={{ flex: 1, overflow: "hidden" }}>
         {/* Main Content Area */}
-        <Content 
-          style={{ 
+        <Content
+          style={{
             background: "transparent",
             overflow: "hidden",
             display: "flex",
@@ -186,7 +214,7 @@ const MyBookshelf: React.FC = () => {
             collapsible
             reverseArrow
             breakpoint="lg"
-            style={{ 
+            style={{
               background: token.colorBgContainer || "#fff",
               borderLeft: `1px solid ${token.colorBorderSecondary || "#f0f0f0"}`,
               boxShadow: "-2px 0 8px rgba(0,0,0,0.03)",
@@ -203,11 +231,15 @@ const MyBookshelf: React.FC = () => {
 
       {/* Mobile Drawer Sidebar */}
       <Drawer
-        title={<span style={{ fontWeight: 600, fontSize: 16 }}>Bookshelf Navigation</span>}
+        title={
+          <span style={{ fontWeight: 600, fontSize: 16 }}>
+            Bookshelf Navigation
+          </span>
+        }
         placement="right"
         onClose={() => setIsMobileSidebarOpen(false)}
         open={isMobileSidebarOpen}
-        bodyStyle={{ padding: 0 }}
+        styles={{ body: { padding: 0 } }}
         width={300}
       >
         <BookshelfSidebar
@@ -221,10 +253,12 @@ const MyBookshelf: React.FC = () => {
       <CreateFolderModal
         open={isFolderModalOpen}
         onClose={() => setIsFolderModalOpen(false)}
-        parentId={activeFolderId && activeFolderData ? activeFolderData.folder.id : null}
+        parentId={
+          activeFolderId && activeFolderData ? activeFolderData.folder.id : null
+        }
         onSuccess={handleCreateSuccess}
       />
-      
+
       {activeFolderData && (
         <AddFileLinkModal
           open={isLinkModalOpen}

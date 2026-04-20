@@ -1,21 +1,27 @@
 import {
-  AppstoreOutlined,
   CalendarOutlined,
-  GlobalOutlined,
   TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import { useNavigate } from "@tanstack/react-router";
 import { Avatar, Button, Card, Tag, Typography } from "antd";
-import { PageCategory, type PageDetails } from "../../../types/impulse/page.types";
+import { Building } from "lucide-react";
+import { RiArticleFill } from "react-icons/ri";
+import { APP_ROUTES } from "../../../constants/app.routes";
+import {
+  PageCategory,
+  type PageDetails,
+} from "../../../types/impulse/page.types";
 import { getAvatarByName } from "../../../utils/avatar.utils";
+import { useUserProfile } from "../../../hooks/auth/useUserProfile";
 
 const { Title, Text, Paragraph } = Typography;
 
 const categoryIcons: Record<string, React.ReactNode> = {
-  [PageCategory.COMPANY]: <GlobalOutlined />,
-  [PageCategory.EVENT]: <CalendarOutlined />,
-  [PageCategory.COMMUNITY]: <TeamOutlined />,
-  [PageCategory.GENERAL]: <AppstoreOutlined />,
+  [PageCategory.COMPANY]: <Building size={14} />,
+  [PageCategory.EVENT]: <CalendarOutlined size={14} />,
+  [PageCategory.COMMUNITY]: <TeamOutlined size={14} />,
+  [PageCategory.GENERAL]: <RiArticleFill size={14} />,
 };
 
 interface PageItemCardProps {
@@ -29,6 +35,10 @@ const PageItemCard = ({
   onFollowToggle,
   isPending,
 }: PageItemCardProps) => {
+  const navigate = useNavigate();
+  const { data: user } = useUserProfile();
+  const isOwner = user?.id === page.owner?.id;
+
   return (
     <Card
       hoverable
@@ -39,11 +49,13 @@ const PageItemCard = ({
         flexDirection: "column",
         height: "100%",
       }}
-      bodyStyle={{
-        flex: 1,
-        display: "flex",
-        flexDirection: "column",
-        padding: "0",
+      styles={{
+        body: {
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          padding: "0",
+        },
       }}
     >
       <div
@@ -97,16 +109,27 @@ const PageItemCard = ({
             icon={categoryIcons[page.category]}
             color="blue"
             style={{
-              margin: 0,
+              marginTop: "10px",
               marginBottom: "8px",
               textTransform: "capitalize",
+              margin: 0,
+              display: "flex",
+              alignItems: "center",
+              gap: 5,
             }}
           >
             {page.category}
           </Tag>
         </div>
 
-        <div style={{ flex: 1 }}>
+        <div
+          style={{ flex: 1 }}
+          onClick={() => {
+            navigate({
+              to: APP_ROUTES.PAGE_DETAILS(page.id),
+            });
+          }}
+        >
           <Title
             level={5}
             style={{ margin: 0 }}
@@ -132,22 +155,24 @@ const PageItemCard = ({
           </Paragraph>
         </div>
 
-        <div
-          style={{
-            marginTop: "20px",
-            borderTop: "1px solid #f0f0f0",
-            paddingTop: "16px",
-          }}
-        >
-          <Button
-            type={page.is_following ? "default" : "primary"}
-            block
-            onClick={() => onFollowToggle(page.id, page.is_following)}
-            loading={isPending}
+        {!isOwner && (
+          <div
+            style={{
+              marginTop: "20px",
+              borderTop: "1px solid #f0f0f0",
+              paddingTop: "16px",
+            }}
           >
-            {page.is_following ? "Unfollow" : "Follow"}
-          </Button>
-        </div>
+            <Button
+              type={page.is_following ? "default" : "primary"}
+              block
+              onClick={() => onFollowToggle(page.id, page.is_following)}
+              loading={isPending}
+            >
+              {page.is_following ? "Unfollow" : "Follow"}
+            </Button>
+          </div>
+        )}
       </div>
     </Card>
   );

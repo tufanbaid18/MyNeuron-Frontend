@@ -3,6 +3,7 @@ import {
   followPage,
   getAllPagesByFilter,
   getPagesOverview,
+  pageDetails,
   unfollowPage,
 } from "../../services/impulse/impulse.service";
 import type {
@@ -46,5 +47,12 @@ export const useUnfollowPage = () => {
       queryClient.invalidateQueries({ queryKey: ["pages-by-filter"] });
       queryClient.invalidateQueries({ queryKey: ["pages-overview"] });
     },
+  });
+};
+
+export const usePageDetails = (pageId: number) => {
+  return useQuery({
+    queryKey: ["page-details", pageId],
+    queryFn: () => pageDetails(pageId),
   });
 };

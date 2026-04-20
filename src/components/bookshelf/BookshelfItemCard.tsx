@@ -1,10 +1,33 @@
 import React, { useState } from "react";
-import { Card, Typography, Tooltip, theme, Dropdown, Modal, Input, message } from "antd";
+import {
+  Card,
+  Typography,
+  Tooltip,
+  theme,
+  Dropdown,
+  Modal,
+  Input,
+  message,
+} from "antd";
 import type { MenuProps } from "antd";
-import { FolderFilled, MoreOutlined, EditOutlined, DeleteOutlined, LinkOutlined } from "@ant-design/icons";
+import {
+  FolderFilled,
+  MoreOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  LinkOutlined,
+} from "@ant-design/icons";
 import FileExtensionIcon from "./FileExtensionIcon";
-import type { BookshelfFolder, BookshelfItem } from "../../types/bookshelf.types";
-import { updateFolder, updateFolderItem, deleteFolder, deleteFolderItem } from "../../services/bookshelf/bookshelf.service";
+import type {
+  BookshelfFolder,
+  BookshelfItem,
+} from "../../types/bookshelf.types";
+import {
+  updateFolder,
+  updateFolderItem,
+  deleteFolder,
+  deleteFolderItem,
+} from "../../services/bookshelf/bookshelf.service";
 
 const { Text } = Typography;
 const { useToken } = theme;
@@ -32,19 +55,19 @@ const BookshelfItemCard: React.FC<BookshelfItemCardProps> = ({
   const [newName, setNewName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleMenuClick: MenuProps['onClick'] = (e) => {
+  const handleMenuClick: MenuProps["onClick"] = (e) => {
     e.domEvent.stopPropagation(); // Prevent card click
-    
-    if (e.key === 'rename') {
+
+    if (e.key === "rename") {
       setNewName(name || "");
       setIsRenameModalOpen(true);
-    } else if (e.key === 'delete') {
+    } else if (e.key === "delete") {
       Modal.confirm({
-        title: `Delete ${isFolder ? 'Folder' : 'File'}`,
+        title: `Delete ${isFolder ? "Folder" : "File"}`,
         content: `Are you sure you want to delete "${name}"?`,
-        okText: 'Delete',
-        okType: 'danger',
-        cancelText: 'Cancel',
+        okText: "Delete",
+        okType: "danger",
+        cancelText: "Cancel",
         onOk: async () => {
           try {
             if (isFolder && folder) {
@@ -52,20 +75,25 @@ const BookshelfItemCard: React.FC<BookshelfItemCardProps> = ({
             } else if (!isFolder && item) {
               await deleteFolderItem(item.id);
             }
-            message.success(`${isFolder ? 'Folder' : 'File'} deleted successfully`);
+            message.success(
+              `${isFolder ? "Folder" : "File"} deleted successfully`,
+            );
             onRefresh?.();
           } catch (error) {
             console.error(error);
             message.error("Failed to delete item");
           }
-        }
+        },
       });
-    } else if (e.key === 'copy_link' && item?.url) {
-      navigator.clipboard.writeText(item.url).then(() => {
-        message.success("Link copied to clipboard");
-      }).catch(() => {
-        message.error("Failed to copy link");
-      });
+    } else if (e.key === "copy_link" && item?.url) {
+      navigator.clipboard
+        .writeText(item.url)
+        .then(() => {
+          message.success("Link copied to clipboard");
+        })
+        .catch(() => {
+          message.error("Failed to copy link");
+        });
     }
   };
 
@@ -74,7 +102,7 @@ const BookshelfItemCard: React.FC<BookshelfItemCardProps> = ({
       message.error("Name cannot be empty");
       return;
     }
-    
+
     try {
       setIsSubmitting(true);
       if (isFolder && folder) {
@@ -82,7 +110,7 @@ const BookshelfItemCard: React.FC<BookshelfItemCardProps> = ({
       } else if (!isFolder && item) {
         await updateFolderItem(item.id, { title: newName });
       }
-      message.success(`${isFolder ? 'Folder' : 'File'} renamed successfully`);
+      message.success(`${isFolder ? "Folder" : "File"} renamed successfully`);
       setIsRenameModalOpen(false);
       onRefresh?.();
     } catch (error) {
@@ -93,20 +121,24 @@ const BookshelfItemCard: React.FC<BookshelfItemCardProps> = ({
     }
   };
 
-  const menuItems: MenuProps['items'] = [
+  const menuItems: MenuProps["items"] = [
     {
-      key: 'rename',
-      label: 'Rename',
+      key: "rename",
+      label: "Rename",
       icon: <EditOutlined />,
     },
-    ...(!isFolder && item?.url ? [{
-      key: 'copy_link',
-      label: 'Copy link',
-      icon: <LinkOutlined />,
-    }] : []),
+    ...(!isFolder && item?.url
+      ? [
+          {
+            key: "copy_link",
+            label: "Copy link",
+            icon: <LinkOutlined />,
+          },
+        ]
+      : []),
     {
-      key: 'delete',
-      label: 'Delete',
+      key: "delete",
+      label: "Delete",
       icon: <DeleteOutlined />,
       danger: true,
     },
@@ -123,12 +155,14 @@ const BookshelfItemCard: React.FC<BookshelfItemCardProps> = ({
             window.open(item.url, "_blank");
           }
         }}
-        bodyStyle={{ 
-          padding: "12px 14px",
-          display: "flex",
-          alignItems: "center",
-          width: "100%",
-          overflow: "hidden"
+        styles={{
+          body: {
+            padding: "12px 14px",
+            display: "flex",
+            alignItems: "center",
+            width: "100%",
+            overflow: "hidden",
+          },
         }}
         style={{
           borderRadius: 8,
@@ -150,18 +184,28 @@ const BookshelfItemCard: React.FC<BookshelfItemCardProps> = ({
           e.currentTarget.style.borderColor = token.colorBorderSecondary;
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 10, width: "100%", minWidth: 0 }}>
-          <div 
-            style={{ 
-              fontSize: 24, 
-              display: "flex", 
-              alignItems: "center", 
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            width: "100%",
+            minWidth: 0,
+          }}
+        >
+          <div
+            style={{
+              fontSize: 24,
+              display: "flex",
+              alignItems: "center",
               justifyContent: "center",
               width: 32,
               height: 32,
               borderRadius: 6,
-              background: isFolder ? `${token.colorPrimary}15` : token.colorBgLayout, // 15 is hex for ~8% opacity
-              color: isFolder ? token.colorPrimary : "inherit"
+              background: isFolder
+                ? `${token.colorPrimary}15`
+                : token.colorBgLayout, // 15 is hex for ~8% opacity
+              color: isFolder ? token.colorPrimary : "inherit",
             }}
           >
             {isFolder ? (
@@ -185,19 +229,26 @@ const BookshelfItemCard: React.FC<BookshelfItemCardProps> = ({
               </Text>
             </Tooltip>
           </div>
-          
+
           <div onClick={(e) => e.stopPropagation()}>
-            <Dropdown menu={{ items: menuItems, onClick: handleMenuClick }} trigger={['click']}>
-              <div 
-                style={{ 
-                  padding: "4px 8px", 
-                  cursor: "pointer", 
+            <Dropdown
+              menu={{ items: menuItems, onClick: handleMenuClick }}
+              trigger={["click"]}
+            >
+              <div
+                style={{
+                  padding: "4px 8px",
+                  cursor: "pointer",
                   color: token.colorTextSecondary,
-                  borderRadius: 4
+                  borderRadius: 4,
                 }}
                 className="context-menu-trigger"
-                onMouseEnter={(e) => e.currentTarget.style.background = token.colorBgTextHover}
-                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.background = token.colorBgTextHover)
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.background = "transparent")
+                }
               >
                 <MoreOutlined />
               </div>
@@ -205,18 +256,18 @@ const BookshelfItemCard: React.FC<BookshelfItemCardProps> = ({
           </div>
         </div>
       </Card>
-      
+
       <Modal
-        title={`Rename ${isFolder ? 'Folder' : 'File'}`}
+        title={`Rename ${isFolder ? "Folder" : "File"}`}
         open={isRenameModalOpen}
         onOk={handleRename}
         onCancel={() => setIsRenameModalOpen(false)}
         confirmLoading={isSubmitting}
-        destroyOnClose
+        destroyOnHidden
       >
-        <Input 
-          value={newName} 
-          onChange={(e) => setNewName(e.target.value)} 
+        <Input
+          value={newName}
+          onChange={(e) => setNewName(e.target.value)}
           placeholder="Enter new name"
           onPressEnter={handleRename}
           autoFocus

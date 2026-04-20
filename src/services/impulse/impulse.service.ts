@@ -4,6 +4,7 @@ import type { MyActivityOverview } from "../../types/impulse/feed.types";
 import type {
   CreatePagePayload,
   PageCategory,
+  PageDetails,
   PageOverviewTypes,
   PagesByFilterResponse,
   PagesOverview,
@@ -170,6 +171,13 @@ export const getAllPagesByFilter = async (params: {
   return response.data;
 };
 
+export const pageDetails = async (pageId: number): Promise<PageDetails> => {
+  const response = await axiosInstance.get<PageDetails>(
+    API_ROUTES.PAGE_DETAILS(pageId),
+  );
+  return response.data;
+};
+
 export const followPage = async (pageId: number) => {
   const response = await axiosInstance.post(API_ROUTES.PAGE_FOLLOW, {
     page: pageId,
@@ -182,4 +190,48 @@ export const unfollowPage = async (pageId: number) => {
     page: pageId,
   });
   return response.data;
+};
+
+export const createPagePost = async ({
+  pageId,
+  title,
+  content,
+  files = [],
+}: {
+  pageId: number;
+  title?: string;
+  content: string;
+  files?: File[];
+}) => {
+  const formData = new FormData();
+  formData.append("page", String(pageId));
+  if (title) formData.append("title", title);
+  formData.append("content", content);
+
+  files.forEach((file) => {
+    formData.append("files", file);
+  });
+
+  const response = await axiosInstance.post(API_ROUTES.PAGE_POSTS, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+
+  return response.data;
+};
+
+export const getPagePosts = async (pageId: number): Promise<FeedPost[]> => {
+  const response = await axiosInstance.get<(FeedPost | FeedPost["data"])[]>(
+    API_ROUTES.GET_PAGE_POSTS(pageId),
+  );
+  return response.data.map((item) => {
+    if ("type" in item && "data" in item) {
+      return item as FeedPost;
+    }
+    return {
+      id: item.id,
+      type: "page_post",
+      data: item as FeedPost["data"],
+      created_at: item.created_at,
+    };
+  });
 };

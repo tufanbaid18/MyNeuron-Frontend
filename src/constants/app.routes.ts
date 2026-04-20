@@ -29,4 +29,5 @@ export const APP_ROUTES = {
   USER: "/user/$userId",
   PAGES: "/impulse/pages",
   IMPULSE_POST: (postId: number | string) => `/impulse/feed/posts/${postId}`,
+  PAGE_DETAILS: (pageId: number | string) => `/impulse/pages/${pageId}`,
 };

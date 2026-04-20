@@ -2,13 +2,23 @@ import { useQuery } from "@tanstack/react-query";
 import {
   getFeedPosts,
   getNews,
+  getPagePosts,
   getPostDetails,
 } from "../../services/impulse/impulse.service";
 
-export const useFeedPosts = () => {
+export const useFeedPosts = (options?: { enabled?: boolean }) => {
   return useQuery({
     queryKey: ["get-feed-posts"],
     queryFn: getFeedPosts,
+    ...options,
+  });
+};
+
+export const usePagePosts = (pageId: number) => {
+  return useQuery({
+    queryKey: ["get-page-posts", pageId],
+    queryFn: () => getPagePosts(pageId),
+    enabled: !!pageId,
   });
 };
 
