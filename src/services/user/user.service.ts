@@ -117,14 +117,14 @@ export const getMyFollowing = async () => {
   return res.data;
 };
 
-export const acceptFollowRequest = async (requestId: string) => {
+export const acceptFollowRequest = async (requestId: number) => {
   const res = await axiosInstance.post(
     API_ROUTES.FOLLOW_REQUEST_ACCEPTED(requestId),
   );
   return res.data;
 };
 
-export const rejectFollowRequest = async (requestId: string) => {
+export const rejectFollowRequest = async (requestId: number) => {
   const res = await axiosInstance.post(
     API_ROUTES.FOLLOW_REQUEST_REJECTED(requestId),
   );

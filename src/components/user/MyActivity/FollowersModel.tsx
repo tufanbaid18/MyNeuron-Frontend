@@ -1,7 +1,7 @@
 import { Button, Modal } from "antd";
 import { useAtomValue } from "jotai";
 import React from "react";
-import { useGetMyFollowers } from "../../../hooks/user/useUserProfile";
+import { useGetMyFollowers } from "../../../hooks/impulse/useMyActivity";
 import { userProfileAtom } from "../../../store/auth.store";
 import { MyActivityTypes } from "../../../types/impulse/feed.types";
 import type { MyActivityUserResponse } from "../../../types/user/user.types";

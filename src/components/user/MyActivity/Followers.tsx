@@ -1,5 +1,9 @@
-import { Avatar, Button, Tag } from "antd";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import { Avatar, Button, Tag } from "antd";
+import {
+  useAcceptFollowRequest,
+  useRejectFollowRequest,
+} from "../../../hooks/impulse/useMyActivity";
 import { MyActivityTypes } from "../../../types/impulse/feed.types";
 import type { UserMiniProfile } from "../../../types/user/user.types";
 import { getAvatarByName } from "../../../utils/avatar.utils";
@@ -10,12 +14,19 @@ type FollowersProps = {
 };
 
 const Followers = ({ user, type }: FollowersProps) => {
-  const fullName = [
-    user.first_name,
-    user.last_name,
-  ]
-    .filter(Boolean)
-    .join(" ");
+  const fullName = [user.first_name, user.last_name].filter(Boolean).join(" ");
+
+  const { mutateAsync: acceptFollowRequest } = useAcceptFollowRequest(user.id);
+  const { mutateAsync: rejectFollowRequest } = useRejectFollowRequest(user.id);
+  // const { mutateAsync: handleUnfollowUser } = useUnfollowUser(user.id);
+
+  const handleAcceptFollowRequest = () => {
+    acceptFollowRequest();
+  };
+
+  const handleRejectFollowRequest = () => {
+    rejectFollowRequest();
+  };
 
   const renderAction = () => {
     switch (type) {
@@ -28,6 +39,7 @@ const Followers = ({ user, type }: FollowersProps) => {
               icon={<CheckOutlined />}
               onClick={(e) => {
                 e.stopPropagation();
+                handleAcceptFollowRequest();
               }}
             >
               Accept
@@ -38,6 +50,7 @@ const Followers = ({ user, type }: FollowersProps) => {
               icon={<CloseOutlined />}
               onClick={(e) => {
                 e.stopPropagation();
+                handleRejectFollowRequest();
               }}
             >
               Reject
@@ -76,7 +89,6 @@ const Followers = ({ user, type }: FollowersProps) => {
 
   return (
     <div
-      //   onClick={() => onUserClick(user)}
       className="flex items-center justify-between gap-3 p-2 rounded-xl h-14 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all group text-left w-full cursor-pointer"
     >
       <div className="flex items-center gap-3">
@@ -97,9 +109,7 @@ const Followers = ({ user, type }: FollowersProps) => {
           </span>
         </div>
       </div>
-      <div className="shrink-0">
-        {renderAction()}
-      </div>
+      <div className="shrink-0">{renderAction()}</div>
     </div>
   );
 };

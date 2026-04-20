@@ -1,6 +1,7 @@
 import { Button, Modal } from "antd";
 import React from "react";
-import { useOutgoingFollowRequests } from "../../../hooks/user/useUserProfile";
+
+import { useOutgoingFollowRequests } from "../../../hooks/impulse/useMyActivity";
 import { MyActivityTypes } from "../../../types/impulse/feed.types";
 import type { MyActivityUserResponse } from "../../../types/user/user.types";
 import ErrorComponent from "../../ui/ErrorComponent";
@@ -16,7 +17,7 @@ const PendingRequestsModel: React.FC<PendingRequestsModelProps> = ({
   onCancel,
 }) => {
   const { data, isLoading, error } = useOutgoingFollowRequests();
-  console.log("data ==========> ", data);
+
 
   return (
     <>

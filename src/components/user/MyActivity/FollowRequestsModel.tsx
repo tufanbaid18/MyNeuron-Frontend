@@ -1,6 +1,6 @@
 import { Button, Modal } from "antd";
 import React from "react";
-import { useIncomingFollowRequests } from "../../../hooks/user/useUserProfile";
+import { useIncomingFollowRequests } from "../../../hooks/impulse/useMyActivity";
 import { MyActivityTypes } from "../../../types/impulse/feed.types";
 import type { MyActivityUserResponse } from "../../../types/user/user.types";
 import ErrorComponent from "../../ui/ErrorComponent";

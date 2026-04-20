@@ -1,14 +1,15 @@
 import { useParams, useRouter } from "@tanstack/react-router";
 import { Avatar, Button } from "antd";
+import { useAtomValue } from "jotai";
 import { MapPin, Send } from "lucide-react";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { FaLinkedin, FaXTwitter } from "react-icons/fa6";
+import { useSendFollowRequest } from "../../hooks/impulse/useMyActivity";
 import {
-  useGetMyFollowing,
-  useSendFollowRequest,
   useUserSearchById,
 } from "../../hooks/user/useUserProfile";
+import { userProfileAtom } from "../../store/auth.store";
 import { FollowingStatus } from "../../types/user/user.types";
 import { getAvatarByName } from "../../utils/avatar.utils";
 import ErrorComponent from "../ui/ErrorComponent";
@@ -46,8 +47,9 @@ const PublicUserProfile: React.FC = () => {
   const [follwingStatus, setFollowingStatus] = useState<string | null>(null);
   // const loggedUser = useAtomValue(userProfileAtom);
 
-  const { data: myFollowing } = useGetMyFollowing();
-  console.log("============>", myFollowing);
+  // const { data: myFollowing } = useGetMyFollowing();
+
+  const logedUser =useAtomValue(userProfileAtom)
 
   const router = useRouter();
 
@@ -59,6 +61,8 @@ const PublicUserProfile: React.FC = () => {
   //     setFollowingStatus(isFollowing ? FollowingStatus.ACCEPTED : null);
   //   }
   // }, [myFollowers, user]);
+
+
 
   if (isLoading) return <Loading />;
   if (error || !user) return <ErrorComponent />;
@@ -166,7 +170,7 @@ const PublicUserProfile: React.FC = () => {
                   <span>Message</span>
                 </div>
               </Button>
-              <Button
+              {logedUser?.id !== Number(userId) && <Button
                 onClick={handleFollowRequest}
                 disabled={follwingStatus === FollowingStatus.PENDING}
                 size="large"
@@ -177,7 +181,7 @@ const PublicUserProfile: React.FC = () => {
                   : follwingStatus === FollowingStatus.ACCEPTED
                     ? "Following"
                     : "Follow"}
-              </Button>
+              </Button>}
 
               {(user.personal_detail?.x_handle ||
                 user.personal_detail?.linkedin) && (
@@ -282,8 +286,8 @@ const PublicUserProfile: React.FC = () => {
           {/* Past Experience */}
 
           <Section title="Past Experience">
-            {user.professional_detail?.past_experiences?.map((exp) => (
-              <div key={exp.id} className="border-b pb-2 mb-2">
+            {user.professional_detail?.past_experiences?.map((exp, index) => (
+              <div key={exp.id || index} className="border-b pb-2 mb-2">
                 <div className="font-medium">{exp.role}</div>
                 <div className="text-xs text-gray-500">{exp.organization}</div>
                 <div className="text-xs">
@@ -296,8 +300,8 @@ const PublicUserProfile: React.FC = () => {
           {/* Education */}
 
           <Section title="Education">
-            {user.education.map((edu) => (
-              <div key={edu.id} className="border-b pb-2 mb-2">
+            {user.education.map((edu, index) => (
+              <div key={edu.id || index} className="border-b pb-2 mb-2">
                 <div className="font-medium">
                   {edu.degree || edu.course_name}
                 </div>

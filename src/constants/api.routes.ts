@@ -70,9 +70,9 @@ export const API_ROUTES = {
   MY_FOLLOWING: "follows/my-following/",
   OUTGOING_FOLLOW_REQUESTS: "follows/outgoing/",
   INCOMING_FOLLOW_REQUESTS: "follows/incoming/",
-  FOLLOW_REQUEST_ACCEPTED: (requestId: string) =>
+  FOLLOW_REQUEST_ACCEPTED: (requestId: number) =>
     `/follows/${requestId}/accept/`,
-  FOLLOW_REQUEST_REJECTED: (requestId: string) =>
+  FOLLOW_REQUEST_REJECTED: (requestId: number) =>
     `/follows/${requestId}/reject/`,
   GET_FOLLOWERS: (userId: number) =>
     `/usersfollow/${userId}/followers/`,
