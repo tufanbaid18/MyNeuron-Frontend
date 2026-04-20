@@ -8,6 +8,8 @@ const { useToken } = theme;
 interface PageImageUploadProps {
   onCoverChange: (file: File | undefined) => void;
   onProfileChange: (file: File | undefined) => void;
+  initialCoverUrl?: string;
+  initialProfileUrl?: string;
 }
 
 const COVER_HEIGHT = 160;
@@ -16,10 +18,16 @@ const PROFILE_SIZE = 88;
 const PageImageUpload = ({
   onCoverChange,
   onProfileChange,
+  initialCoverUrl,
+  initialProfileUrl,
 }: PageImageUploadProps) => {
   const { token } = useToken();
-  const [coverPreview, setCoverPreview] = useState<string | null>(null);
-  const [profilePreview, setProfilePreview] = useState<string | null>(null);
+  const [coverPreview, setCoverPreview] = useState<string | null>(
+    initialCoverUrl ?? null,
+  );
+  const [profilePreview, setProfilePreview] = useState<string | null>(
+    initialProfileUrl ?? null,
+  );
 
   const validateFile = (file: File): boolean => {
     if (!PAGE_IMAGE_CONSTANTS.ALLOWED_TYPES.some((t) => t === file.type)) {

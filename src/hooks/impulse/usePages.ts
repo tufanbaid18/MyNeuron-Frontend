@@ -1,12 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  deletePage,
   followPage,
   getAllPagesByFilter,
   getPagesOverview,
   pageDetails,
   unfollowPage,
+  updatePage,
 } from "../../services/impulse/impulse.service";
 import type {
+  CreatePagePayload,
   PageCategory,
   PageOverviewTypes,
 } from "../../types/impulse/page.types";
@@ -54,5 +57,36 @@ export const usePageDetails = (pageId: number) => {
   return useQuery({
     queryKey: ["page-details", pageId],
     queryFn: () => pageDetails(pageId),
+  });
+};
+
+export const useUpdatePage = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      pageId,
+      payload,
+    }: {
+      pageId: number;
+      payload: Partial<CreatePagePayload>;
+    }) => updatePage(pageId, payload),
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["page-details", variables.pageId],
+      });
+      queryClient.invalidateQueries({ queryKey: ["pages-by-filter"] });
+      queryClient.invalidateQueries({ queryKey: ["pages-overview"] });
+    },
+  });
+};
+
+export const useDeletePage = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (pageId: number) => deletePage(pageId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["pages-by-filter"] });
+      queryClient.invalidateQueries({ queryKey: ["pages-overview"] });
+    },
   });
 };

@@ -117,6 +117,37 @@ export const createPage = async (payload: CreatePagePayload) => {
   return response.data;
 };
 
+export const updatePage = async (
+  pageId: number,
+  payload: Partial<CreatePagePayload>,
+) => {
+  const formData = new FormData();
+
+  for (const [key, value] of Object.entries(payload)) {
+    if (value === "" || value === undefined || value === null) continue;
+
+    if (value instanceof File) {
+      formData.append(key, value);
+    } else if (Array.isArray(value)) {
+      if (value.length === 0) continue;
+      value.forEach((item) => formData.append(key, item));
+    } else {
+      formData.append(key, String(value));
+    }
+  }
+
+  const response = await axiosInstance.patch(
+    API_ROUTES.PAGE_DETAILS(pageId),
+    formData,
+    { headers: { "Content-Type": "multipart/form-data" } },
+  );
+  return response.data;
+};
+
+export const deletePage = async (pageId: number) => {
+  await axiosInstance.delete(API_ROUTES.PAGE_DETAILS(pageId));
+};
+
 export const likePost = async (postId: number) => {
   const response = await axiosInstance.post<{
     id: number;

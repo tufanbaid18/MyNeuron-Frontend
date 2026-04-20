@@ -1,5 +1,9 @@
 import {
   ArrowLeftOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  EllipsisOutlined,
+  ExclamationCircleFilled,
   GlobalOutlined,
   LinkOutlined,
   UserAddOutlined,
@@ -11,16 +15,22 @@ import {
   Button,
   Card,
   Col,
+  Dropdown,
   Grid,
+  Modal,
   Row,
   Skeleton,
   Space,
   Typography,
 } from "antd";
+import { useState } from "react";
+import toast from "react-hot-toast";
 import Feed from "../../../components/impulse/Feed";
+import AddPageModal from "../../../components/impulse/pages/AddPageModal";
 import ErrorComponent from "../../../components/ui/ErrorComponent";
 import { useUserProfile } from "../../../hooks/auth/useUserProfile";
 import {
+  useDeletePage,
   useFollowPage,
   usePageDetails,
   useUnfollowPage,
@@ -37,6 +47,8 @@ const PageDetails = () => {
   const { pageId } = impulsePageDetailsRoute.useParams();
   const numericPageId = Number(pageId);
 
+  const [editModalOpen, setEditModalOpen] = useState(false);
+
   const {
     data: pageDetails,
     isLoading: isPageLoading,
@@ -50,6 +62,7 @@ const PageDetails = () => {
 
   const followPage = useFollowPage();
   const unfollowPage = useUnfollowPage();
+  const deletePage = useDeletePage();
 
   const handleFollow = () => {
     if (pageDetails?.is_following) {
@@ -57,6 +70,34 @@ const PageDetails = () => {
     } else {
       followPage.mutate(numericPageId);
     }
+  };
+
+  const handleDelete = () => {
+    Modal.confirm({
+      title: "Delete this page?",
+      icon: <ExclamationCircleFilled />,
+      content:
+        "This action cannot be undone. All posts and followers associated with this page will be permanently removed.",
+      okText: "Delete",
+      okType: "danger",
+      cancelText: "Cancel",
+      centered: true,
+      onOk: () => {
+        return new Promise((resolve, reject) => {
+          deletePage.mutate(numericPageId, {
+            onSuccess: () => {
+              toast.success("Page deleted successfully!");
+              router.history.back();
+              resolve(undefined);
+            },
+            onError: () => {
+              toast.error("Failed to delete page. Please try again.");
+              reject();
+            },
+          });
+        });
+      },
+    });
   };
 
   if (isPageLoading || isUserLoading) {
@@ -86,9 +127,32 @@ const PageDetails = () => {
 
   const isOwner = user?.id === pageDetails?.owner?.id;
 
+  const ownerMenuItems = [
+    {
+      key: "edit",
+      label: "Edit Page",
+      icon: <EditOutlined />,
+      onClick: () => setEditModalOpen(true),
+    },
+    {
+      key: "delete",
+      label: "Delete Page",
+      icon: <DeleteOutlined />,
+      danger: true,
+      onClick: handleDelete,
+    },
+  ];
+
   return (
     <div style={{ padding: "16px", margin: "0 auto", overflowX: "hidden" }}>
-      <div style={{ marginBottom: 16 }}>
+      <div
+        style={{
+          marginBottom: 16,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <Button
           icon={<ArrowLeftOutlined />}
           onClick={() => router.history.back()}
@@ -96,6 +160,17 @@ const PageDetails = () => {
         >
           Back
         </Button>
+
+        {isOwner && (
+          <Dropdown menu={{ items: ownerMenuItems }} trigger={["click"]}>
+            <Button
+              icon={<EllipsisOutlined />}
+              shape="circle"
+              size="large"
+              style={{ border: "none", boxShadow: "none" }}
+            />
+          </Dropdown>
+        )}
       </div>
 
       {/* Header Section */}
@@ -255,6 +330,15 @@ const PageDetails = () => {
           <Feed user={user} pageId={numericPageId} />
         </Col>
       </Row>
+
+      {/* Edit Page Modal */}
+      {isOwner && (
+        <AddPageModal
+          open={editModalOpen}
+          onCancel={() => setEditModalOpen(false)}
+          pageDetails={pageDetails}
+        />
+      )}
     </div>
   );
 };

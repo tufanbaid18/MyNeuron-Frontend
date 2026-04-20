@@ -30,7 +30,7 @@ const Section: React.FC<{ title: string; children: React.ReactNode }> = ({
   </div>
 );
 
-const Label: React.FC<{ label: string; value?: any }> = ({ label, value }) => {
+const Label: React.FC<{ label: string; value?: string | number | null }> = ({ label, value }) => {
   value = value ?? "Not provided";
   return (
     <div>
@@ -81,7 +81,7 @@ const PublicUserProfile: React.FC = () => {
       const response = await sendFollowRequest();
       setFollowingStatus(response.status);
       toast.success("Follow request sent successfully");
-    } catch (error) {
+    } catch {
       toast.error("Failed to send follow request");
     }
   };
