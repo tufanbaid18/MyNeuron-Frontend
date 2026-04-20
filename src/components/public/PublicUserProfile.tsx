@@ -48,7 +48,6 @@ const PublicUserProfile: React.FC = () => {
   const [follwingStatus, setFollowingStatus] = useState<string | null>(null);
 
   const loggedUser = useAtomValue(userProfileAtom);
-  console.log(loggedUser, "logged user");
   const router = useRouter();
   const { data: outgoingRequests } = useOutgoingFollowRequests();
 

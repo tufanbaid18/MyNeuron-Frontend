@@ -1,8 +1,16 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 import { getMyActivityOverview } from "../../services/impulse/impulse.service";
-import { acceptFollowRequest, getMyFollowers, getMyFollowing, incomingFollowRequests, outgoingFollowRequests, rejectFollowRequest, sendFollowRequest } from "../../services/user/user.service";
+import {
+  acceptFollowRequest,
+  getMyFollowers,
+  getMyFollowing,
+  incomingFollowRequests,
+  outgoingFollowRequests,
+  rejectFollowRequest,
+  sendFollowRequest,
+} from "../../services/user/user.service";
 import type { MyActivityUserResponse } from "../../types/impulse/myactivity.types";
-
 
 export const useMyActivityOverview = () => {
   return useQuery({
@@ -42,8 +50,13 @@ export const useAcceptFollowRequest = (requestId: number) => {
       queryClient.invalidateQueries({
         queryKey: ["userSearchById", requestId],
       });
+      toast.success("Follow request accepted successfully");
+      queryClient.invalidateQueries({
+        queryKey: ["incomingFollowRequests"],
+      });
     },
     onError: (error) => {
+      toast.error(error.message || "Failed to accept follow request");
       console.log(error);
     },
   });
@@ -63,6 +76,7 @@ export const useRejectFollowRequest = (requestId: number) => {
       });
     },
     onError: (error) => {
+      toast.error(error.message || "Failed to reject follow request");
       console.log(error);
     },
   });

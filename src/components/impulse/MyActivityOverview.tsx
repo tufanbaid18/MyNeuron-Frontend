@@ -26,7 +26,6 @@ const MyActivityOverview = () => {
   };
 
   const handleOnClickViewAll = ({ type }: { type: MyActivityTypes }) => {
-    console.log("type ==========> ", type);
     setModelType(type);
     setOpenModel(true);
   };

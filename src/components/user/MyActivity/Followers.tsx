@@ -89,9 +89,7 @@ const Followers = ({ user, type }: FollowersProps) => {
   };
 
   return (
-    <div
-      className="flex items-center justify-between gap-3 p-2 rounded-xl h-14 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all group text-left w-full cursor-pointer"
-    >
+    <div className="flex items-center justify-between gap-3 p-2 rounded-xl h-14 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all group text-left w-full cursor-pointer">
       <div className="flex items-center gap-3">
         <Avatar
           size={40}

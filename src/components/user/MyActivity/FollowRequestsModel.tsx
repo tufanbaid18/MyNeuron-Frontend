@@ -16,7 +16,7 @@ const FollowRequestsModel: React.FC<FollowRequestsModelProps> = ({
   onCancel,
 }) => {
   const { data, isLoading, error } = useIncomingFollowRequests();
-  console.log("incoming follow request data=========> ", data);
+
 
   return (
     <>
@@ -41,7 +41,7 @@ const FollowRequestsModel: React.FC<FollowRequestsModelProps> = ({
               <Followers
                 type={MyActivityTypes.FOLLOW_REQUESTS}
                 key={user.id}
-                user={user.following}
+                user={user.follower}
               />
             ))}
           </div>
