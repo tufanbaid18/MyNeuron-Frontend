@@ -27,4 +27,5 @@ export const APP_ROUTES = {
   INBOX: "/inbox",
   MY_ACTIVITY: "/impulse/my-activity",
   USER: "/user/$userId",
+  PAGES: "/impulse/pages",
 };

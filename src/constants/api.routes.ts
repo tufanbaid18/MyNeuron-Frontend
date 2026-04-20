@@ -31,6 +31,10 @@ export const API_ROUTES = {
   GET_FOLDERS_TREE: "/folders/tree/",
   CREATE_FOLDER: "/folders/",
   CREATE_FOLDER_ITEM: "/folder-items/",
+  UPDATE_FOLDER: (id: number) => `/folders/${id}/`,
+  DELETE_FOLDER: (id: number) => `/folders/${id}/`,
+  UPDATE_FOLDER_ITEM: (id: number) => `/folder-items/${id}/`,
+  DELETE_FOLDER_ITEM: (id: number) => `/folder-items/${id}/`,
   GATC_PASS: "/public/payment",
   GATC_PROGRAMS: "/programs/",
   GATC_SPEAKERS: "/speakers/",
@@ -61,6 +65,7 @@ export const API_ROUTES = {
   OG_META: "/og-meta/",
   MY_ACTIVITY_OVERVIEW: "/my-activity/overview",
   PAGES: "/pages/",
+  PAGES_BY_FILTER: "/pages/filter/",
   PAGES_OVERVIEW: "/pages/counts",
   NEWS: "/news/",
 
@@ -75,7 +80,6 @@ export const API_ROUTES = {
     `/follows/${requestId}/accept/`,
   FOLLOW_REQUEST_REJECTED: (requestId: number) =>
     `/follows/${requestId}/reject/`,
-  GET_FOLLOWERS: (userId: number) =>
-    `/usersfollow/${userId}/followers/`,
+  GET_FOLLOWERS: (userId: number) => `/usersfollow/${userId}/followers/`,
   PUBLIC_USER_FOLLOWING: (userId: number) => `/users/${userId}/following/`,
 };

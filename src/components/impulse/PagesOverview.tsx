@@ -24,7 +24,7 @@ const PagesOverview = () => {
       type = PageOverviewTypes.MY_PAGES;
     }
     navigate({
-      to: APP_ROUTES.MY_ACTIVITY,
+      to: APP_ROUTES.PAGES,
       search: { filter: type },
     });
   };

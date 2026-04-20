@@ -174,6 +174,7 @@ const MyBookshelf: React.FC = () => {
             breadcrumbs={activeFolderData?.path || []}
             loading={loading}
             onSelectFolder={handleSelectFolder}
+            onRefresh={fetchTree}
           />
         </Content>
 

@@ -12,6 +12,7 @@ type BookshelfContentAreaProps = {
   loading: boolean;
   onSelectFolder: (folderId: number | null) => void;
   breadcrumbs: { id: number | null; name: string }[];
+  onRefresh: () => void;
 };
 
 const BookshelfContentArea: React.FC<BookshelfContentAreaProps> = ({
@@ -19,6 +20,7 @@ const BookshelfContentArea: React.FC<BookshelfContentAreaProps> = ({
   loading,
   onSelectFolder,
   breadcrumbs,
+  onRefresh,
 }) => {
   const { token } = useToken();
 
@@ -110,6 +112,7 @@ const BookshelfContentArea: React.FC<BookshelfContentAreaProps> = ({
                       isFolder={true}
                       folder={sf}
                       onClick={() => onSelectFolder(sf.id)}
+                      onRefresh={onRefresh}
                     />
                   </Col>
                 ))}
@@ -136,7 +139,11 @@ const BookshelfContentArea: React.FC<BookshelfContentAreaProps> = ({
               <Row gutter={[12, 12]}>
                 {activeFolder.items.map((it) => (
                   <Col xs={24} sm={12} md={8} lg={6} xl={4} key={`item-${it.id}`}>
-                    <BookshelfItemCard isFolder={false} item={it} />
+                    <BookshelfItemCard 
+                      isFolder={false} 
+                      item={it} 
+                      onRefresh={onRefresh}
+                    />
                   </Col>
                 ))}
               </Row>

@@ -3,6 +3,9 @@ import axiosInstance from "../../lib/axiosInstance";
 import type { MyActivityOverview } from "../../types/impulse/feed.types";
 import type {
   CreatePagePayload,
+  PageCategory,
+  PageOverviewTypes,
+  PagesByFilterResponse,
   PagesOverview,
 } from "../../types/impulse/page.types";
 import type {
@@ -151,5 +154,18 @@ export const getNews = async () => {
 
 export const getPostDetails = async (postId: number) => {
   const response = await axiosInstance.get(API_ROUTES.POST_BY_ID(postId));
+  return response.data;
+};
+
+export const getAllPagesByFilter = async (params: {
+  category?: PageCategory;
+  type?: PageOverviewTypes;
+}): Promise<PagesByFilterResponse> => {
+  const response = await axiosInstance.get<PagesByFilterResponse>(
+    API_ROUTES.PAGES_BY_FILTER,
+    {
+      params,
+    },
+  );
   return response.data;
 };

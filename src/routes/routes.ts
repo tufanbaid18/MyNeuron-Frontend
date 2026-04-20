@@ -30,4 +30,6 @@ export const ROUTER_ROUTES = {
   INBOX: "inbox",
   ACTIVITY: "my-activity",
   POST_DETAILS: "$postId",
+  PAGES: "pages",
+  PAGE_DETAILS: "$pageId",
 };
