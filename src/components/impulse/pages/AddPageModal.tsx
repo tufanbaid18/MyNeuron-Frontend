@@ -1,18 +1,18 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { Button, Divider, Form, Input, Modal, theme, Typography } from "antd";
 import { useCallback, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import { useQueryClient } from "@tanstack/react-query";
 import { useCreatePage } from "../../../hooks/impulse/useCreatePage";
-import { PageCategory } from "../../../types/impulse/page.types";
 import type { CreatePagePayload } from "../../../types/impulse/page.types";
+import { PageCategory } from "../../../types/impulse/page.types";
 import {
   createPageDefaultValues,
   createPageSchema,
 } from "../../../validations/page.schemas";
 import { createZodValidator } from "../../../validations/zodValidator";
 import CategorySelector from "./CategorySelector";
-import CompanyFields from "./CompanyFields";
 import CommunityFields from "./CommunityFields";
+import CompanyFields from "./CompanyFields";
 import EventFields from "./EventFields";
 import LocationFields from "./LocationFields";
 import PageImageUpload from "./PageImageUpload";
@@ -183,7 +183,7 @@ const AddPageModal = ({ open, onCancel }: AddPageModalProps) => {
           {categorySpecificFields && (
             <>
               <Divider
-                orientation="vertical"
+                orientation="horizontal"
                 style={{ margin: "4px 0 16px", fontSize: 13 }}
               >
                 <Text type="secondary" style={{ fontSize: 12 }}>
@@ -200,7 +200,7 @@ const AddPageModal = ({ open, onCancel }: AddPageModalProps) => {
 
           {/* ── Location / Website ─────────────────── */}
           <Divider
-            orientation="vertical"
+            orientation="horizontal"
             style={{ margin: "4px 0 16px", fontSize: 13 }}
           >
             <Text type="secondary" style={{ fontSize: 12 }}>

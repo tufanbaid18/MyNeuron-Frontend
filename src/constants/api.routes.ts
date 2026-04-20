@@ -68,6 +68,8 @@ export const API_ROUTES = {
   PAGES_BY_FILTER: "/pages/filter/",
   PAGES_OVERVIEW: "/pages/counts",
   NEWS: "/news/",
+  PAGE_FOLLOW: "/page-follow/follow/",
+  PAGE_UNFOLLOW: "/page-follow/unfollow/",
 
   //------- public User ---------
   PUBLIC_USER_FOLLOW_REQUESTS: "/follows/",

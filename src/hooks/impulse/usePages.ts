@@ -1,7 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  followPage,
   getAllPagesByFilter,
   getPagesOverview,
+  unfollowPage,
 } from "../../services/impulse/impulse.service";
 import type {
   PageCategory,
@@ -22,5 +24,27 @@ export const usePagesByFilter = (params: {
   return useQuery({
     queryKey: ["pages-by-filter", params],
     queryFn: () => getAllPagesByFilter(params),
+  });
+};
+
+export const useFollowPage = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (pageId: number) => followPage(pageId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["pages-by-filter"] });
+      queryClient.invalidateQueries({ queryKey: ["pages-overview"] });
+    },
+  });
+};
+
+export const useUnfollowPage = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (pageId: number) => unfollowPage(pageId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["pages-by-filter"] });
+      queryClient.invalidateQueries({ queryKey: ["pages-overview"] });
+    },
   });
 };

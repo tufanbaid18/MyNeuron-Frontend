@@ -29,7 +29,7 @@ export const ROUTER_ROUTES = {
   VERIFY_EMAIL: "/verify-email",
   INBOX: "inbox",
   ACTIVITY: "my-activity",
-  POST_DETAILS: "$postId",
+  POST_DETAILS: "posts/$postId",
   PAGES: "pages",
   PAGE_DETAILS: "$pageId",
 };

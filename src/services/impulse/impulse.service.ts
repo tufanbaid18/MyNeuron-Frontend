@@ -169,3 +169,17 @@ export const getAllPagesByFilter = async (params: {
   );
   return response.data;
 };
+
+export const followPage = async (pageId: number) => {
+  const response = await axiosInstance.post(API_ROUTES.PAGE_FOLLOW, {
+    page: pageId,
+  });
+  return response.data;
+};
+
+export const unfollowPage = async (pageId: number) => {
+  const response = await axiosInstance.post(API_ROUTES.PAGE_UNFOLLOW, {
+    page: pageId,
+  });
+  return response.data;
+};
