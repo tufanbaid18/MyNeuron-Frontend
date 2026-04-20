@@ -5,7 +5,8 @@ import {
   useRejectFollowRequest,
 } from "../../../hooks/impulse/useMyActivity";
 import { MyActivityTypes } from "../../../types/impulse/feed.types";
-import type { UserMiniProfile } from "../../../types/user/user.types";
+
+import type { UserMiniProfile } from "../../../types/impulse/myactivity.types";
 import { getAvatarByName } from "../../../utils/avatar.utils";
 
 type FollowersProps = {

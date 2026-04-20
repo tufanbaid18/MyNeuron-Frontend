@@ -4,7 +4,7 @@ import React from "react";
 import { useGetMyFollowers } from "../../../hooks/impulse/useMyActivity";
 import { userProfileAtom } from "../../../store/auth.store";
 import { MyActivityTypes } from "../../../types/impulse/feed.types";
-import type { MyActivityUserResponse } from "../../../types/user/user.types";
+import type { MyActivityUserResponse } from "../../../types/impulse/myactivity.types";
 import ErrorComponent from "../../ui/ErrorComponent";
 import Loading from "../../ui/Loading";
 import Followers from "./Followers";
@@ -43,7 +43,7 @@ const FollowersModel: React.FC<FollowersModelProps> = ({ open, onCancel }) => {
               <Followers
                 type={MyActivityTypes.FOLLOWERS}
                 key={user.id}
-                user={user.follower}
+                user={user.following}
               />
             ))}
           </div>

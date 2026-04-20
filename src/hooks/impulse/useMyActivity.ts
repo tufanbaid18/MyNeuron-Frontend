@@ -1,7 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getMyActivityOverview } from "../../services/impulse/impulse.service";
 import { acceptFollowRequest, getMyFollowers, getMyFollowing, incomingFollowRequests, outgoingFollowRequests, rejectFollowRequest, sendFollowRequest } from "../../services/user/user.service";
-import type { MyActivityUserResponse } from "../../types/user/user.types";
+import type { MyActivityUserResponse } from "../../types/impulse/myactivity.types";
+
 
 export const useMyActivityOverview = () => {
   return useQuery({
