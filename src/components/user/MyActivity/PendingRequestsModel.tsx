@@ -43,6 +43,7 @@ const PendingRequestsModel: React.FC<PendingRequestsModelProps> = ({
                 type={MyActivityTypes.PENDING_REQUESTS}
                 key={user.id}
                 user={user.following}
+                requestId={user.id}
               />
             ))}
           </div>

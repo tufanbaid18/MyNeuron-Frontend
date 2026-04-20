@@ -74,7 +74,8 @@ export const API_ROUTES = {
     `/follows/${requestId}/accept/`,
   FOLLOW_REQUEST_REJECTED: (requestId: number) =>
     `/follows/${requestId}/reject/`,
-  GET_FOLLOWERS: (userId: number) =>
-    `/usersfollow/${userId}/followers/`,
+  GET_FOLLOWERS: (userId: number) => `/usersfollow/${userId}/followers/`,
   PUBLIC_USER_FOLLOWING: (userId: number) => `/users/${userId}/following/`,
+  REMOVE_FOLLOWER: "/follows/remove_follower/",
+  UNFOLLOW_USER: "/follows/unfollow/",
 };

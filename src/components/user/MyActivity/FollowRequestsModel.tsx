@@ -37,11 +37,12 @@ const FollowRequestsModel: React.FC<FollowRequestsModelProps> = ({
           <p className="text-center">No follow requests found</p>
         ) : (
           <div className="flex flex-col gap-4">
-            {data?.map((user: MyActivityUserResponse) => (
+            {data?.map((request: MyActivityUserResponse) => (
               <Followers
                 type={MyActivityTypes.FOLLOW_REQUESTS}
-                key={user.id}
-                user={user.follower}
+                key={request.id}
+                user={request.follower}
+                requestId={request.id}
               />
             ))}
           </div>

@@ -3,11 +3,12 @@ import { Avatar, Button } from "antd";
 import { useAtomValue } from "jotai";
 import { MapPin, Send } from "lucide-react";
 import React, { useState } from "react";
-import toast from "react-hot-toast";
 import { FaLinkedin, FaXTwitter } from "react-icons/fa6";
 import {
+  useGetMyFollowing,
   useOutgoingFollowRequests,
   useSendFollowRequest,
+  useUnfollowUser,
 } from "../../hooks/impulse/useMyActivity";
 import { useUserSearchById } from "../../hooks/user/useUserProfile";
 import { userProfileAtom } from "../../store/auth.store";
@@ -31,7 +32,10 @@ const Section: React.FC<{ title: string; children: React.ReactNode }> = ({
   </div>
 );
 
-const Label: React.FC<{ label: string; value?: any }> = ({ label, value }) => {
+const Label: React.FC<{ label: string; value?: React.ReactNode }> = ({
+  label,
+  value,
+}) => {
   value = value ?? "Not provided";
   return (
     <div>
@@ -39,6 +43,12 @@ const Label: React.FC<{ label: string; value?: any }> = ({ label, value }) => {
       <span>{value}</span>
     </div>
   );
+};
+
+const getFollowButtonText = (status: string | null) => {
+  if (status === FollowingStatus.PENDING) return "Requested";
+  if (status === FollowingStatus.ACCEPTED) return "Unfollow";
+  return "Follow";
 };
 
 const PublicUserProfile: React.FC = () => {
@@ -50,26 +60,36 @@ const PublicUserProfile: React.FC = () => {
   const loggedUser = useAtomValue(userProfileAtom);
   const router = useRouter();
   const { data: outgoingRequests } = useOutgoingFollowRequests();
+  const { data: myFollowing } = useGetMyFollowing();
+
+  const unfollowUserMutation = useUnfollowUser()
 
   React.useEffect(() => {
-    if (outgoingRequests && user) {
-      const followRequest = outgoingRequests.find(
-        (request) =>
-          request.following.id === userId ||
-          String(request.following.id) === String(userId),
+    if (!user) return;
+
+    let isFollowing = false;
+
+    if (myFollowing) {
+      const followingMatch = myFollowing.find(
+        (item: any) => String(item.id) === String(userId)
       );
+      
+      if (followingMatch) {
+        setFollowingStatus(FollowingStatus.ACCEPTED);
+        isFollowing = true;
+      }
+    }
+
+    if (!isFollowing && outgoingRequests) {
+      const followRequest = outgoingRequests.find(
+        (request) => String(request.following.id) === String(userId)
+      );
+      
       setFollowingStatus(followRequest?.status ?? null);
     }
-  }, [outgoingRequests, user, userId]);
+  }, [outgoingRequests, user, userId, myFollowing]);
 
-  // React.useEffect(() => {
-  //   if (myFollowing && user) {
-  //     const isFollowing = myFollowers.some(
-  //       (follower) => follower.id === user.id,
-  //     );
-  //     setFollowingStatus(isFollowing ? FollowingStatus.ACCEPTED : null);
-  //   }
-  // }, [myFollowers, user]);
+
 
   if (isLoading) return <Loading />;
   if (error || !user) return <ErrorComponent />;
@@ -83,13 +103,18 @@ const PublicUserProfile: React.FC = () => {
     .filter(Boolean)
     .join(" ");
 
-  const handleFollowRequest = async () => {
+  const handleFollowUnfollowClick = async () => {
+
+    if(follwingStatus === FollowingStatus.ACCEPTED){
+      await unfollowUserMutation.mutateAsync(Number(userId))
+      setFollowingStatus(null);
+      return
+    }
     try {
       const response = await sendFollowRequest();
       setFollowingStatus(response.status);
-      toast.success("Follow request sent successfully");
     } catch (error) {
-      toast.error("Failed to send follow request");
+      console.log(error);
     }
   };
 
@@ -180,16 +205,14 @@ const PublicUserProfile: React.FC = () => {
                 </Button>
 
                 <Button
-                  onClick={handleFollowRequest}
-                  disabled={follwingStatus === FollowingStatus.PENDING}
+                  onClick={handleFollowUnfollowClick}
+                  disabled={follwingStatus === FollowingStatus.PENDING || unfollowUserMutation.isPending}
+                  danger={follwingStatus === FollowingStatus.ACCEPTED}
                   size="large"
+                  // loading={unfollowUserMutation.isPending}
                   className="bg-white dark:bg-zinc-900 border-gray-300 dark:border-zinc-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50! dark:hover:bg-zinc-800! shadow-sm font-semibold rounded-full px-6 h-11"
                 >
-                  {follwingStatus === FollowingStatus.PENDING
-                    ? "Requested"
-                    : follwingStatus === FollowingStatus.ACCEPTED
-                      ? "Following"
-                      : "Follow"}
+                  {getFollowButtonText(follwingStatus)}
                 </Button>
               </div>
             )}

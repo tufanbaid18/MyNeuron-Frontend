@@ -2,7 +2,7 @@ import { Button, Modal } from "antd";
 import React from "react";
 import { useGetMyFollowing } from "../../../hooks/impulse/useMyActivity";
 import { MyActivityTypes } from "../../../types/impulse/feed.types";
-import type { MyActivityUserResponse } from "../../../types/impulse/myactivity.types";
+import type { UserMiniProfile } from "../../../types/impulse/myactivity.types";
 import ErrorComponent from "../../ui/ErrorComponent";
 import Loading from "../../ui/Loading";
 import Followers from "./Followers";
@@ -37,11 +37,12 @@ const FollowingModel: React.FC<FollowingModelProps> = ({ open, onCancel }) => {
           <p className="text-center">Not following anyone yet</p>
         ) : (
           <div className="flex flex-col gap-4">
-            {data?.map((user: MyActivityUserResponse) => (
+            {data?.map((user: UserMiniProfile) => (
               <Followers
                 type={MyActivityTypes.FOLLOWING}
                 key={user.id}
-                user={user.following}
+                user={user}
+                requestId={user.id}
               />
             ))}
           </div>
