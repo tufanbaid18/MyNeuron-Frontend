@@ -1,4 +1,4 @@
-import { Button, Modal } from "antd";
+import { Modal } from "antd";
 import { useAtomValue } from "jotai";
 import React from "react";
 import { useGetMyFollowers } from "../../../hooks/impulse/useMyActivity";
@@ -22,14 +22,11 @@ const FollowersModel: React.FC<FollowersModelProps> = ({ open, onCancel }) => {
     <>
       <Modal
         title={<p>Followers</p>}
-        footer={
-          <Button type="primary" onClick={onCancel}>
-            Close
-          </Button>
-        }
+        footer={null}
         loading={isLoading}
         open={open}
         onCancel={onCancel}
+        centered
       >
         {isLoading ? (
           <Loading />

@@ -1,4 +1,4 @@
-import { Button, Modal } from "antd";
+import { Modal } from "antd";
 import React from "react";
 import { useGetMyFollowing } from "../../../hooks/impulse/useMyActivity";
 import { MyActivityTypes } from "../../../types/impulse/feed.types";
@@ -20,14 +20,11 @@ const FollowingModel: React.FC<FollowingModelProps> = ({ open, onCancel }) => {
     <>
       <Modal
         title={<p>Following</p>}
-        footer={
-          <Button type="primary" onClick={onCancel}>
-            Close
-          </Button>
-        }
+        footer={null}
         open={open}
         onCancel={onCancel}
         loading={isLoading}
+        centered
       >
         {isLoading ? (
           <Loading />

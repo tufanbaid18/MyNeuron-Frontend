@@ -71,8 +71,8 @@ const PagesOverview = () => {
                   gap: 8,
                   minWidth: 0,
                 }}
-                className="hover:bg-gray-100"
-                onClick={() => handleOnClickViewAll({ type: item.type })}
+                className={`hover:bg-gray-100 dark:hover:bg-gray-800 transition-all`}
+             onClick={() => handleOnClickViewAll({ type: item.type })}
               >
                 <div
                   style={{
@@ -108,9 +108,7 @@ const PagesOverview = () => {
                     </Text>
                   </Tooltip>
                 </div>
-                <Text
-                  style={{ flexShrink: 0, fontWeight: 500, fontSize: 14 }}
-                >
+                <Text style={{ flexShrink: 0, fontWeight: 500, fontSize: 14 }}>
                   {item.data}
                 </Text>
               </div>

@@ -206,7 +206,7 @@ const PublicUserProfile: React.FC = () => {
 
                 <Button
                   onClick={handleFollowUnfollowClick}
-                  disabled={follwingStatus === FollowingStatus.PENDING || unfollowUserMutation.isPending}
+                  disabled={follwingStatus === FollowingStatus.PENDING}
                   danger={follwingStatus === FollowingStatus.ACCEPTED}
                   size="large"
                   // loading={unfollowUserMutation.isPending}

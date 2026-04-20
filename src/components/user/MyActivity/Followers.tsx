@@ -50,8 +50,14 @@ const Followers = ({ user, type, requestId }: FollowersProps) => {
               type="primary"
               size="small"
               icon={<CheckOutlined />}
-              disabled={acceptRequestMutation.isPending || rejectRequestMutation.isPending}
-              loading={acceptRequestMutation.isPending || rejectRequestMutation.isPending}
+              disabled={
+                acceptRequestMutation.isPending ||
+                rejectRequestMutation.isPending
+              }
+              loading={
+                acceptRequestMutation.isPending ||
+                rejectRequestMutation.isPending
+              }
               onClick={(e) => {
                 e.stopPropagation();
                 handleAcceptFollowRequest();
@@ -63,8 +69,14 @@ const Followers = ({ user, type, requestId }: FollowersProps) => {
               danger
               size="small"
               icon={<CloseOutlined />}
-              disabled={rejectRequestMutation.isPending || acceptRequestMutation.isPending}
-              loading={rejectRequestMutation.isPending || acceptRequestMutation.isPending}
+              disabled={
+                rejectRequestMutation.isPending ||
+                acceptRequestMutation.isPending
+              }
+              loading={
+                rejectRequestMutation.isPending ||
+                acceptRequestMutation.isPending
+              }
               onClick={(e) => {
                 e.stopPropagation();
                 handleRejectFollowRequest();
@@ -81,6 +93,7 @@ const Followers = ({ user, type, requestId }: FollowersProps) => {
           <Button
             size="small"
             variant="solid"
+            className="rounded-full px-6 h-11"
             disabled={unfollowUserMutation.isPending}
             loading={unfollowUserMutation.isPending}
             onClick={(e) => {
@@ -97,6 +110,7 @@ const Followers = ({ user, type, requestId }: FollowersProps) => {
           <Button
             size="small"
             variant="solid"
+            className=" rounded-full px-6 h-11"
             danger
             disabled={removeFollowerMutation.isPending}
             loading={removeFollowerMutation.isPending}
@@ -120,6 +134,7 @@ const Followers = ({ user, type, requestId }: FollowersProps) => {
           size={40}
           src={
             user.profile_image_url ||
+            user.profile_image ||
             getAvatarByName({
               firstName: user.first_name,
               lastName: user.last_name,

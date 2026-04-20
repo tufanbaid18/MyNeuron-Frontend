@@ -1,4 +1,4 @@
-import { Button, Modal } from "antd";
+import { Modal } from "antd";
 import React from "react";
 
 import { useOutgoingFollowRequests } from "../../../hooks/impulse/useMyActivity";
@@ -23,14 +23,11 @@ const PendingRequestsModel: React.FC<PendingRequestsModelProps> = ({
     <>
       <Modal
         title={<p>Pending Requests</p>}
-        footer={
-          <Button type="primary" onClick={onCancel}>
-            Close
-          </Button>
-        }
+        footer={null}
         open={open}
         onCancel={onCancel}
         loading={isLoading}
+        centered
       >
         {error ? (
           <ErrorComponent />

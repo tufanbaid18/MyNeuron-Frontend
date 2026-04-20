@@ -1,4 +1,4 @@
-import { Button, Modal } from "antd";
+import { Modal } from "antd";
 import React from "react";
 import { useIncomingFollowRequests } from "../../../hooks/impulse/useMyActivity";
 import { MyActivityTypes } from "../../../types/impulse/feed.types";
@@ -22,14 +22,11 @@ const FollowRequestsModel: React.FC<FollowRequestsModelProps> = ({
     <>
       <Modal
         title={<p>Follow Requests</p>}
-        footer={
-          <Button type="primary" onClick={onCancel}>
-            Close
-          </Button>
-        }
+        footer={null}
         loading={isLoading}
         open={open}
         onCancel={onCancel}
+        centered
       >
         {error ? (
           <ErrorComponent />

@@ -12,7 +12,8 @@ export type UserMiniProfile = {
   first_name: string;
   last_name: string;
   email: string;
-  profile_image_url: string;
+  profile_image_url?: string;
+  profile_image?:string ;
   is_following?: boolean;
 };
 
