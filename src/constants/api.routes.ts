@@ -17,6 +17,9 @@ export const API_ROUTES = {
   ADD_USER_EDUCATION: "/profile/education/add/",
   UPDATE_USER_EDUCATION: (id: number) => `/profile/education/${id}/update/`,
   DELETE_USER_EDUCATION: (id: number) => `/profile/education/${id}/delete/`,
+
+  USER_SEARCH: (query: string) => `/public/users/search/?q=${query}`,
+  GET_SEARCH_USER_BY_ID: (id: number) => `/public/users/${id}/`,
   // ── GATC Payment ──
   GET_EVENTS: "/events/",
   CREATE_REGISTRATION: "/registrations/",
@@ -60,4 +63,19 @@ export const API_ROUTES = {
   PAGES: "/pages/",
   PAGES_OVERVIEW: "/pages/counts",
   NEWS: "/news/",
+
+  //------- public User ---------
+  PUBLIC_USER_FOLLOW_REQUESTS: "/follows/",
+
+  //------------ MY Activity ---------------------
+  MY_FOLLOWING: "follows/my-following/",
+  OUTGOING_FOLLOW_REQUESTS: "follows/outgoing/",
+  INCOMING_FOLLOW_REQUESTS: "follows/incoming/",
+  FOLLOW_REQUEST_ACCEPTED: (requestId: number) =>
+    `/follows/${requestId}/accept/`,
+  FOLLOW_REQUEST_REJECTED: (requestId: number) =>
+    `/follows/${requestId}/reject/`,
+  GET_FOLLOWERS: (userId: number) =>
+    `/usersfollow/${userId}/followers/`,
+  PUBLIC_USER_FOLLOWING: (userId: number) => `/users/${userId}/following/`,
 };
