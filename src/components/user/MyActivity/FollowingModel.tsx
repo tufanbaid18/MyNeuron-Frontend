@@ -5,6 +5,7 @@ import { MyActivityTypes } from "../../../types/impulse/feed.types";
 import type { UserMiniProfile } from "../../../types/impulse/myactivity.types";
 import ErrorComponent from "../../ui/ErrorComponent";
 import Loading from "../../ui/Loading";
+import ModelHeader from "../../ui/ModelHeader";
 import Followers from "./Followers";
 ;
 
@@ -19,7 +20,7 @@ const FollowingModel: React.FC<FollowingModelProps> = ({ open, onCancel }) => {
   return (
     <>
       <Modal
-        title={<p>Following</p>}
+        title={<ModelHeader title="Following" />}
         footer={null}
         open={open}
         onCancel={onCancel}

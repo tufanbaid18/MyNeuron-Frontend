@@ -7,6 +7,7 @@ import { MyActivityTypes } from "../../../types/impulse/feed.types";
 import type { UserMiniProfile } from "../../../types/impulse/myactivity.types";
 import ErrorComponent from "../../ui/ErrorComponent";
 import Loading from "../../ui/Loading";
+import ModelHeader from "../../ui/ModelHeader";
 import Followers from "./Followers";
 
 type FollowersModelProps = {
@@ -21,7 +22,7 @@ const FollowersModel: React.FC<FollowersModelProps> = ({ open, onCancel }) => {
   return (
     <>
       <Modal
-        title={<p>Followers</p>}
+        title={<ModelHeader title="Followers"/>}
         footer={null}
         loading={isLoading}
         open={open}

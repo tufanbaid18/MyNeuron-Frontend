@@ -4,6 +4,7 @@ import { useIncomingFollowRequests } from "../../../hooks/impulse/useMyActivity"
 import { MyActivityTypes } from "../../../types/impulse/feed.types";
 import type { MyActivityUserResponse } from "../../../types/impulse/myactivity.types";
 import ErrorComponent from "../../ui/ErrorComponent";
+import ModelHeader from "../../ui/ModelHeader";
 import Followers from "./Followers";
 
 type FollowRequestsModelProps = {
@@ -17,11 +18,10 @@ const FollowRequestsModel: React.FC<FollowRequestsModelProps> = ({
 }) => {
   const { data, isLoading, error } = useIncomingFollowRequests();
 
-
   return (
     <>
       <Modal
-        title={<p>Follow Requests</p>}
+        title={<ModelHeader title="Follow Requests" />}
         footer={null}
         loading={isLoading}
         open={open}
