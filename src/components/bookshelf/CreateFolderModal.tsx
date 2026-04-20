@@ -45,9 +45,10 @@ const CreateFolderModal: React.FC<CreateFolderModalProps> = ({
       reset();
       onSuccess();
       onClose();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(error);
-      message.error(error.response?.data?.detail || "Failed to create folder");
+      const axiosErr = error as { response?: { data?: { detail?: string } } };
+      message.error(axiosErr.response?.data?.detail || "Failed to create folder");
     } finally {
       setLoading(false);
     }

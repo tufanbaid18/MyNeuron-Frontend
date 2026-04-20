@@ -31,8 +31,11 @@ import {
 } from "./gatc.routes";
 import {
   impulseActivityRoute,
+  impulseAllPagesRoute,
   impulseFeedRootRoute,
   impulseFeedRoute,
+  impulsePageDetailsRoute,
+  impulsePagesRoot,
   impulsePostDetailsRoute,
   impulseRootRoute,
 } from "./impulse.routes";
@@ -100,6 +103,10 @@ export const routeTree = rootRoute.addChildren([
         impulsePostDetailsRoute,
       ]),
       impulseActivityRoute,
+      impulsePagesRoot.addChildren([
+        impulseAllPagesRoute,
+        impulsePageDetailsRoute,
+      ]),
     ]),
     inboxRootRoute.addChildren([inboxUserRoute]),
   ]),

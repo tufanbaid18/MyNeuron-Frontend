@@ -1,19 +1,20 @@
-import { useState, useCallback } from "react";
 import { Card, message, Modal } from "antd";
+import { useCallback, useState } from "react";
+import { useAddComment } from "../../hooks/impulse/useAddComment";
+import { useBookmarkPost } from "../../hooks/impulse/useBookmarkPost";
+import { useDeletePost } from "../../hooks/impulse/useDeletePost";
+import { useLikePost } from "../../hooks/impulse/useLikePost";
 import type { FeedPost } from "../../types/impulse/post.types";
+import CreatePostComponent from "./CreatePostComponent";
 import {
-  PostHeader,
-  PostContent,
-  PostMedia,
-  PostActions,
   LinkPreview,
   OgPreview,
+  PostActions,
+  PostContent,
+  PostHeader,
+  PostMedia,
+  PostStats,
 } from "./post";
-import { useLikePost } from "../../hooks/impulse/useLikePost";
-import { useBookmarkPost } from "../../hooks/impulse/useBookmarkPost";
-import { useAddComment } from "../../hooks/impulse/useAddComment";
-import { useDeletePost } from "../../hooks/impulse/useDeletePost";
-import CreatePostComponent from "./CreatePostComponent";
 
 interface PostCardProps {
   post: FeedPost;
@@ -21,11 +22,7 @@ interface PostCardProps {
   onNewPost?: () => void;
 }
 
-export const PostCard = ({
-  post,
-  userId,
-  onNewPost,
-}: PostCardProps) => {
+export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
   const { type, data } = post;
   const isUserPost = type === "user_post";
 
@@ -148,13 +145,17 @@ export const PostCard = ({
 
         <PostMedia media={data.media} />
 
+        <PostStats
+          postId={post.id}
+          likeCount={data.like_count}
+          commentCount={data.comment_count}
+          isLiked={data.is_liked}
+        />
+
         <PostActions
           isLiked={data.is_liked}
           isBookmarked={data.is_bookmarked}
           isLoading={likePost.isPending || bookmarkPost.isPending}
-          likeCount={data.like_count}
-          commentCount={data.comment_count}
-          bookmarkCount={data.bookmark_count}
           isAddingComment={addComment.isPending}
           onLike={handleLike}
           onComment={handleComment}

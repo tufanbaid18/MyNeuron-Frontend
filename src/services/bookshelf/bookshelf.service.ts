@@ -31,3 +31,25 @@ export const createFolderItem = async (
 ): Promise<void> => {
   await axiosInstance.post(API_ROUTES.CREATE_FOLDER_ITEM, data);
 };
+
+export const updateFolder = async (
+  id: number,
+  data: { name: string }
+): Promise<void> => {
+  await axiosInstance.patch(API_ROUTES.UPDATE_FOLDER(id), data);
+};
+
+export const deleteFolder = async (id: number): Promise<void> => {
+  await axiosInstance.delete(API_ROUTES.DELETE_FOLDER(id));
+};
+
+export const updateFolderItem = async (
+  id: number,
+  data: { title: string }
+): Promise<void> => {
+  await axiosInstance.patch(API_ROUTES.UPDATE_FOLDER_ITEM(id), data);
+};
+
+export const deleteFolderItem = async (id: number): Promise<void> => {
+  await axiosInstance.delete(API_ROUTES.DELETE_FOLDER_ITEM(id));
+};

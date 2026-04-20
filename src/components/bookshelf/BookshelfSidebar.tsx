@@ -63,6 +63,7 @@ const BookshelfSidebar: React.FC<BookshelfSidebarProps> = ({
 
   const formattedData = useMemo(
     () => getTreeData(treeData),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [treeData, searchValue, token],
   );
 

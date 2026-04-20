@@ -27,4 +27,6 @@ export const APP_ROUTES = {
   INBOX: "/inbox",
   MY_ACTIVITY: "/impulse/my-activity",
   USER: "/user/$userId",
+  PAGES: "/impulse/pages",
+  IMPULSE_POST: (postId: number | string) => `/impulse/feed/posts/${postId}`,
 };

@@ -1,4 +1,5 @@
 import { Tag } from "antd";
+import { ChevronRight } from "lucide-react";
 import type { ReactNode } from "react";
 import { CgSpinner } from "react-icons/cg";
 import { RiArticleFill, RiArticleLine, RiPagesLine } from "react-icons/ri";
@@ -25,10 +26,20 @@ export const getPagesOverviewItems = ({
           icon: <RiArticleFill />,
           heading: "Pages",
           data: 0,
-          type: PageOverviewTypes.MY_PAGES,
+          type: PageOverviewTypes.ALL_PAGES,
         },
       ]
     : [
+        {
+          icon: <RiArticleFill className="w-5 h-5" />,
+          heading: "All Pages",
+          data: (
+            <div className="flex justify-center items-center rounded-full w-8 h-8 bg-primary text-white">
+              <ChevronRight style={{ width: 18, height: 18 }} />
+            </div>
+          ),
+          type: PageOverviewTypes.ALL_PAGES,
+        },
         {
           icon: <RiPagesLine className="w-5 h-5" />,
           heading: "My Pages",

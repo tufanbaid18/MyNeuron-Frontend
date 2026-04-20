@@ -95,6 +95,7 @@ const MyBookshelf: React.FC = () => {
       };
     }
     return findFolderData(treeData, activeFolderId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [treeData, activeFolderId, loading]);
 
   return (
@@ -173,6 +174,7 @@ const MyBookshelf: React.FC = () => {
             breadcrumbs={activeFolderData?.path || []}
             loading={loading}
             onSelectFolder={handleSelectFolder}
+            onRefresh={fetchTree}
           />
         </Content>
 

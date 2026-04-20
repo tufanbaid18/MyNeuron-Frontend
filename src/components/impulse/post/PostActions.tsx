@@ -7,7 +7,6 @@ import {
   Share2,
   BookmarkCheck,
 } from "lucide-react";
-import { formatCount } from "../../../utils/impulse.utils";
 
 const { TextArea } = Input;
 
@@ -15,9 +14,6 @@ interface PostActionsProps {
   isLiked: boolean;
   isBookmarked: boolean;
   isLoading?: boolean;
-  likeCount: number;
-  commentCount: number;
-  bookmarkCount: number;
   isAddingComment?: boolean;
   onLike?: () => void;
   onComment?: () => void;
@@ -30,9 +26,6 @@ export const PostActions = ({
   isLiked,
   isBookmarked,
   isLoading,
-  likeCount,
-  commentCount,
-  bookmarkCount,
   isAddingComment,
   onLike,
   onComment,
@@ -99,17 +92,6 @@ export const PostActions = ({
               color: isLiked ? "#3b82f6" : "#6b7280",
             }}
           />
-          {likeCount > 0 && (
-            <span
-              style={{
-                fontSize: 12,
-                color: isLiked ? "#3b82f6" : "#6b7280",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {formatCount(likeCount)}
-            </span>
-          )}
         </Button>
         <Divider type="vertical" style={{ margin: "0 2px" }} />
 
@@ -133,17 +115,6 @@ export const PostActions = ({
               color: showCommentInput ? "#3b82f6" : "#6b7280",
             }}
           />
-          {commentCount > 0 && (
-            <span
-              style={{
-                fontSize: 12,
-                color: showCommentInput ? "#3b82f6" : "#6b7280",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {formatCount(commentCount)}
-            </span>
-          )}
         </Button>
         <Divider type="vertical" style={{ margin: "0 2px" }} />
 
@@ -172,17 +143,6 @@ export const PostActions = ({
             />
           ) : (
             <Bookmark style={{ ...iconSize, color: "#6b7280" }} />
-          )}
-          {bookmarkCount > 0 && (
-            <span
-              style={{
-                fontSize: 12,
-                color: isBookmarked ? "#3b82f6" : "#6b7280",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {formatCount(bookmarkCount)}
-            </span>
           )}
         </Button>
         <Divider type="vertical" style={{ margin: "0 2px" }} />

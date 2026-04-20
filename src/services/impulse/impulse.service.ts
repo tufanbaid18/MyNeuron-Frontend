@@ -1,7 +1,13 @@
 import { API_ROUTES } from "../../constants/api.routes";
 import axiosInstance from "../../lib/axiosInstance";
 import type { MyActivityOverview } from "../../types/impulse/feed.types";
-import type { PagesOverview } from "../../types/impulse/page.types";
+import type {
+  CreatePagePayload,
+  PageCategory,
+  PageOverviewTypes,
+  PagesByFilterResponse,
+  PagesOverview,
+} from "../../types/impulse/page.types";
 import type {
   FeedPost,
   OgMetaResponse,
@@ -87,6 +93,29 @@ export const getPagesOverview = async (): Promise<PagesOverview> => {
   return response.data;
 };
 
+export const createPage = async (payload: CreatePagePayload) => {
+  const formData = new FormData();
+
+  for (const [key, value] of Object.entries(payload)) {
+    if (value === "" || value === undefined || value === null) continue;
+
+    if (value instanceof File) {
+      formData.append(key, value);
+    } else if (Array.isArray(value)) {
+      if (value.length === 0) continue;
+      // Tags: append each item individually so backend receives a list
+      value.forEach((item) => formData.append(key, item));
+    } else {
+      formData.append(key, String(value));
+    }
+  }
+
+  const response = await axiosInstance.post(API_ROUTES.PAGES, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return response.data;
+};
+
 export const likePost = async (postId: number) => {
   const response = await axiosInstance.post<{
     id: number;
@@ -125,5 +154,32 @@ export const getNews = async () => {
 
 export const getPostDetails = async (postId: number) => {
   const response = await axiosInstance.get(API_ROUTES.POST_BY_ID(postId));
+  return response.data;
+};
+
+export const getAllPagesByFilter = async (params: {
+  category?: PageCategory;
+  type?: PageOverviewTypes;
+}): Promise<PagesByFilterResponse> => {
+  const response = await axiosInstance.get<PagesByFilterResponse>(
+    API_ROUTES.PAGES_BY_FILTER,
+    {
+      params,
+    },
+  );
+  return response.data;
+};
+
+export const followPage = async (pageId: number) => {
+  const response = await axiosInstance.post(API_ROUTES.PAGE_FOLLOW, {
+    page: pageId,
+  });
+  return response.data;
+};
+
+export const unfollowPage = async (pageId: number) => {
+  const response = await axiosInstance.post(API_ROUTES.PAGE_UNFOLLOW, {
+    page: pageId,
+  });
   return response.data;
 };

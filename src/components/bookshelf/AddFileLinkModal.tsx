@@ -47,9 +47,10 @@ const AddFileLinkModal: React.FC<AddFileLinkModalProps> = ({
       reset();
       onSuccess();
       onClose();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(error);
-      message.error(error.response?.data?.detail || "Failed to add file");
+      const axiosErr = error as { response?: { data?: { detail?: string } } };
+      message.error(axiosErr.response?.data?.detail || "Failed to add file");
     } finally {
       setLoading(false);
     }
