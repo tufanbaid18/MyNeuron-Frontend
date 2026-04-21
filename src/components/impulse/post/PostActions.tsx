@@ -93,7 +93,7 @@ export const PostActions = ({
             }}
           />
         </Button>
-        <Divider type="vertical" style={{ margin: "0 2px" }} />
+        <Divider orientation="vertical" style={{ margin: "0 2px" }} />
 
         {/* Comment + count */}
         <Button
@@ -145,7 +145,7 @@ export const PostActions = ({
             <Bookmark style={{ ...iconSize, color: "#6b7280" }} />
           )}
         </Button>
-        <Divider type="vertical" style={{ margin: "0 2px" }} />
+        <Divider orientation="vertical" style={{ margin: "0 2px" }} />
 
         {/* Share */}
         <Button

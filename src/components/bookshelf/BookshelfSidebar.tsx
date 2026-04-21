@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
-import { Tree, Input, theme } from "antd";
-import type { DataNode } from "antd/es/tree";
 import { FolderFilled, FolderOpenFilled } from "@ant-design/icons";
+import { Input, theme, Tree } from "antd";
+import type { DataNode } from "antd/es/tree";
+import React, { useMemo } from "react";
 import type { BookshelfFolder } from "../../types/bookshelf.types";
 
 const { Search } = Input;
@@ -24,7 +24,6 @@ const BookshelfSidebar: React.FC<BookshelfSidebarProps> = ({
 
   // Convert API BookshelfFolder[] to Ant Design DataNode[] recursively
   const getTreeData = (folders: BookshelfFolder[]): DataNode[] => {
-    console.log("Get tree fuction called, search value=>", searchValue);
     return folders.map((folder) => {
       const isMatch = folder.name
         .toLowerCase()

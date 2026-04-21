@@ -55,7 +55,7 @@ export const ProgramList = ({ programs, isLoading }: ProgramListProps) => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Spin size="large" tip="Loading Schedule..." />
+        <Spin size="large" description="Loading Schedule..." />
       </div>
     );
   }

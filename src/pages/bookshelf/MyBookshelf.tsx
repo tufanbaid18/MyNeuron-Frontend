@@ -240,7 +240,7 @@ const MyBookshelf: React.FC = () => {
         onClose={() => setIsMobileSidebarOpen(false)}
         open={isMobileSidebarOpen}
         styles={{ body: { padding: 0 } }}
-        width={300}
+        size={300}
       >
         <BookshelfSidebar
           treeData={treeData}

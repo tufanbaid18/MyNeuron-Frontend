@@ -45,7 +45,7 @@ export const NewChatModal = ({
       open={open}
       onCancel={handleClose}
       footer={null}
-      destroyOnClose
+      destroyOnHidden
       className="new-chat-modal"
     >
       <div className="flex flex-col gap-4">
