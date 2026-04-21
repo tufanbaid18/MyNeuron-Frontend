@@ -3,7 +3,6 @@ import { Avatar, Button } from "antd";
 import { useAtomValue } from "jotai";
 import { MapPin, Send } from "lucide-react";
 import React, { useState } from "react";
-import toast from "react-hot-toast";
 import { FaLinkedin, FaXTwitter } from "react-icons/fa6";
 import {
   useGetMyFollowing,
@@ -33,7 +32,7 @@ const Section: React.FC<{ title: string; children: React.ReactNode }> = ({
   </div>
 );
 
-const Label: React.FC<{ label: string; value?: React.ReactNode }> = ({
+const Label: React.FC<{ label: string; value: string | null | undefined }> = ({
   label,
   value,
 }) => {
@@ -109,13 +108,8 @@ const PublicUserProfile: React.FC = () => {
       setFollowingStatus(null);
       return;
     }
-    try {
-      const response = await sendFollowRequest();
-      setFollowingStatus(response.status);
-      toast.success("Follow request sent successfully");
-    } catch {
-      toast.error("Failed to send follow request");
-    }
+    const response = await sendFollowRequest();
+    setFollowingStatus(response.status);
   };
 
   const handleMessageClick = () => {
