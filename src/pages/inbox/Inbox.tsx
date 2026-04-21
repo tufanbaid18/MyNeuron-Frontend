@@ -104,7 +104,7 @@ const Inbox = () => {
 
   // ── Navigate to a conversation ───────────────────────────
   const navigateToConversation = (targetUserId: number) => {
-    router.navigate({ to: `/inbox/${targetUserId}` });
+    router.navigate({ to: `/inbox/${targetUserId}`, replace: true });
   };
 
   // ═══════════════════════════════════════════════════════════
@@ -185,7 +185,7 @@ const Inbox = () => {
               user={active.user}
               messages={chat}
               currentUserId={currentUser?.id ?? 0}
-              onBack={() => router.navigate({ to: "/inbox" })}
+              onBack={() => router.navigate({ to: "/inbox", replace: true })}
               onSend={handleSend}
               isLoading={chatLoading}
               isSending={sendMsg.isPending}
