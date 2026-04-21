@@ -150,7 +150,7 @@ export const CreatePostModal = ({
             {isEditMode ? "Edit Post" : "Create Post"}
           </Text>
         }
-        destroyOnClose
+        destroyOnHidden
       >
         <div
           style={{

@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { createPost } from "../../services/impulse/impulse.service";
+import { createPost, createPagePost } from "../../services/impulse/impulse.service";
 import type { CreatePostPayload } from "../../types/impulse/post.types";
 
 export const useCreatePost = (
@@ -7,6 +7,20 @@ export const useCreatePost = (
 ) => {
   return useMutation({
     mutationFn: createPost,
+    ...options,
+  });
+};
+
+export const useCreatePagePost = (
+  options?: Parameters<typeof useMutation<unknown, unknown, {
+    pageId: number;
+    title?: string;
+    content: string;
+    files?: File[];
+  }>>[0],
+) => {
+  return useMutation({
+    mutationFn: createPagePost,
     ...options,
   });
 };

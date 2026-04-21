@@ -30,14 +30,14 @@ const PagesFilterCard = ({
 
   return (
     <Card
-      bordered={false}
+      variant={"outlined"}
       style={{
         borderRadius: "12px",
         boxShadow: "0 4px 20px rgba(0,0,0,0.03)",
         background: "rgba(255, 255, 255, 0.9)",
         backdropFilter: "blur(10px)",
       }}
-      bodyStyle={{ padding: "16px 24px" }}
+      styles={{ body: { padding: "16px 24px" } }}
     >
       <div
         style={{

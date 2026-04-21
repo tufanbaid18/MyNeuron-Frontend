@@ -1,9 +1,13 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { Button, Divider, Form, Input, Modal, theme, Typography } from "antd";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useCreatePage } from "../../../hooks/impulse/useCreatePage";
-import type { CreatePagePayload } from "../../../types/impulse/page.types";
+import { useUpdatePage } from "../../../hooks/impulse/usePages";
+import type {
+  CreatePagePayload,
+  PageDetails,
+} from "../../../types/impulse/page.types";
 import { PageCategory } from "../../../types/impulse/page.types";
 import {
   createPageDefaultValues,
@@ -23,23 +27,30 @@ const { useToken } = theme;
 interface AddPageModalProps {
   open: boolean;
   onCancel: () => void;
+  /** When provided, the modal operates in "edit" mode */
+  pageDetails?: PageDetails;
 }
 
 const validator = (field: keyof typeof createPageSchema.shape) =>
   createZodValidator(createPageSchema, field, "registration");
 
-const AddPageModal = ({ open, onCancel }: AddPageModalProps) => {
+const AddPageModal = ({ open, onCancel, pageDetails }: AddPageModalProps) => {
   const [form] = Form.useForm();
   const { token } = useToken();
   const queryClient = useQueryClient();
   const selectedCategory = Form.useWatch("category", form);
 
+  const isEditMode = !!pageDetails;
+
   // Image state lives outside the form since Ant Design Forms don't handle File objects natively
   const coverImageRef = useRef<File | undefined>(undefined);
   const profileImageRef = useRef<File | undefined>(undefined);
-  const [hasImages, setHasImages] = useState({ cover: false, profile: false });
+  const [hasImages, setHasImages] = useState(() => ({
+    cover: !!pageDetails?.cover_image,
+    profile: !!pageDetails?.profile_image,
+  }));
 
-  const { mutate: createPage, isPending } = useCreatePage({
+  const { mutate: createPage, isPending: isCreating } = useCreatePage({
     onSuccess: () => {
       toast.success("Page created successfully!");
       queryClient.invalidateQueries({ queryKey: ["pages-overview"] });
@@ -49,6 +60,33 @@ const AddPageModal = ({ open, onCancel }: AddPageModalProps) => {
       toast.error("Failed to create page. Please try again.");
     },
   });
+
+  const { mutate: updatePageMutate, isPending: isUpdating } = useUpdatePage();
+
+  const isPending = isCreating || isUpdating;
+
+  // Pre-fill form when editing
+  useEffect(() => {
+    if (open && pageDetails) {
+      form.setFieldsValue({
+        page_name: pageDetails.page_name,
+        category: pageDetails.category,
+        bio: pageDetails.bio,
+        website: pageDetails.website || "",
+        state: pageDetails.state || "",
+        zip: pageDetails.zip || "",
+        country: pageDetails.country || "",
+        company_name: pageDetails.company_name || "",
+        official_website: pageDetails.official_website || "",
+        company_bio: pageDetails.company_bio || "",
+        cin: pageDetails.cin || "",
+        event_name: pageDetails.event_name || "",
+        event_description: pageDetails.event_description || "",
+        tags: pageDetails.tags ? pageDetails.tags.split(",") : [],
+        community_details: pageDetails.community_details || "",
+      });
+    }
+  }, [open, pageDetails, form]);
 
   const handleClose = useCallback(() => {
     form.resetFields();
@@ -65,9 +103,25 @@ const AddPageModal = ({ open, onCancel }: AddPageModalProps) => {
         cover_image: coverImageRef.current,
         profile_image: profileImageRef.current,
       };
-      createPage(payload);
+
+      if (isEditMode) {
+        updatePageMutate(
+          { pageId: pageDetails.id, payload },
+          {
+            onSuccess: () => {
+              toast.success("Page updated successfully!");
+              handleClose();
+            },
+            onError: () => {
+              toast.error("Failed to update page. Please try again.");
+            },
+          },
+        );
+      } else {
+        createPage(payload);
+      }
     },
-    [createPage],
+    [createPage, isEditMode, pageDetails, updatePageMutate, handleClose],
   );
 
   const categorySpecificFields = useMemo(() => {
@@ -108,6 +162,8 @@ const AddPageModal = ({ open, onCancel }: AddPageModalProps) => {
           profileImageRef.current = file;
           setHasImages((prev) => ({ ...prev, profile: !!file }));
         }}
+        initialCoverUrl={pageDetails?.cover_image ?? undefined}
+        initialProfileUrl={pageDetails?.profile_image ?? undefined}
       />
 
       {/* ── Form Content ───────────────────────────────── */}
@@ -122,17 +178,19 @@ const AddPageModal = ({ open, onCancel }: AddPageModalProps) => {
               lineHeight: 1.3,
             }}
           >
-            Create a New Page
+            {isEditMode ? "Edit Page" : "Create a New Page"}
           </Text>
           <Text type="secondary" style={{ fontSize: 13 }}>
-            Set up your presence — share, connect, and grow.
+            {isEditMode
+              ? "Update your page details below."
+              : "Set up your presence — share, connect, and grow."}
           </Text>
         </div>
 
         <Form
           form={form}
           layout="vertical"
-          initialValues={createPageDefaultValues}
+          initialValues={isEditMode ? undefined : createPageDefaultValues}
           onFinish={handleSubmit}
           requiredMark="optional"
           scrollToFirstError
@@ -258,7 +316,7 @@ const AddPageModal = ({ open, onCancel }: AddPageModalProps) => {
                 size="large"
                 style={{ borderRadius: 8, minWidth: 130 }}
               >
-                Create Page
+                {isEditMode ? "Save Changes" : "Create Page"}
               </Button>
             </div>
           </Form.Item>

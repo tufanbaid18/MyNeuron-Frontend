@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import type { UploadFile } from "antd";
 import type { RcFile } from "antd/es/upload";
 import { message } from "antd";
-import { useCreatePost } from "../../hooks/impulse/useCreatePost";
+import { useCreatePost, useCreatePagePost } from "../../hooks/impulse/useCreatePost";
 import { useUpdatePost } from "../../hooks/impulse/useUpdatePost";
 import { getOgiMeta } from "../../services/impulse/impulse.service";
 import { buildOgHtml } from "../../utils/impulse.utils";
@@ -24,6 +24,7 @@ interface CreatePostComponentProps {
   onSuccess: () => void;
   editingPost?: EditablePost | null;
   user: UserProfile;
+  pageId?: number;
 }
 
 const CreatePostComponent = ({
@@ -33,6 +34,7 @@ const CreatePostComponent = ({
   onSuccess,
   editingPost,
   user,
+  pageId,
 }: CreatePostComponentProps) => {
   const [activeTab, setActiveTab] = useState<string>("post");
   const [form, setForm] = useState({ title: "", content: "" });
@@ -48,6 +50,17 @@ const CreatePostComponent = ({
     },
     onError: () => {
       message.error("Failed to create post");
+    },
+  });
+
+  const createPagePost = useCreatePagePost({
+    onSuccess: () => {
+      message.success("Page post created successfully");
+      handleClose();
+      onSuccess();
+    },
+    onError: () => {
+      message.error("Failed to create page post");
     },
   });
 
@@ -124,7 +137,7 @@ const CreatePostComponent = ({
     }
   };
 
-  const isLoading = createPost.isPending || updatePost.isPending;
+  const isLoading = createPost.isPending || createPagePost.isPending || updatePost.isPending;
   const isEmpty = !form.content?.trim() && fileList.length === 0 && !ogPreview;
   const isEditMode = !!editingPost;
 
@@ -144,6 +157,13 @@ const CreatePostComponent = ({
     if (isEditMode && editingPost) {
       updatePost.mutate({
         postId: editingPost.id,
+        title: form.title?.trim() || "",
+        content: finalContent,
+        files,
+      });
+    } else if (pageId) {
+      createPagePost.mutate({
+        pageId,
         title: form.title?.trim() || "",
         content: finalContent,
         files,

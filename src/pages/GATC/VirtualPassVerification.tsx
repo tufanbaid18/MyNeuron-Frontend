@@ -69,7 +69,7 @@ const VirtualPassVerification: React.FC = () => {
       <div className="min-h-dvh bg-gray-50 flex items-center justify-center p-4">
         <Card
           className="w-full max-w-md shadow-xl rounded-3xl border-0 overflow-hidden"
-          bodyStyle={{ padding: 0 }}
+          styles={{ body: { padding: 0 } }}
         >
           {/* Header Banner */}
           <div
@@ -100,9 +100,10 @@ const VirtualPassVerification: React.FC = () => {
               size={80}
               src={
                 data.user.profile_image ??
-                getAvatarByName({ 
-                  firstName: data.user.name.split(' ')[0],
-                  lastName: data.user.name.split(' ').slice(1).join(' ') || undefined
+                getAvatarByName({
+                  firstName: data.user.name.split(" ")[0],
+                  lastName:
+                    data.user.name.split(" ").slice(1).join(" ") || undefined,
                 })
               }
               icon={<UserOutlined />}
@@ -131,7 +132,10 @@ const VirtualPassVerification: React.FC = () => {
                   {data.event.event_name}
                 </Text>
               </div>
-              <Tag color="purple" className="m-0 rounded-full px-3 py-1 font-semibold border-0">
+              <Tag
+                color="purple"
+                className="m-0 rounded-full px-3 py-1 font-semibold border-0"
+              >
                 {data.event.category}
               </Tag>
             </div>
@@ -148,7 +152,7 @@ const VirtualPassVerification: React.FC = () => {
                   {data.payment.status}
                 </Tag>
               </div>
-              
+
               {data.payment.manual_payment_status && (
                 <div className="flex justify-between items-center">
                   <Text className="text-gray-500 text-sm font-medium">
