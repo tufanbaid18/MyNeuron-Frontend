@@ -24,7 +24,7 @@ export const MessageBubble = ({ message, isMe }: MessageBubbleProps) => {
             : "rounded-bl-md border border-slate-200 bg-white text-slate-800"
         }`}
       >
-        <p className="mb-0">{message.content}</p>
+        <p className="mb-0 wrap-anywhere">{message.content}</p>
         <p
           className={`mb-0 mt-1 text-right text-[10px] ${
             isMe ? "text-emerald-100" : "text-slate-400"
