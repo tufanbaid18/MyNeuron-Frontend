@@ -1,6 +1,4 @@
-import {
-  PlusOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import { useParams, useRouter } from "@tanstack/react-router";
 import { Button, Empty, Spin, Typography } from "antd";
 import { useAtomValue } from "jotai";
@@ -97,7 +95,10 @@ const Inbox = () => {
     if (!active) return;
     sendMsg.mutate(
       { receiver: active.user.id, content },
-      { onSuccess: () => chatEndRef.current?.scrollIntoView({ behavior: "smooth" }) },
+      {
+        onSuccess: () =>
+          chatEndRef.current?.scrollIntoView({ behavior: "smooth" }),
+      },
     );
   };
 
@@ -118,7 +119,7 @@ const Inbox = () => {
         onSelectUser={(id) => navigateToConversation(id)}
       />
 
-      <div className="mx-auto flex h-[calc(100vh-64px)] overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+      <div className="flex flex-1 min-h-0 overflow-hidden bg-white">
         {/* ─── LEFT: Conversation List ────────────────────────── */}
         <div
           className={`flex w-full flex-col border-r border-slate-200 md:w-80 md:shrink-0 ${

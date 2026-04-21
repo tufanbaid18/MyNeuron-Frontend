@@ -32,7 +32,11 @@ const RootLayout = () => {
             MD_BREAKPOINT={MD_BREAKPOINT}
           />
         )}
-        <Content className="p-2 overflow-y-auto">
+        <Content
+          className={`flex flex-col ${
+            pathname.includes("/inbox") ? "overflow-hidden" : "p-2 overflow-y-auto"
+          }`}
+        >
           <Outlet />
         </Content>
       </Layout>
