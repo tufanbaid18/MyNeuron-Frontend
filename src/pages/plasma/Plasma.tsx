@@ -39,14 +39,14 @@ const Plasma = () => {
 
         <PlasmaSearchBar search={search} setSearch={setSearch} />
       </div>
-      <div className="w-full h-full p-5  flex justify-center items-start overflow-y-auto">
+      <div className="w-full h-full px-3 sm:px-5 pb-5 flex justify-center items-start overflow-y-auto">
         {isLoading || isFetching ? (
           <Loading />
         ) : isError ? (
           <ErrorComponent />
         ) : (
           <div
-            className="w-[90%] flex justify-start items-start gap-2 flex-col pb-5"
+            className="w-full sm:w-[90%] flex justify-start items-start gap-2 flex-col pb-5"
             id="articles-container"
           >
             {data && data.articles && data.articles.length > 0 ? (
@@ -54,7 +54,7 @@ const Plasma = () => {
                 <div
                   key={article.id}
                   id="article"
-                  className="w-full h-max flex justify-start items-start gap-5 p-5 rounded-md shadow-md border border-gray-100"
+                  className="w-full flex flex-col sm:flex-row justify-start items-start gap-3 sm:gap-5 p-3 sm:p-5 rounded-md shadow-md border border-gray-100"
                 >
                   <div className="w-max h-full flex justify-center items-start">
                     {article.pdf ? (
@@ -67,7 +67,7 @@ const Plasma = () => {
                     id="article-title"
                     className="flex flex-col items-start justify-start gap-1"
                   >
-                    <p className="text-xl font-semibold text-primary wrap-break-word">
+                    <p className="text-base sm:text-xl font-semibold text-primary wrap-break-word">
                       {article.title}
                     </p>
                     <p className="text-sm font-semibold wrap-break-word">
@@ -97,7 +97,7 @@ const Plasma = () => {
 
                     <div
                       id="actions"
-                      className="flex justify-start items-start gap-5 mt-3"
+                      className="flex flex-wrap justify-start items-center gap-2 sm:gap-5 mt-3"
                     >
                       {article.pdf ? (
                         <Button
