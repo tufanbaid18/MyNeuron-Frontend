@@ -1,4 +1,6 @@
+import { appStore, userProfileAtom } from "../../store/auth.store";
 import { API_ROUTES } from "../../constants/api.routes";
+import { queryClient } from "../../lib/queryClient";
 import axiosInstance from "../../lib/axiosInstance";
 import type {
   LoginRequest,
@@ -67,4 +69,6 @@ export const updateUserProfile = async (
 
 export const logout = async (): Promise<void> => {
   await axiosInstance.post(API_ROUTES.LOGOUT);
+  queryClient.clear();
+  appStore.set(userProfileAtom, null);
 };

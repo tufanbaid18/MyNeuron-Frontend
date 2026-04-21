@@ -20,6 +20,8 @@ export const useMyActivityOverview = () => {
   return useQuery({
     queryKey: ["my-activity-overview"],
     queryFn: getMyActivityOverview,
+    staleTime: 1000 * 60, // 1 minute
+    refetchOnWindowFocus: true,
   });
 };
 
@@ -101,7 +103,8 @@ export const useOutgoingFollowRequests = () => {
   return useQuery<MyActivityUserResponse[]>({
     queryKey: ["outgoingFollowRequests"],
     queryFn: () => outgoingFollowRequests(),
-    // staleTime: 2 * 60 * 1000, // 2 minutes
+    staleTime: 1000 * 60 * 2, // 2 minutes
+    refetchOnWindowFocus: true,
   });
 };
 
@@ -109,7 +112,8 @@ export const useIncomingFollowRequests = () => {
   return useQuery<MyActivityUserResponse[]>({
     queryKey: ["incomingFollowRequests"],
     queryFn: () => incomingFollowRequests(),
-    // staleTime: 2 * 60 * 1000, // 2 minutes
+    staleTime: 1000 * 60 * 2, // 2 minutes
+    refetchOnWindowFocus: true,
   });
 };
 
@@ -117,6 +121,8 @@ export const useGetMyFollowers = (userId: number) => {
   return useQuery<UserMiniProfile[]>({
     queryKey: ["getMyFollowers", userId],
     queryFn: () => getMyFollowers(userId),
+    staleTime: 1000 * 60 * 2, // 2 minutes
+    refetchOnWindowFocus: true,
   });
 };
 

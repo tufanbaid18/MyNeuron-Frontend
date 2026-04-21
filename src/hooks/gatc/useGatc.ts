@@ -25,6 +25,8 @@ export const useGatcMembers = (params?: {
   return useQuery({
     queryKey: ["gatc-members", params?.role, params?.event],
     queryFn: () => getGatcMembers(params),
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    refetchOnWindowFocus: true,
   });
 };
 
@@ -33,5 +35,6 @@ export const useGatcMemberById = (id: number | string) => {
     queryKey: ["gatc-member", id],
     queryFn: () => getGatcMemberById(id),
     enabled: !!id,
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 };

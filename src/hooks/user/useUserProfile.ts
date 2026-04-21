@@ -36,7 +36,7 @@ export const useUserSearch = (query: string) => {
     queryKey: ["userSearch", query],
     queryFn: () => publicUserSearch(query),
     enabled: !!query,
-    // staleTime: 2 * 60 * 1000, // 2 minutes
+    staleTime: 1000 * 60 * 2, // 2 minutes
   });
 };
 
@@ -45,7 +45,7 @@ export const useUserSearchById = (id: number) => {
     queryKey: ["userSearchById", id],
     queryFn: () => publicUserSearchById(id),
     enabled: !!id,
-    // staleTime: 2 * 60 * 1000, // 2 minutes
+    staleTime: 1000 * 60 * 10, // 10 minutes
   });
 };
 

@@ -36,6 +36,8 @@ export const useChatHistory = (userId: number | null) => {
     queryKey: [CHAT_HISTORY_KEY, userId],
     queryFn: () => getChatHistory(userId!),
     enabled: !!userId,
+    staleTime: 0,
+    refetchOnWindowFocus: true,
   });
 };
 
@@ -53,9 +55,6 @@ export const useSendMessage = (activeUserId: number | null) => {
       );
       // Refresh conversations list
       queryClient.invalidateQueries({ queryKey: CONVERSATIONS_KEY });
-      queryClient.invalidateQueries({
-        queryKey: [CHAT_HISTORY_KEY, activeUserId],
-      });
     },
     onError: (error) => {
       toast.error(
@@ -98,5 +97,6 @@ export const useUserById = (userId: number | null) => {
     queryKey: ["user", userId],
     queryFn: () => getUserById(userId!),
     enabled: !!userId,
+    staleTime: 1000 * 60 * 10, // 10 minutes
   });
 };

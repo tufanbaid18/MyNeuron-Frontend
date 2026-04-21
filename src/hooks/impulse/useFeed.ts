@@ -10,6 +10,8 @@ export const useFeedPosts = (options?: { enabled?: boolean }) => {
   return useQuery({
     queryKey: ["get-feed-posts"],
     queryFn: getFeedPosts,
+    staleTime: 1000 * 60, // 1 minute
+    refetchOnWindowFocus: true,
     ...options,
   });
 };
@@ -19,6 +21,8 @@ export const usePagePosts = (pageId: number) => {
     queryKey: ["get-page-posts", pageId],
     queryFn: () => getPagePosts(pageId),
     enabled: !!pageId,
+    staleTime: 1000 * 60, // 1 minute
+    refetchOnWindowFocus: true,
   });
 };
 
@@ -33,5 +37,6 @@ export const usePostDetails = (postId: number) => {
   return useQuery({
     queryKey: ["get-post-details", postId],
     queryFn: () => getPostDetails(postId),
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 };
