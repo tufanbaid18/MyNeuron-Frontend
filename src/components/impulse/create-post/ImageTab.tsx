@@ -18,11 +18,10 @@ export const ImageTab = ({
   fileList,
   onContentChange,
   onPaste,
-  onFileSelect,
+  // onFileSelect,
   onRemoveFile,
   fileInputRef,
 }: ImageTabProps) => {
-  console.log(onFileSelect);
   return (
     <div className="flex flex-col gap-3">
       <Input.TextArea
