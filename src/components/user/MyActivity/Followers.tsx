@@ -3,29 +3,42 @@ import { Avatar, Button, Tag } from "antd";
 import {
   useAcceptFollowRequest,
   useRejectFollowRequest,
+  useRemoveFollower,
+  useUnfollowUser,
 } from "../../../hooks/impulse/useMyActivity";
 import { MyActivityTypes } from "../../../types/impulse/feed.types";
-import type { UserMiniProfile } from "../../../types/user/user.types";
+
+import type { UserMiniProfile } from "../../../types/impulse/myactivity.types";
 import { getAvatarByName } from "../../../utils/avatar.utils";
 
 type FollowersProps = {
   user: UserMiniProfile;
   type?: MyActivityTypes;
+  requestId: number;
 };
 
-const Followers = ({ user, type }: FollowersProps) => {
+const Followers = ({ user, type, requestId }: FollowersProps) => {
   const fullName = [user.first_name, user.last_name].filter(Boolean).join(" ");
 
-  const { mutateAsync: acceptFollowRequest } = useAcceptFollowRequest(user.id);
-  const { mutateAsync: rejectFollowRequest } = useRejectFollowRequest(user.id);
-  // const { mutateAsync: handleUnfollowUser } = useUnfollowUser(user.id);
+  const acceptRequestMutation = useAcceptFollowRequest(requestId);
+  const rejectRequestMutation = useRejectFollowRequest(requestId);
+  const removeFollowerMutation = useRemoveFollower();
+  const unfollowUserMutation = useUnfollowUser();
 
   const handleAcceptFollowRequest = () => {
-    acceptFollowRequest();
+    acceptRequestMutation.mutateAsync();
   };
 
   const handleRejectFollowRequest = () => {
-    rejectFollowRequest();
+    rejectRequestMutation.mutateAsync();
+  };
+
+  const handleRemoveFollower = () => {
+    removeFollowerMutation.mutateAsync(user.id);
+  };
+
+  const handleUnfollowUser = () => {
+    unfollowUserMutation.mutateAsync(user.id);
   };
 
   const renderAction = () => {
@@ -37,6 +50,14 @@ const Followers = ({ user, type }: FollowersProps) => {
               type="primary"
               size="small"
               icon={<CheckOutlined />}
+              disabled={
+                acceptRequestMutation.isPending ||
+                rejectRequestMutation.isPending
+              }
+              loading={
+                acceptRequestMutation.isPending ||
+                rejectRequestMutation.isPending
+              }
               onClick={(e) => {
                 e.stopPropagation();
                 handleAcceptFollowRequest();
@@ -48,6 +69,14 @@ const Followers = ({ user, type }: FollowersProps) => {
               danger
               size="small"
               icon={<CloseOutlined />}
+              disabled={
+                rejectRequestMutation.isPending ||
+                acceptRequestMutation.isPending
+              }
+              loading={
+                rejectRequestMutation.isPending ||
+                acceptRequestMutation.isPending
+              }
               onClick={(e) => {
                 e.stopPropagation();
                 handleRejectFollowRequest();
@@ -63,9 +92,15 @@ const Followers = ({ user, type }: FollowersProps) => {
         return (
           <Button
             size="small"
+            variant="solid"
+            className="rounded-full px-6 h-11"
+            disabled={unfollowUserMutation.isPending}
+            loading={unfollowUserMutation.isPending}
             onClick={(e) => {
               e.stopPropagation();
+              handleUnfollowUser();
             }}
+            danger
           >
             Unfollow
           </Button>
@@ -74,9 +109,14 @@ const Followers = ({ user, type }: FollowersProps) => {
         return (
           <Button
             size="small"
+            variant="solid"
+            className=" rounded-full px-6 h-11"
             danger
+            disabled={removeFollowerMutation.isPending}
+            loading={removeFollowerMutation.isPending}
             onClick={(e) => {
               e.stopPropagation();
+              handleRemoveFollower();
             }}
           >
             Remove
@@ -88,14 +128,13 @@ const Followers = ({ user, type }: FollowersProps) => {
   };
 
   return (
-    <div
-      className="flex items-center justify-between gap-3 p-2 rounded-xl h-14 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all group text-left w-full cursor-pointer"
-    >
+    <div className="flex items-center justify-between gap-3 p-2 rounded-xl h-14 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all group text-left w-full">
       <div className="flex items-center gap-3">
         <Avatar
           size={40}
           src={
             user.profile_image_url ||
+            user.profile_image ||
             getAvatarByName({
               firstName: user.first_name,
               lastName: user.last_name,

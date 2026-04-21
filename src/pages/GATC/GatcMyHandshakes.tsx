@@ -167,8 +167,6 @@ const GatcMyHandshakes = () => {
     );
   }
 
-  console.log(filtered);
-
   return (
     <div className="mx-auto p-6">
       {/* Header */}

@@ -26,7 +26,6 @@ const MyActivityOverview = () => {
   };
 
   const handleOnClickViewAll = ({ type }: { type: MyActivityTypes }) => {
-    console.log("type ==========> ", type);
     setModelType(type);
     setOpenModel(true);
   };
@@ -75,7 +74,7 @@ const MyActivityOverview = () => {
                   gap: 8,
                   minWidth: 0,
                 }}
-                className="hover:bg-gray-100"
+                className={`hover:bg-gray-100 dark:hover:bg-gray-800 transition-all`}
                 onClick={() => handleOnClickViewAll({ type: item.type })}
               >
                 <div

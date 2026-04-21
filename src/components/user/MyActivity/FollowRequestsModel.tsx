@@ -1,9 +1,10 @@
-import { Button, Modal } from "antd";
+import { Modal } from "antd";
 import React from "react";
 import { useIncomingFollowRequests } from "../../../hooks/impulse/useMyActivity";
 import { MyActivityTypes } from "../../../types/impulse/feed.types";
-import type { MyActivityUserResponse } from "../../../types/user/user.types";
+import type { MyActivityUserResponse } from "../../../types/impulse/myactivity.types";
 import ErrorComponent from "../../ui/ErrorComponent";
+import ModelHeader from "../../ui/ModelHeader";
 import Followers from "./Followers";
 
 type FollowRequestsModelProps = {
@@ -16,20 +17,16 @@ const FollowRequestsModel: React.FC<FollowRequestsModelProps> = ({
   onCancel,
 }) => {
   const { data, isLoading, error } = useIncomingFollowRequests();
-  console.log("incoming follow request data=========> ", data);
 
   return (
     <>
       <Modal
-        title={<p>Follow Requests</p>}
-        footer={
-          <Button type="primary" onClick={onCancel}>
-            Close
-          </Button>
-        }
+        title={<ModelHeader title="Follow Requests" />}
+        footer={null}
         loading={isLoading}
         open={open}
         onCancel={onCancel}
+        centered
       >
         {error ? (
           <ErrorComponent />
@@ -37,11 +34,12 @@ const FollowRequestsModel: React.FC<FollowRequestsModelProps> = ({
           <p className="text-center">No follow requests found</p>
         ) : (
           <div className="flex flex-col gap-4">
-            {data?.map((user: MyActivityUserResponse) => (
+            {data?.map((request: MyActivityUserResponse) => (
               <Followers
                 type={MyActivityTypes.FOLLOW_REQUESTS}
-                key={user.id}
-                user={user.following}
+                key={request.id}
+                user={request.follower}
+                requestId={request.id}
               />
             ))}
           </div>

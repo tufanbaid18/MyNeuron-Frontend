@@ -14,12 +14,8 @@ function FeedNewsCard({ item, onClick }: FeedNewsCardProps) {
       onClick={() => onClick(item.link)}
       key={item.title}
       styles={{ body: { padding: 12 } }}
-      style={{
-        cursor: "pointer",
-        transition: "all 0.2s",
-        border: "1px solid #e5e7eb",
-        background: "#fafafa",
-      }}
+      style={{ cursor: "pointer", transition: "all 0.2s" }}
+      className="hover:border-[#e5e7eb]! dark:hover:border-[#303030]! hover:bg-[#fafafa]! dark:hover:bg-[#141414]!"
       hoverable
     >
       <div
@@ -42,7 +38,6 @@ function FeedNewsCard({ item, onClick }: FeedNewsCardProps) {
             strong
             style={{
               fontSize: 13,
-              color: "#1a1a1a",
               marginBottom: 0,
             }}
           >

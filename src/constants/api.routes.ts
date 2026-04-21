@@ -87,4 +87,6 @@ export const API_ROUTES = {
   GET_FOLLOWERS: (userId: number) => `/usersfollow/${userId}/followers/`,
   PUBLIC_USER_FOLLOWING: (userId: number) => `/users/${userId}/following/`,
   PAGE_DETAILS: (pageId: number) => `/pages/${pageId}/`,
+  REMOVE_FOLLOWER: "/follows/remove_follower/",
+  UNFOLLOW_USER: "/follows/unfollow/",
 };

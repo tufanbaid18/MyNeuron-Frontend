@@ -73,8 +73,8 @@ const PagesOverview = () => {
                   gap: 8,
                   minWidth: 0,
                 }}
-                className="hover:bg-gray-100"
-                onClick={() => handleOnClickViewAll({ type: item.type })}
+                className={`hover:bg-gray-100 dark:hover:bg-gray-800 transition-all`}
+             onClick={() => handleOnClickViewAll({ type: item.type })}
               >
                 <div
                   style={{

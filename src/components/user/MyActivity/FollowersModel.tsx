@@ -1,12 +1,13 @@
-import { Button, Modal } from "antd";
+import { Modal } from "antd";
 import { useAtomValue } from "jotai";
 import React from "react";
 import { useGetMyFollowers } from "../../../hooks/impulse/useMyActivity";
 import { userProfileAtom } from "../../../store/auth.store";
 import { MyActivityTypes } from "../../../types/impulse/feed.types";
-import type { MyActivityUserResponse } from "../../../types/user/user.types";
+import type { UserMiniProfile } from "../../../types/impulse/myactivity.types";
 import ErrorComponent from "../../ui/ErrorComponent";
 import Loading from "../../ui/Loading";
+import ModelHeader from "../../ui/ModelHeader";
 import Followers from "./Followers";
 
 type FollowersModelProps = {
@@ -21,15 +22,12 @@ const FollowersModel: React.FC<FollowersModelProps> = ({ open, onCancel }) => {
   return (
     <>
       <Modal
-        title={<p>Followers</p>}
-        footer={
-          <Button type="primary" onClick={onCancel}>
-            Close
-          </Button>
-        }
+        title={<ModelHeader title="Followers"/>}
+        footer={null}
         loading={isLoading}
         open={open}
         onCancel={onCancel}
+        centered
       >
         {isLoading ? (
           <Loading />
@@ -39,11 +37,12 @@ const FollowersModel: React.FC<FollowersModelProps> = ({ open, onCancel }) => {
           <p className="text-center">No followers found</p>
         ) : (
           <div className="flex flex-col gap-4">
-            {data?.map((user: MyActivityUserResponse) => (
+            {data?.map((user: UserMiniProfile) => (
               <Followers
                 type={MyActivityTypes.FOLLOWERS}
                 key={user.id}
-                user={user.follower}
+                user={user}
+                requestId={0}
               />
             ))}
           </div>

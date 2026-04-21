@@ -5,12 +5,15 @@ import { MapPin, Send } from "lucide-react";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { FaLinkedin, FaXTwitter } from "react-icons/fa6";
-import { useSendFollowRequest } from "../../hooks/impulse/useMyActivity";
 import {
-  useUserSearchById,
-} from "../../hooks/user/useUserProfile";
+  useGetMyFollowing,
+  useOutgoingFollowRequests,
+  useSendFollowRequest,
+  useUnfollowUser,
+} from "../../hooks/impulse/useMyActivity";
+import { useUserSearchById } from "../../hooks/user/useUserProfile";
 import { userProfileAtom } from "../../store/auth.store";
-import { FollowingStatus } from "../../types/user/user.types";
+import { FollowingStatus } from "../../types/impulse/myactivity.types";
 import { getAvatarByName } from "../../utils/avatar.utils";
 import ErrorComponent from "../ui/ErrorComponent";
 import Loading from "../ui/Loading";
@@ -30,7 +33,10 @@ const Section: React.FC<{ title: string; children: React.ReactNode }> = ({
   </div>
 );
 
-const Label: React.FC<{ label: string; value?: string | number | null }> = ({ label, value }) => {
+const Label: React.FC<{ label: string; value?: React.ReactNode }> = ({
+  label,
+  value,
+}) => {
   value = value ?? "Not provided";
   return (
     <div>
@@ -40,29 +46,50 @@ const Label: React.FC<{ label: string; value?: string | number | null }> = ({ la
   );
 };
 
+const getFollowButtonText = (status: string | null) => {
+  if (status === FollowingStatus.PENDING) return "Requested";
+  if (status === FollowingStatus.ACCEPTED) return "Unfollow";
+  return "Follow";
+};
+
 const PublicUserProfile: React.FC = () => {
   const { userId } = useParams({ strict: false });
   const { data: user, isLoading, error } = useUserSearchById(userId);
   const { mutateAsync: sendFollowRequest } = useSendFollowRequest(userId);
   const [follwingStatus, setFollowingStatus] = useState<string | null>(null);
-  // const loggedUser = useAtomValue(userProfileAtom);
 
-  // const { data: myFollowing } = useGetMyFollowing();
-
-  const logedUser =useAtomValue(userProfileAtom)
-
+  const loggedUser = useAtomValue(userProfileAtom);
   const router = useRouter();
+  const { data: outgoingRequests } = useOutgoingFollowRequests();
+  const { data: myFollowing } = useGetMyFollowing();
 
-  // React.useEffect(() => {
-  //   if (myFollowing && user) {
-  //     const isFollowing = myFollowers.some(
-  //       (follower) => follower.id === user.id,
-  //     );
-  //     setFollowingStatus(isFollowing ? FollowingStatus.ACCEPTED : null);
-  //   }
-  // }, [myFollowers, user]);
+  const unfollowUserMutation = useUnfollowUser();
 
+  React.useEffect(() => {
+    if (!user) return;
 
+    let isFollowing = false;
+
+    if (myFollowing) {
+      const followingMatch = myFollowing.find(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (item: any) => String(item.id) === String(userId),
+      );
+
+      if (followingMatch) {
+        setFollowingStatus(FollowingStatus.ACCEPTED);
+        isFollowing = true;
+      }
+    }
+
+    if (!isFollowing && outgoingRequests) {
+      const followRequest = outgoingRequests.find(
+        (request) => String(request.following.id) === String(userId),
+      );
+
+      setFollowingStatus(followRequest?.status ?? null);
+    }
+  }, [outgoingRequests, user, userId, myFollowing]);
 
   if (isLoading) return <Loading />;
   if (error || !user) return <ErrorComponent />;
@@ -76,7 +103,12 @@ const PublicUserProfile: React.FC = () => {
     .filter(Boolean)
     .join(" ");
 
-  const handleFollowRequest = async () => {
+  const handleFollowUnfollowClick = async () => {
+    if (follwingStatus === FollowingStatus.ACCEPTED) {
+      await unfollowUserMutation.mutateAsync(Number(userId));
+      setFollowingStatus(null);
+      return;
+    }
     try {
       const response = await sendFollowRequest();
       setFollowingStatus(response.status);
@@ -156,53 +188,34 @@ const PublicUserProfile: React.FC = () => {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex flex-wrap justify-center md:justify-start xl:justify-end items-center gap-3">
-              <Button
-                type="primary"
-                size="large"
-                className="bg-zinc-900 hover:bg-zinc-800! dark:bg-white dark:text-zinc-900 dark:hover:bg-gray-100! border-none shadow-sm font-semibold rounded-full px-6 flex items-center justify-center h-11"
-              >
-                <div
-                  onClick={handleMessageClick}
-                  className="flex items-center gap-2"
+            {loggedUser?.id !== Number(userId) && (
+              <div className="flex flex-wrap justify-center md:justify-start xl:justify-end items-center gap-3">
+                <Button
+                  type="primary"
+                  size="large"
+                  className="bg-zinc-900 hover:bg-zinc-800! dark:bg-white dark:text-zinc-900 dark:hover:bg-gray-100! border-none shadow-sm font-semibold rounded-full px-6 flex items-center justify-center h-11"
                 >
-                  <Send size={18} />
-                  <span>Message</span>
-                </div>
-              </Button>
-              {logedUser?.id !== Number(userId) && <Button
-                onClick={handleFollowRequest}
-                disabled={follwingStatus === FollowingStatus.PENDING}
-                size="large"
-                className="bg-white dark:bg-zinc-900 border-gray-300 dark:border-zinc-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50! dark:hover:bg-zinc-800! shadow-sm font-semibold rounded-full px-6 h-11"
-              >
-                {follwingStatus === FollowingStatus.PENDING
-                  ? "Requested"
-                  : follwingStatus === FollowingStatus.ACCEPTED
-                    ? "Following"
-                    : "Follow"}
-              </Button>}
+                  <div
+                    onClick={handleMessageClick}
+                    className="flex items-center gap-2"
+                  >
+                    <Send size={18} />
+                    <span>Message</span>
+                  </div>
+                </Button>
 
-              {(user.personal_detail?.x_handle ||
-                user.personal_detail?.linkedin) && (
-                <div className="flex items-center gap-2 ml-1 sm:ml-2 pl-3 sm:pl-4 border-l-2 border-gray-100 dark:border-zinc-800/80">
-                  {user.personal_detail?.x_handle && (
-                    <SocialHandle
-                      icon={<FaXTwitter size={18} />}
-                      href={user.personal_detail.x_handle}
-                      hoverColorClass="hover:!text-black dark:hover:!text-white"
-                    />
-                  )}
-                  {user.personal_detail?.linkedin && (
-                    <SocialHandle
-                      icon={<FaLinkedin size={18} />}
-                      href={user.personal_detail.linkedin}
-                      hoverColorClass="hover:!text-[#0a66c2] dark:hover:!text-[#0a66c2]"
-                    />
-                  )}
-                </div>
-              )}
-            </div>
+                <Button
+                  onClick={handleFollowUnfollowClick}
+                  disabled={follwingStatus === FollowingStatus.PENDING}
+                  danger={follwingStatus === FollowingStatus.ACCEPTED}
+                  size="large"
+                  // loading={unfollowUserMutation.isPending}
+                  className="bg-white dark:bg-zinc-900 border-gray-300 dark:border-zinc-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50! dark:hover:bg-zinc-800! shadow-sm font-semibold rounded-full px-6 h-11"
+                >
+                  {getFollowButtonText(follwingStatus)}
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -211,6 +224,29 @@ const PublicUserProfile: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* LEFT */}
         <div className="space-y-6 lg:col-span-1">
+          {/*Social */}
+
+          {(user.personal_detail?.x_handle ||
+            user.personal_detail?.linkedin) && (
+            <Section title="Social">
+              <div className="flex items-center gap-2">
+                {user.personal_detail?.x_handle && (
+                  <SocialHandle
+                    icon={<FaXTwitter size={18} />}
+                    href={user.personal_detail.x_handle}
+                    hoverColorClass="hover:!text-black dark:hover:!text-white"
+                  />
+                )}
+                {user.personal_detail?.linkedin && (
+                  <SocialHandle
+                    icon={<FaLinkedin size={18} />}
+                    href={user.personal_detail.linkedin}
+                    hoverColorClass="hover:!text-[#0a66c2] dark:hover:!text-[#0a66c2]"
+                  />
+                )}
+              </div>
+            </Section>
+          )}
           {/* Personal */}
 
           <Section title="Personal">

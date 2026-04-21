@@ -1,11 +1,13 @@
-import { Button, Modal } from "antd";
+import { Modal } from "antd";
 import React from "react";
 import { useGetMyFollowing } from "../../../hooks/impulse/useMyActivity";
 import { MyActivityTypes } from "../../../types/impulse/feed.types";
-import type { MyActivityUserResponse } from "../../../types/user/user.types";
+import type { UserMiniProfile } from "../../../types/impulse/myactivity.types";
 import ErrorComponent from "../../ui/ErrorComponent";
 import Loading from "../../ui/Loading";
+import ModelHeader from "../../ui/ModelHeader";
 import Followers from "./Followers";
+;
 
 type FollowingModelProps = {
   open: boolean;
@@ -18,15 +20,12 @@ const FollowingModel: React.FC<FollowingModelProps> = ({ open, onCancel }) => {
   return (
     <>
       <Modal
-        title={<p>Following</p>}
-        footer={
-          <Button type="primary" onClick={onCancel}>
-            Close
-          </Button>
-        }
+        title={<ModelHeader title="Following" />}
+        footer={null}
         open={open}
         onCancel={onCancel}
         loading={isLoading}
+        centered
       >
         {isLoading ? (
           <Loading />
@@ -36,11 +35,12 @@ const FollowingModel: React.FC<FollowingModelProps> = ({ open, onCancel }) => {
           <p className="text-center">Not following anyone yet</p>
         ) : (
           <div className="flex flex-col gap-4">
-            {data?.map((user: MyActivityUserResponse) => (
+            {data?.map((user: UserMiniProfile) => (
               <Followers
                 type={MyActivityTypes.FOLLOWING}
                 key={user.id}
-                user={user.following}
+                user={user}
+                requestId={user.id}
               />
             ))}
           </div>

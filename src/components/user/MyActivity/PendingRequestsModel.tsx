@@ -1,10 +1,11 @@
-import { Button, Modal } from "antd";
+import { Modal } from "antd";
 import React from "react";
 
 import { useOutgoingFollowRequests } from "../../../hooks/impulse/useMyActivity";
 import { MyActivityTypes } from "../../../types/impulse/feed.types";
-import type { MyActivityUserResponse } from "../../../types/user/user.types";
+import type { MyActivityUserResponse } from "../../../types/impulse/myactivity.types";
 import ErrorComponent from "../../ui/ErrorComponent";
+import ModelHeader from "../../ui/ModelHeader";
 import Followers from "./Followers";
 
 type PendingRequestsModelProps = {
@@ -22,15 +23,12 @@ const PendingRequestsModel: React.FC<PendingRequestsModelProps> = ({
   return (
     <>
       <Modal
-        title={<p>Pending Requests</p>}
-        footer={
-          <Button type="primary" onClick={onCancel}>
-            Close
-          </Button>
-        }
+        title={<ModelHeader title="Pending Requests" />}
+        footer={null}
         open={open}
         onCancel={onCancel}
         loading={isLoading}
+        centered
       >
         {error ? (
           <ErrorComponent />
@@ -43,6 +41,7 @@ const PendingRequestsModel: React.FC<PendingRequestsModelProps> = ({
                 type={MyActivityTypes.PENDING_REQUESTS}
                 key={user.id}
                 user={user.following}
+                requestId={user.id}
               />
             ))}
           </div>

@@ -19,7 +19,6 @@ const VerificationMail = () => {
   const verifyEmailMutation = useResendVerificationEmail();
 
   const onSubmit = async (data: EmailForm) => {
-    console.log(data);
     verifyEmailMutation.mutate({ email: data.email });
   };
 
