@@ -148,7 +148,7 @@ const GatcMemberDetails = () => {
           </div>
 
           {/* Handshake Button — uses user.id (not member.id) */}
-          {user.id !== currentUser?.id && (
+          {user.id !== currentUser?.id && user.role !== "participant" && (
             <div className="shrink-0" key={handshake.status}>
               <HandshakeButton
                 userId={user.id}
