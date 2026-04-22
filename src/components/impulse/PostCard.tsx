@@ -10,6 +10,7 @@ import {
   LinkPreview,
   OgPreview,
   PostActions,
+  PostComments,
   PostContent,
   PostHeader,
   PostMedia,
@@ -20,9 +21,10 @@ interface PostCardProps {
   post: FeedPost;
   userId: number;
   onNewPost?: () => void;
+  showCommentsExpanded?: boolean;
 }
 
-export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
+export const PostCard = ({ post, userId, onNewPost, showCommentsExpanded }: PostCardProps) => {
   const { type, data } = post;
   const isUserPost = type === "user_post";
 
@@ -55,6 +57,8 @@ export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
     media: { file_url: string; is_video: boolean }[];
   } | null>(null);
 
+  const [isCommentsVisible, setIsCommentsVisible] = useState(showCommentsExpanded || false);
+
   const likePost = useLikePost();
   const bookmarkPost = useBookmarkPost();
   const addComment = useAddComment();
@@ -65,7 +69,7 @@ export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
   }, [likePost, post.id]);
 
   const handleComment = useCallback(() => {
-    // toggled inside PostActions
+    setIsCommentsVisible((prev) => !prev);
   }, []);
 
   const handleBookmark = useCallback(() => {
@@ -156,13 +160,21 @@ export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
           isLiked={data.is_liked}
           isBookmarked={data.is_bookmarked}
           isLoading={likePost.isPending || bookmarkPost.isPending}
-          isAddingComment={addComment.isPending}
           onLike={handleLike}
           onComment={handleComment}
           onBookmark={handleBookmark}
           onShare={handleShare}
-          onAddComment={handleAddComment}
         />
+
+        {isCommentsVisible && data.comments && (
+          <PostComments
+            comments={data.comments}
+            postId={post.id}
+            userId={userId}
+            onAddComment={handleAddComment}
+            isAddingComment={addComment.isPending}
+          />
+        )}
       </Card>
 
       {editOpen && editingPostData && (

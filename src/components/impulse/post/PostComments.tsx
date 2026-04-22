@@ -22,7 +22,6 @@ export const PostComments = ({
   onAddComment,
   isAddingComment,
 }: PostCommentsProps) => {
-  const [showInput, setShowInput] = useState(false);
   const [commentText, setCommentText] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -32,16 +31,10 @@ export const PostComments = ({
   );
   const hasMore = comments.length > IMPULSE_CONSTANTS.COMMENTS_PREVIEW_COUNT;
 
-  const handleCommentClick = () => {
-    setShowInput(true);
-    setTimeout(() => inputRef.current?.focus(), 50);
-  };
-
   const handleSubmit = () => {
     if (!commentText.trim()) return;
     onAddComment(commentText.trim());
     setCommentText("");
-    setShowInput(false);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -143,50 +136,33 @@ export const PostComments = ({
       )}
 
       {/* Comment input */}
-      {showInput ? (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "flex-start",
-            gap: 8,
-            marginTop: 12,
-          }}
-        >
-          <TextArea
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            //@ts-expect-error
-            ref={inputRef}
-            value={commentText}
-            onChange={(e) => setCommentText(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Write a comment..."
-            autoSize={{ minRows: 1, maxRows: 4 }}
-            style={{ flex: 1 }}
-          />
-          <Button
-            type="primary"
-            icon={<Send style={{ width: 16, height: 16 }} />}
-            loading={isAddingComment}
-            onClick={handleSubmit}
-            disabled={!commentText.trim()}
-          />
-        </div>
-      ) : (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "flex-start",
+          gap: 8,
+          marginTop: 12,
+        }}
+      >
+        <TextArea
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-expect-error
+          ref={inputRef}
+          value={commentText}
+          onChange={(e) => setCommentText(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Write a comment..."
+          autoSize={{ minRows: 1, maxRows: 4 }}
+          style={{ flex: 1 }}
+        />
         <Button
-          type="link"
-          style={{
-            color: "#6b7280",
-            padding: 0,
-            height: "auto",
-            fontSize: 13,
-            fontWeight: 500,
-            marginTop: 8,
-          }}
-          onClick={handleCommentClick}
-        >
-          Write a comment...
-        </Button>
-      )}
+          type="primary"
+          icon={<Send style={{ width: 16, height: 16 }} />}
+          loading={isAddingComment}
+          onClick={handleSubmit}
+          disabled={!commentText.trim()}
+        />
+      </div>
     </div>
   );
 };

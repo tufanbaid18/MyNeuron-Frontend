@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Button, Divider, Input } from "antd";
+import { Button, Divider } from "antd";
 import {
   ThumbsUp,
   MessageCircle,
@@ -7,8 +6,6 @@ import {
   Share2,
   BookmarkCheck,
 } from "lucide-react";
-
-const { TextArea } = Input;
 
 interface PostActionsProps {
   isLiked: boolean;
@@ -26,35 +23,11 @@ export const PostActions = ({
   isLiked,
   isBookmarked,
   isLoading,
-  isAddingComment,
   onLike,
   onComment,
   onBookmark,
   onShare,
-  onAddComment,
 }: PostActionsProps) => {
-  const [showCommentInput, setShowCommentInput] = useState(false);
-  const [commentText, setCommentText] = useState("");
-
-  const handleCommentClick = () => {
-    setShowCommentInput((prev) => !prev);
-    onComment?.();
-  };
-
-  const handleSubmitComment = () => {
-    if (!commentText.trim()) return;
-    onAddComment?.(commentText.trim());
-    setCommentText("");
-    setShowCommentInput(false);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSubmitComment();
-    }
-  };
-
   const iconSize = { width: 18, height: 18, flexShrink: 0 };
 
   return (
@@ -95,10 +68,10 @@ export const PostActions = ({
         </Button>
         <Divider orientation="vertical" style={{ margin: "0 2px" }} />
 
-        {/* Comment + count */}
+        {/* Comment */}
         <Button
           type="text"
-          onClick={handleCommentClick}
+          onClick={onComment}
           style={{
             flex: 1,
             display: "flex",
@@ -112,13 +85,13 @@ export const PostActions = ({
           <MessageCircle
             style={{
               ...iconSize,
-              color: showCommentInput ? "#3b82f6" : "#6b7280",
+              color: "#6b7280",
             }}
           />
         </Button>
         <Divider type="vertical" style={{ margin: "0 2px" }} />
 
-        {/* Bookmark + count */}
+        {/* Bookmark */}
         <Button
           type="text"
           loading={isLoading}
@@ -163,35 +136,6 @@ export const PostActions = ({
           <Share2 style={{ ...iconSize, color: "#6b7280" }} />
         </Button>
       </div>
-
-      {/* Comment input */}
-      {showCommentInput && (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "flex-start",
-            gap: 8,
-            padding: "8px 16px 12px",
-          }}
-        >
-          <TextArea
-            value={commentText}
-            onChange={(e) => setCommentText(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Write a comment..."
-            autoSize={{ minRows: 1, maxRows: 4 }}
-            style={{ flex: 1 }}
-          />
-          <Button
-            type="primary"
-            onClick={handleSubmitComment}
-            loading={isAddingComment}
-            disabled={!commentText.trim()}
-          >
-            Post
-          </Button>
-        </div>
-      )}
     </div>
   );
 };
