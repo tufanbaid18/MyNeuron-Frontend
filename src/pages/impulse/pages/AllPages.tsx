@@ -53,7 +53,7 @@ const AllPages = () => {
   };
 
   return (
-    <div style={{ padding: "24px", margin: "0 auto" }}>
+    <div className="p-3">
       <Space orientation="vertical" size="large" style={{ width: "100%" }}>
         <PagesFilterCard
           pageType={pageType}

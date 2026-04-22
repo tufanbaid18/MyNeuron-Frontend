@@ -102,7 +102,7 @@ const PageDetails = () => {
 
   if (isPageLoading || isUserLoading) {
     return (
-      <div style={{ padding: "16px", maxWidth: 1000, margin: "0 auto" }}>
+      <div style={{ padding: "16px", margin: "0 auto" }}>
         <Skeleton.Image style={{ width: "100%", height: 300 }} active />
         <div
           style={{
@@ -144,7 +144,7 @@ const PageDetails = () => {
   ];
 
   return (
-    <div style={{ padding: "16px", margin: "0 auto", overflowX: "hidden" }}>
+    <div className="p-3">
       <div
         style={{
           marginBottom: 16,
