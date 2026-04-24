@@ -24,8 +24,43 @@ export const formatCount = (count: number): string => {
 
 export const sanitizePostContent = (content: string): string => {
   return DOMPurify.sanitize(content, {
-    ALLOWED_TAGS: ["p", "br", "strong", "em", "a", "ul", "ol", "li"],
-    ALLOWED_ATTR: ["href", "target"],
+    ALLOWED_TAGS: [
+      "p",
+      "br",
+      "strong",
+      "em",
+      "a",
+      "ul",
+      "ol",
+      "li",
+      "h1",
+      "h2",
+      "h3",
+      "h4",
+      "h5",
+      "h6",
+      "blockquote",
+      "pre",
+      "code",
+      "img",
+      "span",
+      "s",
+      "u",
+      "sub",
+      "sup",
+      "div",
+    ],
+    ALLOWED_ATTR: [
+      "href",
+      "target",
+      "rel",
+      "src",
+      "alt",
+      "width",
+      "height",
+      "class",
+      "style",
+    ],
   });
 };
 

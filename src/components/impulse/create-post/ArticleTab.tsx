@@ -1,5 +1,6 @@
 import { Input } from "antd";
-import { Editor } from "@tinymce/tinymce-react";
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
 
 interface ArticleTabProps {
   title: string;
@@ -8,6 +9,32 @@ interface ArticleTabProps {
   onContentChange: (content: string) => void;
 }
 
+const QUILL_MODULES = {
+  toolbar: [
+    [{ header: [1, 2, 3, false] }],
+    ["bold", "italic", "underline", "strike"],
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ align: [] }],
+    ["blockquote", "code-block"],
+    ["link", "image"],
+    ["clean"],
+  ],
+};
+
+const QUILL_FORMATS = [
+  "header",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "list",
+  "align",
+  "blockquote",
+  "code-block",
+  "link",
+  "image",
+];
+
 export const ArticleTab = ({
   title,
   content,
@@ -15,25 +42,21 @@ export const ArticleTab = ({
   onContentChange,
 }: ArticleTabProps) => {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 article-editor-wrapper">
       <Input
         placeholder="Title"
         value={title}
         onChange={(e) => onTitleChange(e.target.value)}
         className="font-semibold"
       />
-      <Editor
-        apiKey="gzbaq6k6otgk5w4c2vhnm06gksbkpyt5ahllriq2s49rj3ty"
+      <ReactQuill
+        theme="snow"
         value={content}
-        onEditorChange={onContentChange}
-        init={{
-          height: 200,
-          menubar: false,
-          plugins:
-            "advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table help wordcount",
-          toolbar:
-            "undo redo | formatselect | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image media table | code preview fullscreen",
-        }}
+        onChange={onContentChange}
+        modules={QUILL_MODULES}
+        formats={QUILL_FORMATS}
+        placeholder="Write your article..."
+        style={{ minHeight: 200 }}
       />
     </div>
   );

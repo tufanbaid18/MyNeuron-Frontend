@@ -52,7 +52,10 @@ export const PostContent = ({
           overflowWrap: "break-word",
         }}
       >
-        <span dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
+        <span
+          className="post-rich-content"
+          dangerouslySetInnerHTML={{ __html: sanitizedContent }}
+        />
         {shouldTruncate && (
           <button
             onClick={() => setShowFull(!showFull)}
