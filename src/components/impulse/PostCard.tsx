@@ -58,6 +58,12 @@ export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
     title: string;
     content: string;
     media: { file_url: string; is_video: boolean }[];
+    link_preview?: {
+      type?: string;
+      embed_url?: string;
+      video_id?: string;
+      watch_url?: string;
+    } | null;
   } | null>(null);
 
   const [showCommentForm, setShowCommentForm] = useState(false);
@@ -119,6 +125,7 @@ export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
       title: data.title || "",
       content: data.content || "",
       media: data.media || [],
+      link_preview: data.link_preview,
     });
     setEditOpen(true);
   }, [post.id, data]);

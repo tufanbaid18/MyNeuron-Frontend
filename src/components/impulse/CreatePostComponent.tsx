@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { UploadFile } from "antd";
 import type { RcFile } from "antd/es/upload";
 import { message } from "antd";
@@ -15,6 +15,12 @@ interface EditablePost {
   title?: string;
   content?: string;
   media?: { file_url: string; is_video: boolean }[];
+  link_preview?: {
+    type?: string;
+    embed_url?: string;
+    video_id?: string;
+    watch_url?: string;
+  } | null;
 }
 
 interface CreatePostComponentProps {
@@ -141,6 +147,76 @@ const CreatePostComponent = ({
   const isEmpty = !form.content?.trim() && fileList.length === 0 && !ogPreview;
   const isEditMode = !!editingPost;
 
+  const inferEditTab = (post: EditablePost): string => {
+    const media = post.media || [];
+    const hasVideoPreview = !!post.link_preview?.embed_url
+      || !!post.link_preview?.video_id
+      || (post.link_preview?.type || "").toLowerCase().includes("video")
+      || (post.link_preview?.watch_url || "").length > 0;
+    if (media.some((m) => m.is_video)) return "video";
+    if (hasVideoPreview) return "video";
+    if (media.length > 0) return "image";
+    if ((post.title || "").trim().length > 0) return "article";
+    return "post";
+  };
+
+  const extractOgCardHtml = (content: string): string | null => {
+    const match = content.match(/<div class="og-card"[\s\S]*?<\/div>\s*<\/div>/i);
+    return match ? match[0] : null;
+  };
+
+  const stripOgCardFromContent = (content: string): string => {
+    return content
+      .replace(/<div class="og-card"[\s\S]*?<\/div>\s*<\/div>/gi, "")
+      .replace(/<p><\/p>/gi, "")
+      .trim();
+  };
+
+  const extractReadMoreUrl = (content: string): string => {
+    const hrefMatch = content.match(/<a[^>]*href="([^"]+)"[^>]*>\s*Read more\s*→?\s*<\/a>/i);
+    return hrefMatch?.[1] || "";
+  };
+
+  useEffect(() => {
+    if (!open) return;
+
+    if (editingPost) {
+      const inferredTab = inferEditTab(editingPost);
+      const rawContent = editingPost.content || "";
+      const ogCardHtml = extractOgCardHtml(rawContent);
+      const normalizedContent = stripOgCardFromContent(rawContent);
+      const extractedReadMoreUrl = extractReadMoreUrl(rawContent);
+      const resolvedVideoUrl = editingPost.link_preview?.watch_url || extractedReadMoreUrl;
+      setForm({
+        title: editingPost.title || "",
+        content: inferredTab === "video" ? normalizedContent : rawContent,
+      });
+      setFileList(
+        inferredTab === "video"
+          ? (resolvedVideoUrl
+            ? [{
+                uid: `existing-video-link-${editingPost.id}`,
+                name: resolvedVideoUrl,
+                status: "done" as const,
+                url: resolvedVideoUrl,
+              }]
+            : [])
+          : (editingPost.media || []).map((media, idx) => ({
+              uid: `existing-${editingPost.id}-${idx}`,
+              name: media.file_url.split("/").pop() || `media-${idx + 1}`,
+              status: "done" as const,
+              url: media.file_url,
+            })),
+      );
+      setOgPreview(inferredTab === "video" ? ogCardHtml : null);
+      setActiveTab(inferredTab);
+      return;
+    }
+
+    setForm({ title: "", content: "" });
+    setFileList([]);
+  }, [open, editingPost]);
+
   const handleSubmit = () => {
     if (isEmpty) {
       message.warning("Post cannot be empty");
@@ -152,7 +228,9 @@ const CreatePostComponent = ({
       finalContent += ogPreview;
     }
 
-    const files = fileList.map((f) => f.originFileObj as File);
+    const files = fileList
+      .map((f) => f.originFileObj as File | undefined)
+      .filter((f): f is File => !!f);
 
     if (isEditMode && editingPost) {
       updatePost.mutate({
