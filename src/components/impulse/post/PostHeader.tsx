@@ -28,16 +28,21 @@ export const PostHeader = ({
   onDelete,
 }: PostHeaderProps) => {
   const menuItems: MenuProps["items"] = [
-    { key: "save", label: "Save post" },
-    { key: "hide", label: "Hide post" },
+    // { key: "save", label: "Save post" },
+    // { key: "hide", label: "Hide post" },
     ...(isOwnPost
       ? [
           { key: "edit", label: "Edit post", onClick: onEdit },
           { type: "divider" as const },
-          { key: "delete", label: "Delete post", danger: true, onClick: onDelete },
+          {
+            key: "delete",
+            label: "Delete post",
+            danger: true,
+            onClick: onDelete,
+          },
         ]
       : []),
-    { key: "report", label: "Report", danger: true },
+    // { key: "report", label: "Report", danger: true },
   ];
 
   return (
@@ -109,36 +114,37 @@ export const PostHeader = ({
               {subtitle}
             </Text>
           </Tooltip>
-          <Text
-            type="secondary"
-            style={{ fontSize: 12, color: "#9ca3af" }}
-          >
+          <Text type="secondary" style={{ fontSize: 12, color: "#9ca3af" }}>
             {formatTimeAgo(createdAt)}
           </Text>
         </div>
       </div>
-      <Dropdown
-        menu={{ items: menuItems }}
-        trigger={["click"]}
-        placement="bottomRight"
-      >
-        <button
-          style={{
-            padding: 8,
-            borderRadius: "50%",
-            border: "none",
-            background: "transparent",
-            cursor: "pointer",
-            flexShrink: 0,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          className="hover:bg-gray-100"
+      {isOwnPost && (
+        <Dropdown
+          menu={{ items: menuItems }}
+          trigger={["click"]}
+          placement="bottomRight"
         >
-          <MoreHorizontal style={{ width: 20, height: 20, color: "#6b7280" }} />
-        </button>
-      </Dropdown>
+          <button
+            style={{
+              padding: 8,
+              borderRadius: "50%",
+              border: "none",
+              background: "transparent",
+              cursor: "pointer",
+              flexShrink: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            className="hover:bg-gray-100"
+          >
+            <MoreHorizontal
+              style={{ width: 20, height: 20, color: "#6b7280" }}
+            />
+          </button>
+        </Dropdown>
+      )}
     </div>
   );
 };
