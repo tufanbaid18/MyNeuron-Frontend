@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { Card, message, Modal } from "antd";
+import { Card, Modal } from "antd";
 import { useCallback, useState } from "react";
 import { useAddComment } from "../../hooks/impulse/useAddComment";
 import { useBookmarkPost } from "../../hooks/impulse/useBookmarkPost";
@@ -17,6 +17,8 @@ import {
   PostMedia,
   PostStats,
 } from "./post";
+import { APP_ROUTES } from "../../constants/app.routes";
+import { SharePostModal } from "../inbox/SharePostModal";
 
 interface PostCardDetailsProps {
   post: FeedPost;
@@ -66,6 +68,7 @@ export const PostCardDetails = ({
     data.comments || [],
   );
   const [showAllComments, setShowAllComments] = useState(false);
+  const [shareModalOpen, setShareModalOpen] = useState(false);
 
   const likePost = useLikePost();
   const bookmarkPost = useBookmarkPost();
@@ -80,12 +83,11 @@ export const PostCardDetails = ({
     bookmarkPost.mutate(post.id);
   }, [bookmarkPost, post.id]);
 
+  const postUrl = `${window.location.origin}${APP_ROUTES.IMPULSE_POST(post.id)}`;
+
   const handleShare = useCallback(() => {
-    const url = `${window.location.origin}/posts/${post.id}`;
-    navigator.clipboard.writeText(url).then(() => {
-      message.success("Link copied to clipboard");
-    });
-  }, [post.id]);
+    setShareModalOpen(true);
+  }, []);
 
   const handleAddComment = useCallback(
     (content: string) => {
@@ -213,6 +215,13 @@ export const PostCardDetails = ({
           showFormOnly={false}
         />
       </Card>
+
+      <SharePostModal
+        open={shareModalOpen}
+        onClose={() => setShareModalOpen(false)}
+        postUrl={postUrl}
+        postTitle={data.title || data.content?.slice(0, 60) || "Impulse Post"}
+      />
 
       {editOpen && editingPostData && (
         <CreatePostComponent

@@ -1,4 +1,4 @@
-import { Card, message, Modal } from "antd";
+import { Card, Modal } from "antd";
 import { useCallback, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAddComment } from "../../hooks/impulse/useAddComment";
@@ -17,6 +17,8 @@ import {
   PostMedia,
   PostStats,
 } from "./post";
+import { APP_ROUTES } from "../../constants/app.routes";
+import { SharePostModal } from "../inbox/SharePostModal";
 
 interface PostCardProps {
   post: FeedPost;
@@ -59,6 +61,7 @@ export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
   } | null>(null);
 
   const [showCommentForm, setShowCommentForm] = useState(false);
+  const [shareModalOpen, setShareModalOpen] = useState(false);
 
   const likePost = useLikePost();
   const bookmarkPost = useBookmarkPost();
@@ -77,12 +80,11 @@ export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
     bookmarkPost.mutate(post.id);
   }, [bookmarkPost, post.id]);
 
+  const postUrl = `${window.location.origin}${APP_ROUTES.IMPULSE_POST(post.id)}`;
+
   const handleShare = useCallback(() => {
-    const url = `${window.location.origin}/posts/${post.id}`;
-    navigator.clipboard.writeText(url).then(() => {
-      message.success("Link copied to clipboard");
-    });
-  }, [post.id]);
+    setShareModalOpen(true);
+  }, []);
 
   const handleAddComment = useCallback(
     (content: string) => {
@@ -91,7 +93,9 @@ export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
         {
           onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["get-feed-posts"] });
-            queryClient.invalidateQueries({ queryKey: ["get-post-details", post.id] });
+            queryClient.invalidateQueries({
+              queryKey: ["get-post-details", post.id],
+            });
           },
         },
       );
@@ -186,6 +190,13 @@ export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
           />
         )}
       </Card>
+
+      <SharePostModal
+        open={shareModalOpen}
+        onClose={() => setShareModalOpen(false)}
+        postUrl={postUrl}
+        postTitle={data.title || data.content?.slice(0, 60) || "Impulse Post"}
+      />
 
       {editOpen && editingPostData && (
         <CreatePostComponent
