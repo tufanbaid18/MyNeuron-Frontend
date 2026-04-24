@@ -12,6 +12,7 @@ interface PostActionsProps {
   isBookmarked: boolean;
   isLoading?: boolean;
   isAddingComment?: boolean;
+  showCommentButton?: boolean;
   onLike?: () => void;
   onComment?: () => void;
   onBookmark?: () => void;
@@ -23,6 +24,7 @@ export const PostActions = ({
   isLiked,
   isBookmarked,
   isLoading,
+  showCommentButton,
   onLike,
   onComment,
   onBookmark,
@@ -68,28 +70,32 @@ export const PostActions = ({
         </Button>
         <Divider orientation="vertical" style={{ margin: "0 2px" }} />
 
-        {/* Comment */}
-        <Button
-          type="text"
-          onClick={onComment}
-          style={{
-            flex: 1,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: 4,
-            minWidth: 0,
-            padding: "4px 6px",
-          }}
-        >
-          <MessageCircle
-            style={{
-              ...iconSize,
-              color: "#6b7280",
-            }}
-          />
-        </Button>
-        <Divider type="vertical" style={{ margin: "0 2px" }} />
+        {/* Comment - only shown in feed, not in post details */}
+        {showCommentButton !== false && (
+          <>
+            <Button
+              type="text"
+              onClick={onComment}
+              style={{
+                flex: 1,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: 4,
+                minWidth: 0,
+                padding: "4px 6px",
+              }}
+            >
+              <MessageCircle
+                style={{
+                  ...iconSize,
+                  color: "#6b7280",
+                }}
+              />
+            </Button>
+            <Divider type="vertical" style={{ margin: "0 2px" }} />
+          </>
+        )}
 
         {/* Bookmark */}
         <Button

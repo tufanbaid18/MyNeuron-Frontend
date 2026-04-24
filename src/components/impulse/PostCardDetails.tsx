@@ -1,34 +1,39 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { Card, message, Modal } from "antd";
 import { useCallback, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 import { useAddComment } from "../../hooks/impulse/useAddComment";
 import { useBookmarkPost } from "../../hooks/impulse/useBookmarkPost";
 import { useDeletePost } from "../../hooks/impulse/useDeletePost";
 import { useLikePost } from "../../hooks/impulse/useLikePost";
-import type { FeedPost } from "../../types/impulse/post.types";
+import type { FeedPost, FeedPostComment } from "../../types/impulse/post.types";
 import CreatePostComponent from "./CreatePostComponent";
-import { PostComments } from "./post";
 import {
   LinkPreview,
   OgPreview,
   PostActions,
+  PostComments,
   PostContent,
   PostHeader,
   PostMedia,
   PostStats,
 } from "./post";
 
-interface PostCardProps {
+interface PostCardDetailsProps {
   post: FeedPost;
   userId: number;
-  onNewPost?: () => void;
+  onPostUpdate?: () => void;
 }
 
-export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
+export const PostCardDetails = ({
+  post,
+  userId,
+  onPostUpdate,
+}: PostCardDetailsProps) => {
   const queryClient = useQueryClient();
   const { type, data } = post;
   const isUserPost = type === "user_post";
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const author = isUserPost
     ? data.user
     : {
@@ -57,8 +62,10 @@ export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
     content: string;
     media: { file_url: string; is_video: boolean }[];
   } | null>(null);
-
-  const [showCommentForm, setShowCommentForm] = useState(false);
+  const [localComments, setLocalComments] = useState<FeedPostComment[]>(
+    data.comments || [],
+  );
+  const [showAllComments, setShowAllComments] = useState(false);
 
   const likePost = useLikePost();
   const bookmarkPost = useBookmarkPost();
@@ -68,10 +75,6 @@ export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
   const handleLike = useCallback(() => {
     likePost.mutate(post.id);
   }, [likePost, post.id]);
-
-  const handleComment = useCallback(() => {
-    setShowCommentForm((prev) => !prev);
-  }, []);
 
   const handleBookmark = useCallback(() => {
     bookmarkPost.mutate(post.id);
@@ -86,17 +89,33 @@ export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
 
   const handleAddComment = useCallback(
     (content: string) => {
+      const newComment: FeedPostComment = {
+        id: Date.now(),
+        post_id: post.id,
+        user_id: userId,
+        c_content: content,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        user: {
+          id: userId,
+          first_name: author.first_name,
+          last_name: author.last_name,
+          email: author.email,
+          profile_image_url: author.profile_image_url || null,
+          is_following: false,
+        },
+      };
+      setLocalComments((prev) => [newComment, ...prev]);
       addComment.mutate(
         { postId: post.id, content },
         {
           onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["get-feed-posts"] });
-            queryClient.invalidateQueries({ queryKey: ["get-post-details", post.id] });
           },
         },
       );
     },
-    [addComment, post.id, queryClient],
+    [addComment, post.id, userId, author, queryClient],
   );
 
   const handleDelete = useCallback(() => {
@@ -122,8 +141,13 @@ export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
   const handleEditSuccess = useCallback(() => {
     setEditOpen(false);
     setEditingPostData(null);
-    onNewPost?.();
-  }, [onNewPost]);
+    onPostUpdate?.();
+  }, [onPostUpdate]);
+
+  const displayedComments = showAllComments
+    ? localComments
+    : localComments.slice(0, 3);
+  const shouldShowViewMore = localComments.length > 3 && !showAllComments;
 
   return (
     <>
@@ -165,26 +189,29 @@ export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
           isLiked={data.is_liked}
         />
 
+        {/* Post actions without comment button - comments are always visible below */}
         <PostActions
           isLiked={data.is_liked}
           isBookmarked={data.is_bookmarked}
           isLoading={likePost.isPending || bookmarkPost.isPending}
+          showCommentButton={false}
           onLike={handleLike}
-          onComment={handleComment}
           onBookmark={handleBookmark}
           onShare={handleShare}
         />
 
-        {showCommentForm && (
-          <PostComments
-            comments={[]}
-            postId={post.id}
-            userId={userId}
-            onAddComment={handleAddComment}
-            isAddingComment={addComment.isPending}
-            showFormOnly
-          />
-        )}
+        {/* Comments section - always visible in post details */}
+        <PostComments
+          comments={displayedComments}
+          postId={post.id}
+          userId={userId}
+          onAddComment={handleAddComment}
+          isAddingComment={addComment.isPending}
+          hasMore={shouldShowViewMore}
+          totalCount={localComments.length}
+          onShowAllComments={() => setShowAllComments(true)}
+          showFormOnly={false}
+        />
       </Card>
 
       {editOpen && editingPostData && (
@@ -220,4 +247,4 @@ export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
   );
 };
 
-export default PostCard;
+export default PostCardDetails;

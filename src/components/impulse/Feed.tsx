@@ -17,8 +17,10 @@ const Feed = ({ user, pageId }: FeedProps) => {
   const [createOpen, setCreateOpen] = useState(false);
   const feedPostsQuery = useFeedPosts({ enabled: !pageId });
   const pagePostsQuery = usePagePosts(pageId!); // The hook handles enabled: !!pageId internally
-  
-  const { data, isFetching, isLoading, error, dataUpdatedAt } = pageId ? pagePostsQuery : feedPostsQuery;
+
+  const { data, isFetching, isLoading, error, dataUpdatedAt } = pageId
+    ? pagePostsQuery
+    : feedPostsQuery;
   const queryClient = useQueryClient();
   const containerRef = useRef<HTMLDivElement>(null);
   const scroll記憶Ref = useRef<{ postId: number | null; offset: number }>({

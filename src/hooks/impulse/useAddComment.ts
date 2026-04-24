@@ -19,6 +19,9 @@ export const useAddComment = () => {
         id: data.id,
         c_content: data.c_content,
         created_at: data.created_at,
+        post_id: postId,
+        user_id: user.id,
+        updated_at: new Date().toISOString(),
         user: {
           id: user.id,
           first_name: user.first_name,

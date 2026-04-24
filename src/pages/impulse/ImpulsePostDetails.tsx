@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "@tanstack/react-router";
 import { Button, Card, Skeleton } from "antd";
 import { useAtomValue } from "jotai";
 import { ArrowLeft } from "lucide-react";
-import PostCard from "../../components/impulse/PostCard";
+import PostCardDetails from "../../components/impulse/PostCardDetails";
 import ErrorComponent from "../../components/ui/ErrorComponent";
 import { APP_ROUTES } from "../../constants/app.routes";
 import { usePostDetails } from "../../hooks/impulse/useFeed";
@@ -108,10 +108,9 @@ function ImpulsePostDetails() {
 
       <div style={{ width: "100%", maxWidth: 680 }}>
         {user ? (
-          <PostCard
+          <PostCardDetails
             post={feedPost}
             userId={user.id}
-            showCommentsExpanded={true}
           />
         ) : null}
       </div>

@@ -98,6 +98,9 @@ export type FeedLinkPreview = {
 
 export type FeedPostComment = {
   id: number;
+  post_id: number;
+  user_id: number;
+  updated_at: string;
   user: {
     id: number;
     first_name: string;

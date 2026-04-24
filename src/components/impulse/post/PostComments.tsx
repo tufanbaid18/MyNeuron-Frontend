@@ -1,7 +1,6 @@
 import { Avatar, Button, Input, Typography } from "antd";
 import { Send } from "lucide-react";
 import { useRef, useState } from "react";
-import { IMPULSE_CONSTANTS } from "../../../constants/impulse.constants";
 import type { FeedPostComment } from "../../../types/impulse/post.types";
 import { formatTimeAgo } from "../../../utils/impulse.utils";
 
@@ -14,6 +13,10 @@ interface PostCommentsProps {
   userId: number;
   onAddComment: (content: string) => void;
   isAddingComment?: boolean;
+  showFormOnly?: boolean;
+  hasMore?: boolean;
+  totalCount?: number;
+  onShowAllComments?: () => void;
 }
 
 export const PostComments = ({
@@ -21,15 +24,13 @@ export const PostComments = ({
   userId,
   onAddComment,
   isAddingComment,
+  showFormOnly,
+  hasMore,
+  totalCount,
+  onShowAllComments,
 }: PostCommentsProps) => {
   const [commentText, setCommentText] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
-
-  const previewComments = comments.slice(
-    0,
-    IMPULSE_CONSTANTS.COMMENTS_PREVIEW_COUNT,
-  );
-  const hasMore = comments.length > IMPULSE_CONSTANTS.COMMENTS_PREVIEW_COUNT;
 
   const handleSubmit = () => {
     if (!commentText.trim()) return;
@@ -52,7 +53,36 @@ export const PostComments = ({
         background: "rgba(249,250,251,0.5)",
       }}
     >
-      {previewComments.map((comment) => (
+      {/* Comment input - always at top in post details */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "flex-start",
+          gap: 8,
+          marginBottom: 12,
+        }}
+      >
+        <TextArea
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-expect-error
+          ref={inputRef}
+          value={commentText}
+          onChange={(e) => setCommentText(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Write a comment..."
+          autoSize={{ minRows: 1, maxRows: 4 }}
+          style={{ flex: 1 }}
+        />
+        <Button
+          type="primary"
+          icon={<Send style={{ width: 16, height: 16 }} />}
+          loading={isAddingComment}
+          onClick={handleSubmit}
+          disabled={!commentText.trim()}
+        />
+      </div>
+
+      {!showFormOnly && comments.map((comment) => (
         <div
           key={comment.id}
           style={{
@@ -119,9 +149,10 @@ export const PostComments = ({
           </div>
         </div>
       ))}
-      {hasMore && (
+      {hasMore && !showFormOnly && onShowAllComments && (
         <Button
           type="link"
+          onClick={onShowAllComments}
           style={{
             color: "#3b82f6",
             padding: 0,
@@ -131,38 +162,9 @@ export const PostComments = ({
             marginTop: 8,
           }}
         >
-          View all {comments.length} comments
+          View all {totalCount || comments.length} comments
         </Button>
       )}
-
-      {/* Comment input */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "flex-start",
-          gap: 8,
-          marginTop: 12,
-        }}
-      >
-        <TextArea
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          //@ts-expect-error
-          ref={inputRef}
-          value={commentText}
-          onChange={(e) => setCommentText(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder="Write a comment..."
-          autoSize={{ minRows: 1, maxRows: 4 }}
-          style={{ flex: 1 }}
-        />
-        <Button
-          type="primary"
-          icon={<Send style={{ width: 16, height: 16 }} />}
-          loading={isAddingComment}
-          onClick={handleSubmit}
-          disabled={!commentText.trim()}
-        />
-      </div>
     </div>
   );
 };
