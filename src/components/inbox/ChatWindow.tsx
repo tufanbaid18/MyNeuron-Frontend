@@ -30,7 +30,7 @@ export const ChatWindow = ({
   isSending,
 }: ChatWindowProps) => {
   return (
-    <>
+    <div className="flex min-h-0 flex-1 flex-col">
       <ChatHeader user={user} onBack={onBack} showBackButton />
 
       <ChatMessages
@@ -40,6 +40,6 @@ export const ChatWindow = ({
       />
 
       <ChatInput onSend={onSend} isPending={isSending} />
-    </>
+    </div>
   );
 };

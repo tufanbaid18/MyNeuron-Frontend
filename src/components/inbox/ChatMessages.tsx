@@ -45,7 +45,7 @@ export const ChatMessages = forwardRef<HTMLDivElement, ChatMessagesProps>(
 
     if (isLoading) {
       return (
-        <div className="flex items-center justify-center py-12">
+        <div className="flex min-h-0 flex-1 items-center justify-center py-12">
           <Spin />
         </div>
       );
@@ -53,7 +53,7 @@ export const ChatMessages = forwardRef<HTMLDivElement, ChatMessagesProps>(
 
     if (messages.length === 0) {
       return (
-        <div className="flex h-full flex-col items-center justify-center text-slate-400">
+        <div className="flex min-h-0 flex-1 flex-col items-center justify-center text-slate-400">
           <SendOutlined className="mb-3 text-4xl text-slate-300" />
           <Text className="text-slate-400">
             No messages yet. Start the conversation!
@@ -63,10 +63,10 @@ export const ChatMessages = forwardRef<HTMLDivElement, ChatMessagesProps>(
     }
 
     return (
-      <div className="relative h-full">
+      <div className="relative min-h-0 flex-1">
         <div
           ref={containerRef}
-          className="flex h-full flex-col gap-3 overflow-y-auto bg-slate-50/50 px-5 py-4"
+          className="flex h-full min-h-0 flex-col gap-3 overflow-y-auto bg-slate-50/50 px-5 py-4"
         >
           {messages.map((m) => (
             <MessageBubble

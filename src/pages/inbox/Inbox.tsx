@@ -119,10 +119,10 @@ const Inbox = () => {
         onSelectUser={(id) => navigateToConversation(id)}
       />
 
-      <div className="flex flex-1 min-h-0 overflow-hidden bg-white">
+      <div className="flex h-full min-h-0 flex-1 bg-white">
         {/* ─── LEFT: Conversation List ────────────────────────── */}
         <div
-          className={`flex w-full flex-col border-r border-slate-200 md:w-80 md:shrink-0 ${
+          className={`flex min-h-0 w-full flex-col border-r border-slate-200 md:w-80 md:shrink-0 ${
             active ? "hidden md:flex" : "flex"
           }`}
         >
@@ -150,7 +150,7 @@ const Inbox = () => {
           </div>
 
           {/* Conversation items */}
-          <div className="flex-1 overflow-y-auto">
+          <div className="min-h-0 flex-1 overflow-y-auto">
             {convLoading ? (
               <div className="flex items-center justify-center py-12">
                 <Spin />
@@ -176,7 +176,7 @@ const Inbox = () => {
 
         {/* ─── RIGHT: Chat Window ─────────────────────────────── */}
         <div
-          className={`flex flex-1 flex-col ${
+          className={`flex min-h-0 flex-1 flex-col ${
             !active ? "hidden md:flex" : "flex"
           }`}
         >

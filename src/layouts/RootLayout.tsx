@@ -21,9 +21,9 @@ const RootLayout = () => {
   }, [pathname]);
 
   return (
-    <Layout className="w-full h-screen overflow-hidden">
+    <Layout className="h-screen w-full">
       <RootHeader setSidebarVisible={setSidebarVisible} />
-      <Layout className="relative overflow-hidden">
+      <Layout className="relative min-h-0 flex-1">
         {!hideSidebar && (
           <Sidebar
             sidebarVisible={sidebarVisible}
@@ -33,8 +33,10 @@ const RootLayout = () => {
           />
         )}
         <Content
-          className={`flex flex-col ${
-            pathname.includes("/inbox") ? "overflow-hidden" : "p-2 overflow-y-auto"
+          className={`flex min-h-0 flex-1 flex-col ${
+            pathname.includes("/inbox")
+              ? "h-full"
+              : "h-full overflow-y-auto p-2"
           }`}
         >
           <Outlet />
