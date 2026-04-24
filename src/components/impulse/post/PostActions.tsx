@@ -93,7 +93,7 @@ export const PostActions = ({
                 }}
               />
             </Button>
-            <Divider type="vertical" style={{ margin: "0 2px" }} />
+            <Divider orientation="vertical" style={{ margin: "0 2px" }} />
           </>
         )}
 

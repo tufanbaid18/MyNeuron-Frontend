@@ -10,7 +10,7 @@ export const useLikePost = () => {
   return useMutation({
     mutationFn: likePost,
     onSuccess: (data) => {
-      queryClient.setQueryData<FeedPost[]>(FEED_QUERY_KEY, (old) =>
+      queryClient.setQueriesData({ queryKey: FEED_QUERY_KEY }, (old: FeedPost[] | undefined) =>
         old?.map((post) =>
           post.id === data.id
             ? {

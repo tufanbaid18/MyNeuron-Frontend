@@ -10,7 +10,7 @@ export const useDeletePost = () => {
   return useMutation({
     mutationFn: deletePost,
     onSuccess: (_, postId) => {
-      queryClient.setQueryData<FeedPost[]>(FEED_QUERY_KEY, (old) =>
+      queryClient.setQueriesData({ queryKey: FEED_QUERY_KEY }, (old: FeedPost[] | undefined) =>
         old?.filter((post) => post.id !== postId),
       );
     },

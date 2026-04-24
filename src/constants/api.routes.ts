@@ -67,7 +67,6 @@ export const API_ROUTES = {
   PAGES: "/pages/",
   PAGES_BY_FILTER: "/pages/filter/",
   PAGE_POSTS: "/page-posts/",
-  GET_PAGE_POSTS: (pageId: number) => `/pages/${pageId}/posts/`,
   PAGES_OVERVIEW: "/pages/counts",
   NEWS: "/news/",
   PAGE_FOLLOW: "/page-follow/follow/",

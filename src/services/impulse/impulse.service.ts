@@ -15,8 +15,17 @@ import type {
   UpdatePostPayload,
 } from "../../types/impulse/post.types";
 
-export const getFeedPosts = async (): Promise<FeedPost[]> => {
-  const response = await axiosInstance.get<FeedPost[]>(API_ROUTES.POSTS);
+export const getFeedPosts = async (pageId?: number): Promise<FeedPost[]> => {
+  let response;
+  if (pageId) {
+    response = await axiosInstance.get<FeedPost[]>(API_ROUTES.POSTS, {
+      params: {
+        pageId: pageId,
+      },
+    });
+  } else {
+    response = await axiosInstance.get<FeedPost[]>(API_ROUTES.POSTS);
+  }
   return response.data;
 };
 
@@ -250,19 +259,3 @@ export const createPagePost = async ({
   return response.data;
 };
 
-export const getPagePosts = async (pageId: number): Promise<FeedPost[]> => {
-  const response = await axiosInstance.get<(FeedPost | FeedPost["data"])[]>(
-    API_ROUTES.GET_PAGE_POSTS(pageId),
-  );
-  return response.data.map((item) => {
-    if ("type" in item && "data" in item) {
-      return item as FeedPost;
-    }
-    return {
-      id: item.id,
-      type: "page_post",
-      data: item as FeedPost["data"],
-      created_at: item.created_at,
-    };
-  });
-};

@@ -1,7 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { Card, Skeleton } from "antd";
 import { useEffect, useRef, useState } from "react";
-import { useFeedPosts, usePagePosts } from "../../hooks/impulse/useFeed";
+import { useFeedPosts } from "../../hooks/impulse/useFeed";
 import type { UserProfile } from "../../types/user/user.types";
 import ErrorComponent from "../ui/ErrorComponent";
 import NoData from "../ui/NoData";
@@ -15,12 +15,9 @@ interface FeedProps {
 
 const Feed = ({ user, pageId }: FeedProps) => {
   const [createOpen, setCreateOpen] = useState(false);
-  const feedPostsQuery = useFeedPosts({ enabled: !pageId });
-  const pagePostsQuery = usePagePosts(pageId!); // The hook handles enabled: !!pageId internally
+  const feedPostsQuery = useFeedPosts(pageId);
 
-  const { data, isFetching, isLoading, error, dataUpdatedAt } = pageId
-    ? pagePostsQuery
-    : feedPostsQuery;
+  const { data, isFetching, isLoading, error, dataUpdatedAt } = feedPostsQuery;
   const queryClient = useQueryClient();
   const containerRef = useRef<HTMLDivElement>(null);
   const scroll記憶Ref = useRef<{ postId: number | null; offset: number }>({
@@ -71,7 +68,7 @@ const Feed = ({ user, pageId }: FeedProps) => {
     } else {
       scroll記憶Ref.current = { postId: null, offset: 0 };
     }
-    const queryKey = pageId ? ["get-page-posts", pageId] : ["get-feed-posts"];
+    const queryKey = pageId ? ["get-feed-posts", pageId] : ["get-feed-posts"];
     queryClient.invalidateQueries({ queryKey });
   };
 
