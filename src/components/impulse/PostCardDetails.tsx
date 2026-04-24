@@ -19,6 +19,7 @@ import {
 } from "./post";
 import { APP_ROUTES } from "../../constants/app.routes";
 import { SharePostModal } from "../inbox/SharePostModal";
+import type { FeedPostType } from "../../types/impulse/feed.types";
 
 interface PostCardDetailsProps {
   post: FeedPost;
@@ -76,11 +77,11 @@ export const PostCardDetails = ({
   const deletePost = useDeletePost();
 
   const handleLike = useCallback(() => {
-    likePost.mutate(post.id);
+    likePost.mutate({ postId: post.id, post_type: type as FeedPostType });
   }, [likePost, post.id]);
 
   const handleBookmark = useCallback(() => {
-    bookmarkPost.mutate(post.id);
+    bookmarkPost.mutate({ postId: post.id, post_type: type as FeedPostType });
   }, [bookmarkPost, post.id]);
 
   const postUrl = `${window.location.origin}${APP_ROUTES.IMPULSE_POST(post.id)}`;
@@ -109,7 +110,7 @@ export const PostCardDetails = ({
       };
       setLocalComments((prev) => [newComment, ...prev]);
       addComment.mutate(
-        { postId: post.id, content },
+        { postId: post.id, post_type: type as FeedPostType, content },
         {
           onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["get-feed-posts"] });

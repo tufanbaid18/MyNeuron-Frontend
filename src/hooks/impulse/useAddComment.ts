@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addComment } from "../../services/impulse/impulse.service";
 import { useUserProfile } from "../auth/useUserProfile";
 import type { FeedPost, FeedPostComment } from "../../types/impulse/post.types";
+import { FeedPostType } from "../../types/impulse/feed.types";
 
 export const FEED_QUERY_KEY = ["get-feed-posts"] as const;
 
@@ -10,8 +11,8 @@ export const useAddComment = () => {
   const { data: user } = useUserProfile();
 
   return useMutation({
-    mutationFn: ({ postId, content }: { postId: number; content: string }) =>
-      addComment(postId, content),
+    mutationFn: ({ postId, content, post_type = FeedPostType.USER_POST }: { postId: number; content: string; post_type?: FeedPostType }) =>
+      addComment(postId, content, post_type),
     onSuccess: (data, { postId }) => {
       if (!user) return;
 

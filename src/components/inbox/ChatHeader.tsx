@@ -13,7 +13,7 @@ interface ChatHeaderProps {
 
 export const ChatHeader = ({ user, onBack, showBackButton = true }: ChatHeaderProps) => {
   return (
-    <div className="flex items-center gap-3 border-b border-slate-200 px-5 py-3">
+    <div className="flex items-center gap-3 border-b border-slate-200 px-5 py-2.5">
       {showBackButton && (
         <Button
           type="text"

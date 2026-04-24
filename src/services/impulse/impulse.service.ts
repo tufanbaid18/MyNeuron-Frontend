@@ -1,6 +1,6 @@
 import { API_ROUTES } from "../../constants/api.routes";
 import axiosInstance from "../../lib/axiosInstance";
-import type { MyActivityOverview } from "../../types/impulse/feed.types";
+import type { FeedPostType, MyActivityOverview } from "../../types/impulse/feed.types";
 import type {
   CreatePagePayload,
   PageCategory,
@@ -157,30 +157,30 @@ export const deletePage = async (pageId: number) => {
   await axiosInstance.delete(API_ROUTES.PAGE_DETAILS(pageId));
 };
 
-export const likePost = async (postId: number) => {
+export const likePost = async (postId: number, post_type: FeedPostType) => {
   const response = await axiosInstance.post<{
     id: number;
     is_liked: boolean;
     like_count: number;
-  }>(API_ROUTES.POST_LIKE(postId));
+  }>(API_ROUTES.POST_LIKE(postId), { post_type });
   return response.data;
 };
 
-export const bookmarkPost = async (postId: number) => {
+export const bookmarkPost = async (postId: number, post_type: FeedPostType) => {
   const response = await axiosInstance.post<{
     id: number;
     is_bookmarked: boolean;
     bookmark_count: number;
-  }>(API_ROUTES.POST_BOOKMARK(postId));
+  }>(API_ROUTES.POST_BOOKMARK(postId), { post_type });
   return response.data;
 };
 
-export const addComment = async (postId: number, content: string) => {
+export const addComment = async (postId: number, content: string, post_type: FeedPostType) => {
   const response = await axiosInstance.post<{
     id: number;
     c_content: string;
     created_at: string;
-  }>(API_ROUTES.POST_COMMENT(postId), { c_content: content });
+  }>(API_ROUTES.POST_COMMENT(postId), { c_content: content, post_type });
   return response.data;
 };
 

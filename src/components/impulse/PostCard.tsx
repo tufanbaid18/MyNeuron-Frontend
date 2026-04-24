@@ -19,6 +19,7 @@ import {
 } from "./post";
 import { APP_ROUTES } from "../../constants/app.routes";
 import { SharePostModal } from "../inbox/SharePostModal";
+import type { FeedPostType } from "../../types/impulse/feed.types";
 
 interface PostCardProps {
   post: FeedPost;
@@ -75,7 +76,7 @@ export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
   const deletePost = useDeletePost();
 
   const handleLike = useCallback(() => {
-    likePost.mutate(post.id);
+    likePost.mutate({ postId: post.id, post_type: type as FeedPostType });
   }, [likePost, post.id]);
 
   const handleComment = useCallback(() => {
@@ -83,7 +84,7 @@ export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
   }, []);
 
   const handleBookmark = useCallback(() => {
-    bookmarkPost.mutate(post.id);
+    bookmarkPost.mutate({ postId: post.id, post_type: type as FeedPostType });
   }, [bookmarkPost, post.id]);
 
   const postUrl = `${window.location.origin}${APP_ROUTES.IMPULSE_POST(post.id)}`;
@@ -95,7 +96,7 @@ export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
   const handleAddComment = useCallback(
     (content: string) => {
       addComment.mutate(
-        { postId: post.id, content },
+        { postId: post.id, content, post_type: type as FeedPostType },
         {
           onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["get-feed-posts"] });

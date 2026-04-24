@@ -1,5 +1,10 @@
 import type { ReactNode } from "react";
 
+export enum FeedPostType {
+  USER_POST = "user_post",
+  PAGE_POST = "page_post",
+}
+
 export type MyFollowersResponse = MyFollowersItem[];
 
 export type MyFollowersItem = {
