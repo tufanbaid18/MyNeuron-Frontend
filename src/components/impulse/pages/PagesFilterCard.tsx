@@ -1,11 +1,11 @@
-import { Button, Card, Segmented, Space, Typography, Tooltip } from "antd";
+import { ArrowLeftOutlined } from "@ant-design/icons";
+import { useRouter } from "@tanstack/react-router";
+import { Button, Card, Segmented, Space, Tooltip, Typography } from "antd";
+import { Plus } from "lucide-react";
 import {
   PageCategory,
   PageOverviewTypes,
 } from "../../../types/impulse/page.types";
-import { Plus } from "lucide-react";
-import { ArrowLeftOutlined } from "@ant-design/icons";
-import { useRouter } from "@tanstack/react-router";
 
 const { Text } = Typography;
 
@@ -96,10 +96,12 @@ const PagesFilterCard = ({
             style={{ background: "#f0f2f5" }}
           />
         </Space>
-        <Button type="primary" onClick={() => setOpenAddPage(!openAddPage)}>
-          <Plus />
-          Create Page
-        </Button>
+        {pageType !== PageOverviewTypes.FOLLOWED_PAGES && (
+          <Button type="primary" onClick={() => setOpenAddPage(!openAddPage)}>
+            <Plus />
+            Create Page
+          </Button>
+        )}
       </div>
     </Card>
   );
