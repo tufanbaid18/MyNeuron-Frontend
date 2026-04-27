@@ -242,6 +242,14 @@ const UserProfileManager: React.FC<UserProfileManagerProps> = ({
                     customRequest={handleImageUpload}
                     showUploadList={false}
                     accept="image/*"
+                    beforeUpload={(file) => {
+                      const isWithinLimit = file.size / 1024 / 1024 <= 5;
+                      if (!isWithinLimit) {
+                        message.error("Image must be smaller than 5MB.");
+                        return Upload.LIST_IGNORE;
+                      }
+                      return true;
+                    }}
                   >
                     <div
                       style={{
