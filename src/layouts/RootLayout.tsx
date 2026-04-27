@@ -34,8 +34,8 @@ const RootLayout = () => {
         )}
         <Content
           className={`flex min-h-0 flex-1 flex-col ${
-            pathname.includes("/inbox")
-              ? "h-full"
+            pathname.includes("/inbox") || pathname.includes("/profile")
+              ? "h-full overflow-y-auto"
               : "h-full overflow-y-auto p-2"
           }`}
         >

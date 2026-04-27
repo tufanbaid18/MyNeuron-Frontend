@@ -143,11 +143,11 @@ const UserProfileManager: React.FC<UserProfileManagerProps> = ({
     <div
       style={{
         background: token.colorBgLayout,
-        minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
         paddingBottom: "40px",
       }}
+      className="w-full"
     >
       {/* Hero Banner Area for Profile Mode */}
       {mode === "profile" && (
@@ -256,7 +256,9 @@ const UserProfileManager: React.FC<UserProfileManagerProps> = ({
                     beforeUpload={(file) => {
                       const sizeMB = file.size / 1024 / 1024;
                       if (sizeMB > MAX_FILE_SIZE_MB) {
-                        message.error(`"${truncateFilename(file.name)}" exceeds 5MB limit`);
+                        message.error(
+                          `"${truncateFilename(file.name)}" exceeds 5MB limit`,
+                        );
                         return Upload.LIST_IGNORE;
                       }
                       return true;
