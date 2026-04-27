@@ -190,6 +190,7 @@ export const PostCardDetails = ({
           likeCount={data.like_count}
           commentCount={data.comment_count}
           isLiked={data.is_liked}
+          postType={type}
         />
 
         {/* Post actions without comment button - comments are always visible below */}

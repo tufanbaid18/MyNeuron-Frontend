@@ -1,6 +1,9 @@
 import { API_ROUTES } from "../../constants/api.routes";
 import axiosInstance from "../../lib/axiosInstance";
-import type { FeedPostType, MyActivityOverview } from "../../types/impulse/feed.types";
+import type {
+  FeedPostType,
+  MyActivityOverview,
+} from "../../types/impulse/feed.types";
 import type {
   CreatePagePayload,
   PageCategory,
@@ -175,7 +178,11 @@ export const bookmarkPost = async (postId: number, post_type: FeedPostType) => {
   return response.data;
 };
 
-export const addComment = async (postId: number, content: string, post_type: FeedPostType) => {
+export const addComment = async (
+  postId: number,
+  content: string,
+  post_type: FeedPostType,
+) => {
   const response = await axiosInstance.post<{
     id: number;
     c_content: string;
@@ -193,8 +200,13 @@ export const getNews = async () => {
   return response.data;
 };
 
-export const getPostDetails = async (postId: number) => {
-  const response = await axiosInstance.get(API_ROUTES.POST_BY_ID(postId));
+export const getPostDetails = async (
+  postId: number,
+  post_type: FeedPostType,
+) => {
+  const response = await axiosInstance.get(API_ROUTES.POST_BY_ID(postId), {
+    params: { post_type },
+  });
   return response.data;
 };
 
@@ -258,4 +270,3 @@ export const createPagePost = async ({
 
   return response.data;
 };
-

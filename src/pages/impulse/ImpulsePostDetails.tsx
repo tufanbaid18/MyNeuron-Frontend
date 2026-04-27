@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "@tanstack/react-router";
+import { useNavigate, useParams, useSearch } from "@tanstack/react-router";
 import { Button, Card, Skeleton } from "antd";
 import { useAtomValue } from "jotai";
 import { ArrowLeft } from "lucide-react";
@@ -9,14 +9,18 @@ import { usePostDetails } from "../../hooks/impulse/useFeed";
 import { impulsePostDetailsRoute } from "../../routes/impulse.routes";
 import { userProfileAtom } from "../../store/auth.store";
 import type { FeedPost } from "../../types/impulse/post.types";
+import type { FeedPostType } from "../../types/impulse/feed.types";
 
 function ImpulsePostDetails() {
-  const { postId } = useParams({ from: impulsePostDetailsRoute.id });
+  const { postId } = useParams({
+    from: impulsePostDetailsRoute.id,
+  });
+  const { post_type } = useSearch({ from: impulsePostDetailsRoute.id });
   const {
     data: postResponse,
     isLoading,
     isError,
-  } = usePostDetails(Number(postId));
+  } = usePostDetails(Number(postId), post_type);
   const user = useAtomValue(userProfileAtom);
   const navigate = useNavigate();
 
@@ -75,7 +79,7 @@ function ImpulsePostDetails() {
   // Map API response to FeedPost structure
   const feedPost: FeedPost = {
     id: postData.id,
-    type: postData.page_details ? "page_post" : "user_post",
+    type: post_type as FeedPostType,
     data: postData,
     created_at: postData.created_at,
   };
@@ -107,12 +111,7 @@ function ImpulsePostDetails() {
       </div>
 
       <div style={{ width: "100%", maxWidth: 680 }}>
-        {user ? (
-          <PostCardDetails
-            post={feedPost}
-            userId={user.id}
-          />
-        ) : null}
+        {user ? <PostCardDetails post={feedPost} userId={user.id} /> : null}
       </div>
     </div>
   );

@@ -1,25 +1,25 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { Card, Modal } from "antd";
 import { useCallback, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { APP_ROUTES } from "../../constants/app.routes";
 import { useAddComment } from "../../hooks/impulse/useAddComment";
 import { useBookmarkPost } from "../../hooks/impulse/useBookmarkPost";
 import { useDeletePost } from "../../hooks/impulse/useDeletePost";
 import { useLikePost } from "../../hooks/impulse/useLikePost";
+import type { FeedPostType } from "../../types/impulse/feed.types";
 import type { FeedPost } from "../../types/impulse/post.types";
+import { SharePostModal } from "../inbox/SharePostModal";
 import CreatePostComponent from "./CreatePostComponent";
-import { PostComments } from "./post";
 import {
   LinkPreview,
   OgPreview,
   PostActions,
+  PostComments,
   PostContent,
   PostHeader,
   PostMedia,
   PostStats,
 } from "./post";
-import { APP_ROUTES } from "../../constants/app.routes";
-import { SharePostModal } from "../inbox/SharePostModal";
-import type { FeedPostType } from "../../types/impulse/feed.types";
 
 interface PostCardProps {
   post: FeedPost;
@@ -175,6 +175,7 @@ export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
           likeCount={data.like_count}
           commentCount={data.comment_count}
           isLiked={data.is_liked}
+          postType={post.type}
         />
 
         <PostActions

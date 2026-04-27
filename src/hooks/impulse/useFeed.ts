@@ -2,9 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import {
   getFeedPosts,
   getNews,
-  
   getPostDetails,
 } from "../../services/impulse/impulse.service";
+import type { FeedPostType } from "../../types/impulse/feed.types";
 
 export const useFeedPosts = (pageId?: number) => {
   return useQuery({
@@ -15,7 +15,6 @@ export const useFeedPosts = (pageId?: number) => {
   });
 };
 
-
 export const useNews = () => {
   return useQuery({
     queryKey: ["get-news"],
@@ -23,10 +22,10 @@ export const useNews = () => {
   });
 };
 
-export const usePostDetails = (postId: number) => {
+export const usePostDetails = (postId: number, post_type: FeedPostType) => {
   return useQuery({
-    queryKey: ["get-post-details", postId],
-    queryFn: () => getPostDetails(postId),
+    queryKey: ["get-post-details", postId, post_type],
+    queryFn: () => getPostDetails(postId, post_type),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 };

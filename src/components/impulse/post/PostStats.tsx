@@ -2,12 +2,14 @@ import { ThumbsUp } from "lucide-react";
 import { formatCount } from "../../../utils/impulse.utils";
 import { useNavigate } from "@tanstack/react-router";
 import { impulsePostDetailsRoute } from "../../../routes/impulse.routes";
+import type { FeedPostType } from "../../../types/impulse/feed.types";
 
 interface PostStatsProps {
   postId: number;
   likeCount: number;
   commentCount: number;
   isLiked?: boolean;
+  postType: FeedPostType;
 }
 
 export const PostStats = ({
@@ -15,6 +17,7 @@ export const PostStats = ({
   likeCount,
   commentCount,
   isLiked,
+  postType,
 }: PostStatsProps) => {
   const navigate = useNavigate();
   if (likeCount === 0 && commentCount === 0) {
@@ -32,7 +35,11 @@ export const PostStats = ({
       }}
       className="border-t border-gray-100"
       onClick={() =>
-        navigate({ to: impulsePostDetailsRoute.to, params: { postId } })
+        navigate({
+          to: impulsePostDetailsRoute.to,
+          params: { postId },
+          search: { post_type: postType },
+        })
       }
     >
       {/* Like count */}

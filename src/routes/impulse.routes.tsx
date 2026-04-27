@@ -8,7 +8,7 @@ import MyActivity from "../pages/impulse/MyActivity";
 import AllPages from "../pages/impulse/pages/AllPages";
 import PageDetails from "../pages/impulse/pages/PageDetails";
 import PagesRoot from "../pages/impulse/pages/PagesRoot";
-import { MyActivityTypes } from "../types/impulse/feed.types";
+import { FeedPostType, MyActivityTypes } from "../types/impulse/feed.types";
 import { PageOverviewTypes } from "../types/impulse/page.types";
 import { appRoute } from "./app.routes";
 import { ROUTER_ROUTES } from "./routes";
@@ -37,9 +37,11 @@ export const impulsePostDetailsRoute = createRoute({
   params: {
     parse: (params: Record<string, string>) => ({
       postId: params.postId,
+      post_type: params.post_type as FeedPostType,
     }),
-    stringify: (params: { postId: string }) => ({
+    stringify: (params: { postId: string; post_type: FeedPostType }) => ({
       postId: params.postId,
+      post_type: params.post_type as FeedPostType,
     }),
   },
   component: () => <ImpulsePostDetails />,

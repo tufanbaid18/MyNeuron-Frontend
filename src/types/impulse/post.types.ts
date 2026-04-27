@@ -1,3 +1,5 @@
+import type { FeedPostType } from "./feed.types";
+
 export type PostUser = {
   id: number;
   first_name: string;
@@ -52,7 +54,7 @@ export type FeedPosts = FeedPost[];
 
 export type FeedPost = {
   id: number;
-  type: "user_post" | "page_post";
+  type: FeedPostType;
   data: {
     id: number;
     page_details: PostPageDetails | null;
