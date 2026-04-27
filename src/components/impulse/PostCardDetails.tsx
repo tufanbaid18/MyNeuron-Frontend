@@ -35,6 +35,7 @@ export const PostCardDetails = ({
   const queryClient = useQueryClient();
   const { type, data } = post;
   const isUserPost = type === "user_post";
+  const [pendingAction, setPendingAction] = useState<"like" | "bookmark" | null>(null);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const author = isUserPost
@@ -77,11 +78,19 @@ export const PostCardDetails = ({
   const deletePost = useDeletePost();
 
   const handleLike = useCallback(() => {
-    likePost.mutate({ postId: post.id, post_type: type as FeedPostType });
+    setPendingAction("like");
+    likePost.mutate(
+      { postId: post.id, post_type: type as FeedPostType },
+      { onSettled: () => setPendingAction(null) },
+    );
   }, [likePost, post.id]);
 
   const handleBookmark = useCallback(() => {
-    bookmarkPost.mutate({ postId: post.id, post_type: type as FeedPostType });
+    setPendingAction("bookmark");
+    bookmarkPost.mutate(
+      { postId: post.id, post_type: type as FeedPostType },
+      { onSettled: () => setPendingAction(null) },
+    );
   }, [bookmarkPost, post.id]);
 
   const postUrl = `${window.location.origin}${APP_ROUTES.IMPULSE_POST(post.id)}`;
@@ -197,7 +206,7 @@ export const PostCardDetails = ({
         <PostActions
           isLiked={data.is_liked}
           isBookmarked={data.is_bookmarked}
-          isLoading={likePost.isPending || bookmarkPost.isPending}
+          isLoading={pendingAction !== null}
           showCommentButton={false}
           onLike={handleLike}
           onBookmark={handleBookmark}

@@ -31,6 +31,7 @@ export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
   const queryClient = useQueryClient();
   const { type, data } = post;
   const isUserPost = type === "user_post";
+  const [pendingAction, setPendingAction] = useState<"like" | "bookmark" | null>(null);
 
   const author = isUserPost
     ? data.user
@@ -76,7 +77,11 @@ export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
   const deletePost = useDeletePost();
 
   const handleLike = useCallback(() => {
-    likePost.mutate({ postId: post.id, post_type: type as FeedPostType });
+    setPendingAction("like");
+    likePost.mutate(
+      { postId: post.id, post_type: type as FeedPostType },
+      { onSettled: () => setPendingAction(null) },
+    );
   }, [likePost, post.id]);
 
   const handleComment = useCallback(() => {
@@ -84,7 +89,11 @@ export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
   }, []);
 
   const handleBookmark = useCallback(() => {
-    bookmarkPost.mutate({ postId: post.id, post_type: type as FeedPostType });
+    setPendingAction("bookmark");
+    bookmarkPost.mutate(
+      { postId: post.id, post_type: type as FeedPostType },
+      { onSettled: () => setPendingAction(null) },
+    );
   }, [bookmarkPost, post.id]);
 
   const postUrl = `${window.location.origin}${APP_ROUTES.IMPULSE_POST(post.id)}`;
@@ -181,7 +190,7 @@ export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
         <PostActions
           isLiked={data.is_liked}
           isBookmarked={data.is_bookmarked}
-          isLoading={likePost.isPending || bookmarkPost.isPending}
+          isLoading={pendingAction !== null}
           onLike={handleLike}
           onComment={handleComment}
           onBookmark={handleBookmark}

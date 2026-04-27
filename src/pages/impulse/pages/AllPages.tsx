@@ -27,6 +27,7 @@ const AllPages = () => {
   const [pageType, setPageType] = useState<PageOverviewTypes | null>(
     filter as PageOverviewTypes | null,
   );
+  const [pendingPageId, setPendingPageId] = useState<number | null>(null);
 
   const { data: pages, isLoading } = usePagesByFilter({
     category: pageCategory || undefined,
@@ -37,11 +38,11 @@ const AllPages = () => {
   const unfollowMutation = useUnfollowPage();
 
   const handleFollowToggle = (pageId: number, isFollowing: boolean) => {
-    if (isFollowing) {
-      unfollowMutation.mutate(pageId);
-    } else {
-      followMutation.mutate(pageId);
-    }
+    setPendingPageId(pageId);
+    const mutation = isFollowing ? unfollowMutation : followMutation;
+    mutation.mutate(pageId, {
+      onSettled: () => setPendingPageId(null),
+    });
   };
 
   const handleTypeChange = (val: string) => {
@@ -81,9 +82,7 @@ const AllPages = () => {
                 <PageItemCard
                   page={page}
                   onFollowToggle={handleFollowToggle}
-                  isPending={
-                    followMutation.isPending || unfollowMutation.isPending
-                  }
+                  isPending={pendingPageId === page.id}
                 />
               </Col>
             ))}
