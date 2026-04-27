@@ -1,8 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { UploadFile } from "antd";
 import type { RcFile } from "antd/es/upload";
 import { message } from "antd";
-import { useCreatePost, useCreatePagePost } from "../../hooks/impulse/useCreatePost";
+import {
+  useCreatePost,
+  useCreatePagePost,
+} from "../../hooks/impulse/useCreatePost";
 import { useUpdatePost } from "../../hooks/impulse/useUpdatePost";
 import { getOgiMeta } from "../../services/impulse/impulse.service";
 import { buildOgHtml } from "../../utils/impulse.utils";
@@ -46,7 +49,10 @@ const CreatePostComponent = ({
   const [form, setForm] = useState({ title: "", content: "" });
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [ogPreview, setOgPreview] = useState<string | null>(null);
+  const [videoLinkError, setVideoLinkError] = useState<string | null>(null);
+  const [isValidatingLink, setIsValidatingLink] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const validationDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const createPost = useCreatePost({
     onSuccess: () => {
@@ -85,6 +91,8 @@ const CreatePostComponent = ({
     setForm({ title: "", content: "" });
     setFileList([]);
     setOgPreview(null);
+    setVideoLinkError(null);
+    setIsValidatingLink(false);
     setActiveTab("post");
     onClose();
   };
@@ -131,7 +139,10 @@ const CreatePostComponent = ({
     });
 
     const existing = fileList.map((f) => f.originFileObj as File);
-    const combined = [...existing, ...validatedFiles].slice(0, IMPULSE_CONSTANTS.MAX_IMAGES);
+    const combined = [...existing, ...validatedFiles].slice(
+      0,
+      IMPULSE_CONSTANTS.MAX_IMAGES,
+    );
 
     setFileList(
       combined.map((file, idx) => ({
@@ -148,31 +159,137 @@ const CreatePostComponent = ({
     setFileList((prev) => prev.filter((f) => f.uid !== uid));
   };
 
+  // ─── Known video-platform patterns (accepted without a network check) ──────
+  const KNOWN_VIDEO_PATTERNS = [
+    /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)/i,
+    /vimeo\.com\//i,
+    /dailymotion\.com\//i,
+    /dai\.ly\//i,
+    /twitch\.tv\//i,
+    /facebook\.com\/.*\/videos\//i,
+    /instagram\.com\/(?:p|reel)\//i,
+    /tiktok\.com\//i,
+    /streamable\.com\//i,
+    /rumble\.com\//i,
+  ];
+
+  const IMAGE_EXTENSIONS = /\.(png|jpg|jpeg|webp|gif|svg|bmp|ico)(\?.*)?$/i;
+  const VIDEO_EXTENSIONS = /\.(mp4|webm|ogg|mov|avi|mkv|m4v|flv)(\?.*)?$/i;
+
+  /**
+   * Uses a hidden <img> element to test whether `url` is a loadable image.
+   * Resolves true on load, false on error.
+   */
+  const testImageUrl = (url: string): Promise<boolean> =>
+    new Promise((resolve) => {
+      const img = new Image();
+      const timer = setTimeout(() => {
+        img.src = "";
+        resolve(false);
+      }, 8000);
+      img.onload = () => { clearTimeout(timer); resolve(true); };
+      img.onerror = () => { clearTimeout(timer); resolve(false); };
+      img.src = url;
+    });
+
+  /**
+   * Uses a hidden <video> element to test whether `url` is a loadable video.
+   * Resolves true if the browser can start decoding, false otherwise.
+   */
+  const testVideoUrl = (url: string): Promise<boolean> =>
+    new Promise((resolve) => {
+      const video = document.createElement("video");
+      video.muted = true;
+      video.preload = "metadata";
+      const timer = setTimeout(() => {
+        video.src = "";
+        resolve(false);
+      }, 8000);
+      video.oncanplay = () => { clearTimeout(timer); resolve(true); };
+      video.onerror = () => { clearTimeout(timer); resolve(false); };
+      video.src = url;
+      video.load();
+    });
+
+  /**
+   * Returns null if valid, or an error message string if not.
+   * Uses browser-native element loading — no fetch/no-cors hacks.
+   */
+  const validateMediaLink = useCallback(async (url: string): Promise<string | null> => {
+    if (!/^https?:\/\//i.test(url)) {
+      return "Please enter a valid URL starting with http:// or https://";
+    }
+
+    // Known video platforms — trust them without a network round-trip
+    if (KNOWN_VIDEO_PATTERNS.some((re) => re.test(url))) {
+      return null;
+    }
+
+    // Route by file extension so we test the right element type
+    if (IMAGE_EXTENSIONS.test(url)) {
+      const ok = await testImageUrl(url);
+      return ok ? null : "This URL does not point to a valid image. Please check the link.";
+    }
+
+    if (VIDEO_EXTENSIONS.test(url)) {
+      const ok = await testVideoUrl(url);
+      return ok ? null : "This URL does not point to a valid video. Please check the link.";
+    }
+
+    // Unknown extension — try image first, then video
+    const isImage = await testImageUrl(url);
+    if (isImage) return null;
+
+    const isVideo = await testVideoUrl(url);
+    if (isVideo) return null;
+
+    return "This link does not appear to point to a valid image or video.";
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleVideoUrlChange = (url: string) => {
-    if (url) {
-      setFileList([{
-        uid: "-video-link",
-        name: url,
-        status: "done" as const,
-        url,
-      }]);
-      handleOgFromText(url);
-    } else {
+    // Always update the input immediately so it stays responsive
+    if (!url) {
       setFileList([]);
       setOgPreview(null);
+      setVideoLinkError(null);
+      setIsValidatingLink(false);
+      if (validationDebounceRef.current) clearTimeout(validationDebounceRef.current);
+      return;
     }
+
+    setFileList([{ uid: "-video-link", name: url, status: "done" as const, url }]);
+    setIsValidatingLink(true);
+    setVideoLinkError(null);
+
+    // Debounce: wait 600ms after the user stops typing before validating
+    if (validationDebounceRef.current) clearTimeout(validationDebounceRef.current);
+    validationDebounceRef.current = setTimeout(async () => {
+      const error = await validateMediaLink(url);
+      setVideoLinkError(error);
+      setIsValidatingLink(false);
+      if (!error) {
+        handleOgFromText(url);
+      } else {
+        setOgPreview(null);
+      }
+    }, 600);
   };
 
-  const isLoading = createPost.isPending || createPagePost.isPending || updatePost.isPending;
+  const isLoading =
+    createPost.isPending || createPagePost.isPending || updatePost.isPending;
   const isEmpty = !form.content?.trim() && fileList.length === 0 && !ogPreview;
   const isEditMode = !!editingPost;
+  const hasLinkError =
+    activeTab === "video" && (!!videoLinkError || isValidatingLink);
 
   const inferEditTab = (post: EditablePost): string => {
     const media = post.media || [];
-    const hasVideoPreview = !!post.link_preview?.embed_url
-      || !!post.link_preview?.video_id
-      || (post.link_preview?.type || "").toLowerCase().includes("video")
-      || (post.link_preview?.watch_url || "").length > 0;
+    const hasVideoPreview =
+      !!post.link_preview?.embed_url ||
+      !!post.link_preview?.video_id ||
+      (post.link_preview?.type || "").toLowerCase().includes("video") ||
+      (post.link_preview?.watch_url || "").length > 0;
     if (media.some((m) => m.is_video)) return "video";
     if (hasVideoPreview) return "video";
     if (media.length > 0) return "image";
@@ -181,7 +298,9 @@ const CreatePostComponent = ({
   };
 
   const extractOgCardHtml = (content: string): string | null => {
-    const match = content.match(/<div class="og-card"[\s\S]*?<\/div>\s*<\/div>/i);
+    const match = content.match(
+      /<div class="og-card"[\s\S]*?<\/div>\s*<\/div>/i,
+    );
     return match ? match[0] : null;
   };
 
@@ -193,7 +312,9 @@ const CreatePostComponent = ({
   };
 
   const extractReadMoreUrl = (content: string): string => {
-    const hrefMatch = content.match(/<a[^>]*href="([^"]+)"[^>]*>\s*Read more\s*→?\s*<\/a>/i);
+    const hrefMatch = content.match(
+      /<a[^>]*href="([^"]+)"[^>]*>\s*Read more\s*→?\s*<\/a>/i,
+    );
     return hrefMatch?.[1] || "";
   };
 
@@ -206,21 +327,25 @@ const CreatePostComponent = ({
       const ogCardHtml = extractOgCardHtml(rawContent);
       const normalizedContent = stripOgCardFromContent(rawContent);
       const extractedReadMoreUrl = extractReadMoreUrl(rawContent);
-      const resolvedVideoUrl = editingPost.link_preview?.watch_url || extractedReadMoreUrl;
+      const resolvedVideoUrl =
+        editingPost.link_preview?.watch_url || extractedReadMoreUrl;
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setForm({
         title: editingPost.title || "",
         content: inferredTab === "video" ? normalizedContent : rawContent,
       });
       setFileList(
         inferredTab === "video"
-          ? (resolvedVideoUrl
-            ? [{
-                uid: `existing-video-link-${editingPost.id}`,
-                name: resolvedVideoUrl,
-                status: "done" as const,
-                url: resolvedVideoUrl,
-              }]
-            : [])
+          ? resolvedVideoUrl
+            ? [
+                {
+                  uid: `existing-video-link-${editingPost.id}`,
+                  name: resolvedVideoUrl,
+                  status: "done" as const,
+                  url: resolvedVideoUrl,
+                },
+              ]
+            : []
           : (editingPost.media || []).map((media, idx) => ({
               uid: `existing-${editingPost.id}-${idx}`,
               name: media.file_url.split("/").pop() || `media-${idx + 1}`,
@@ -240,6 +365,16 @@ const CreatePostComponent = ({
   const handleSubmit = () => {
     if (isEmpty) {
       message.warning("Post cannot be empty");
+      return;
+    }
+
+    if (activeTab === "video" && videoLinkError) {
+      message.error(videoLinkError);
+      return;
+    }
+
+    if (activeTab === "video" && isValidatingLink) {
+      message.info("Please wait while the link is being validated");
       return;
     }
 
@@ -290,17 +425,26 @@ const CreatePostComponent = ({
         fileList={fileList}
         ogPreview={ogPreview}
         isLoading={isLoading}
-        isEmpty={isEmpty}
+        isEmpty={isEmpty || hasLinkError}
         isEditMode={isEditMode}
         user={user}
         fileInputRef={fileInputRef}
-        onTabChange={setActiveTab}
+        onTabChange={(tab) => {
+          setActiveTab(tab);
+          // Clear link error when switching away from video tab
+          if (tab !== "video") {
+            setVideoLinkError(null);
+            setIsValidatingLink(false);
+          }
+        }}
         onContentChange={(content) => setForm({ ...form, content })}
         onTitleChange={(title) => setForm({ ...form, title })}
         onFileSelect={handleFileSelect}
         onRemoveFile={removeImage}
         onOgPaste={handleOgFromText}
         onVideoUrlChange={handleVideoUrlChange}
+        videoLinkError={videoLinkError}
+        isValidatingLink={isValidatingLink}
         onSubmit={handleSubmit}
         onClose={handleClose}
       />

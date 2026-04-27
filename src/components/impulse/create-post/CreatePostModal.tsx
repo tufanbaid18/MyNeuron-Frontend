@@ -30,6 +30,8 @@ interface CreatePostModalProps {
   onRemoveFile: (uid: string) => void;
   onOgPaste: (text: string) => void;
   onVideoUrlChange: (url: string) => void;
+  videoLinkError?: string | null;
+  isValidatingLink?: boolean;
   onSubmit: () => void;
   onClose: () => void;
 }
@@ -52,6 +54,8 @@ export const CreatePostModal = ({
   onRemoveFile,
   onOgPaste,
   onVideoUrlChange,
+  videoLinkError,
+  isValidatingLink,
   onSubmit,
   onClose,
 }: CreatePostModalProps) => {
@@ -119,6 +123,8 @@ export const CreatePostModal = ({
           fileList={fileList}
           onContentChange={onContentChange}
           onVideoUrlChange={onVideoUrlChange}
+          linkError={videoLinkError ?? null}
+          isValidating={isValidatingLink ?? false}
         />
       ),
     },
