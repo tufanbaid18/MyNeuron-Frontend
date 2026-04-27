@@ -2,10 +2,10 @@ import { useNavigate } from "@tanstack/react-router";
 import { Avatar, Dropdown } from "antd";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { BiChevronDown, BiSolidMoon, BiSolidSun } from "react-icons/bi";
+import { BiChevronDown } from "react-icons/bi";
 import { APP_ROUTES } from "../../constants/app.routes";
 import { getHeaderProfileItems } from "../../constants/root.constants";
-import { useTheme } from "../../providers/useTheme";
+// import { useTheme } from "../../providers/useTheme";
 import { logout } from "../../services/auth/auth.service";
 import type { UserProfile } from "../../types/user/user.types";
 import { getAvatarByName } from "../../utils/avatar.utils";
@@ -15,7 +15,7 @@ export type HeaderProfileProps = {
 };
 
 const HeaderProfile: React.FC<HeaderProfileProps> = ({ user }) => {
-  const { toggleTheme, dark } = useTheme();
+  // const { toggleTheme, dark } = useTheme();
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -36,14 +36,14 @@ const HeaderProfile: React.FC<HeaderProfileProps> = ({ user }) => {
     });
   };
 
-  const theme = {
-    title: dark ? "Switch to Light" : "Switch to Dark",
-    icon: dark ? <BiSolidSun /> : <BiSolidMoon />,
-    action: toggleTheme,
-  };
+  // const theme = {
+  //   title: dark ? "Switch to Light" : "Switch to Dark",
+  //   icon: dark ? <BiSolidSun /> : <BiSolidMoon />,
+  //   action: toggleTheme,
+  // };
 
   const items = getHeaderProfileItems({
-    theme,
+    // theme,
     handleLogout,
     handleProfileClick,
   });

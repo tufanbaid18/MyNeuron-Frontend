@@ -2,11 +2,11 @@ import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 
 export const getHeaderProfileItems = ({
-  theme,
+  // theme,
   handleLogout,
   handleProfileClick,
 }: {
-  theme: { title: string; icon: React.ReactNode; action: () => void };
+  // theme: { title: string; icon: React.ReactNode; action: () => void };
   handleLogout: () => void;
   handleProfileClick: () => void;
 }): MenuProps["items"] => [
@@ -16,12 +16,12 @@ export const getHeaderProfileItems = ({
     icon: <UserOutlined />,
     onClick: handleProfileClick,
   },
-  {
-    key: "3",
-    label: theme.title,
-    onClick: theme.action,
-    icon: theme.icon,
-  },
+  // {
+  //   key: "3",
+  //   label: theme.title,
+  //   onClick: theme.action,
+  //   icon: theme.icon,
+  // },
   {
     type: "divider",
   },
