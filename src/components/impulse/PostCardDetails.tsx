@@ -206,7 +206,8 @@ export const PostCardDetails = ({
         <PostActions
           isLiked={data.is_liked}
           isBookmarked={data.is_bookmarked}
-          isLoading={pendingAction !== null}
+          isLikeLoading={pendingAction === "like"}
+          isBookmarkLoading={pendingAction === "bookmark"}
           showCommentButton={false}
           onLike={handleLike}
           onBookmark={handleBookmark}

@@ -190,7 +190,8 @@ export const PostCard = ({ post, userId, onNewPost }: PostCardProps) => {
         <PostActions
           isLiked={data.is_liked}
           isBookmarked={data.is_bookmarked}
-          isLoading={pendingAction !== null}
+          isLikeLoading={pendingAction === "like"}
+          isBookmarkLoading={pendingAction === "bookmark"}
           onLike={handleLike}
           onComment={handleComment}
           onBookmark={handleBookmark}

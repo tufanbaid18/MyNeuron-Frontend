@@ -10,7 +10,8 @@ import {
 interface PostActionsProps {
   isLiked: boolean;
   isBookmarked: boolean;
-  isLoading?: boolean;
+  isLikeLoading?: boolean;
+  isBookmarkLoading?: boolean;
   isAddingComment?: boolean;
   showCommentButton?: boolean;
   onLike?: () => void;
@@ -23,7 +24,8 @@ interface PostActionsProps {
 export const PostActions = ({
   isLiked,
   isBookmarked,
-  isLoading,
+  isLikeLoading,
+  isBookmarkLoading,
   showCommentButton,
   onLike,
   onComment,
@@ -48,7 +50,7 @@ export const PostActions = ({
         {/* Like + count */}
         <Button
           type="text"
-          loading={isLoading}
+          loading={isLikeLoading}
           onClick={onLike}
           style={{
             flex: 1,
@@ -100,7 +102,7 @@ export const PostActions = ({
         {/* Bookmark */}
         <Button
           type="text"
-          loading={isLoading}
+          loading={isBookmarkLoading}
           onClick={onBookmark}
           style={{
             flex: 1,
