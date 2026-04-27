@@ -76,11 +76,12 @@ const AddFileLinkModal: React.FC<AddFileLinkModalProps> = ({
             fontSize: 14,
           }}
         >
-          Provide the Name of the file, its URL, or both.
+          Provide either <b>Name</b> of the file, its <b>URL</b>, or <b>both</b>
+          .
         </p>
 
         <Form.Item
-          label={<span style={{ fontWeight: 500 }}>Name (Optional)</span>}
+          label={<span style={{ fontWeight: 500 }}>Name</span>}
           validateStatus={errors.title ? "error" : ""}
           help={errors.title?.message}
         >
@@ -104,7 +105,6 @@ const AddFileLinkModal: React.FC<AddFileLinkModalProps> = ({
           }
           validateStatus={errors.url ? "error" : ""}
           help={errors.url?.message}
-          required
         >
           <Controller
             name="url"
