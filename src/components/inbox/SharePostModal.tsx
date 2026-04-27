@@ -1,7 +1,7 @@
-import { SendOutlined, ShareAltOutlined, UserOutlined } from "@ant-design/icons";
+import { CheckOutlined, CopyOutlined, SendOutlined, ShareAltOutlined, UserOutlined } from "@ant-design/icons";
 import { useRouter } from "@tanstack/react-router";
-import { Avatar, Input, Modal, Spin, Typography } from "antd";
-import { useState } from "react";
+import { Avatar, Button, Input, Modal, Spin, Typography } from "antd";
+import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
 import { useSendMessage } from "../../hooks/inbox/useInbox";
 import { useUserSearch } from "../../hooks/user/useUserProfile";
@@ -15,6 +15,32 @@ interface SharePostModalProps {
   postUrl: string;
   postTitle?: string;
 }
+
+const CopyLinkButton = ({ url }: { url: string }) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      toast.success("Link copied to clipboard!");
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      toast.error("Failed to copy link.");
+    }
+  }, [url]);
+
+  return (
+    <Button
+      type="text"
+      size="small"
+      icon={copied ? <CheckOutlined className="text-emerald-600" /> : <CopyOutlined className="text-slate-500" />}
+      onClick={handleCopy}
+      title="Copy link"
+      className="shrink-0"
+    />
+  );
+};
 
 export const SharePostModal = ({
   open,
@@ -87,12 +113,13 @@ export const SharePostModal = ({
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600">
             <SendOutlined className="text-lg" />
           </div>
-          <div className="flex min-w-0 flex-col">
+          <div className="flex min-w-0 flex-1 flex-col">
             <Text strong className="truncate text-sm text-slate-700">
               {postTitle || "Impulse Post"}
             </Text>
             <Text className="truncate text-xs text-slate-400">{postUrl}</Text>
           </div>
+          <CopyLinkButton url={postUrl} />
         </div>
 
         {/* Search input */}
