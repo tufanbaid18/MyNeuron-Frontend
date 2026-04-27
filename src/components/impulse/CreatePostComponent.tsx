@@ -99,6 +99,17 @@ const CreatePostComponent = ({
     }
   };
 
+  const MAX_FILE_SIZE_MB = 5;
+  const MAX_FILENAME_LENGTH = 90;
+
+  const truncateFilename = (name: string): string => {
+    if (name.length <= MAX_FILENAME_LENGTH) return name;
+    const ext = name.split(".").pop() ?? "";
+    const baseName = name.slice(0, name.length - ext.length - 1);
+    const availableLength = MAX_FILENAME_LENGTH - ext.length - 1;
+    return `${baseName.slice(0, Math.max(availableLength, 1))}.${ext}`;
+  };
+
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = Array.from(e.target.files ?? []);
     const allowedFiles = selected.filter(
@@ -110,13 +121,22 @@ const CreatePostComponent = ({
       message.warning("Only images and videos are allowed");
     }
 
+    const validatedFiles = allowedFiles.filter((file) => {
+      const sizeMB = file.size / 1024 / 1024;
+      if (sizeMB > MAX_FILE_SIZE_MB) {
+        message.warning(`"${truncateFilename(file.name)}" exceeds 5MB limit`);
+        return false;
+      }
+      return true;
+    });
+
     const existing = fileList.map((f) => f.originFileObj as File);
-    const combined = [...existing, ...allowedFiles].slice(0, IMPULSE_CONSTANTS.MAX_IMAGES);
+    const combined = [...existing, ...validatedFiles].slice(0, IMPULSE_CONSTANTS.MAX_IMAGES);
 
     setFileList(
       combined.map((file, idx) => ({
         uid: `-${Date.now()}-${idx}`,
-        name: file.name,
+        name: truncateFilename(file.name),
         status: "done" as const,
         originFileObj: file as RcFile,
         url: URL.createObjectURL(file),

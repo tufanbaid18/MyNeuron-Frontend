@@ -29,19 +29,28 @@ const PageImageUpload = ({
     initialProfileUrl ?? null,
   );
 
-  const validateFile = (file: File): boolean => {
-    if (!PAGE_IMAGE_CONSTANTS.ALLOWED_TYPES.some((t) => t === file.type)) {
-      message.error(`Only ${PAGE_IMAGE_CONSTANTS.ALLOWED_LABEL} allowed`);
-      return false;
-    }
-    if (file.size > PAGE_IMAGE_CONSTANTS.MAX_SIZE_MB * 1024 * 1024) {
-      message.error(
-        `Image must be under ${PAGE_IMAGE_CONSTANTS.MAX_SIZE_MB}MB`,
-      );
-      return false;
-    }
-    return true;
-  };
+  const MAX_FILE_SIZE_MB = 5;
+const MAX_FILENAME_LENGTH = 90;
+
+const truncateFilename = (name: string): string => {
+  if (name.length <= MAX_FILENAME_LENGTH) return name;
+  const ext = name.split(".").pop() ?? "";
+  const baseName = name.slice(0, name.length - ext.length - 1);
+  const availableLength = MAX_FILENAME_LENGTH - ext.length - 1;
+  return `${baseName.slice(0, Math.max(availableLength, 1))}.${ext}`;
+};
+
+const validateFile = (file: File): boolean => {
+  if (!PAGE_IMAGE_CONSTANTS.ALLOWED_TYPES.some((t) => t === file.type)) {
+    message.error(`Only ${PAGE_IMAGE_CONSTANTS.ALLOWED_LABEL} allowed`);
+    return false;
+  }
+  if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+    message.error(`"${truncateFilename(file.name)}" exceeds 5MB limit`);
+    return false;
+  }
+  return true;
+};
 
   const placeholderGradient = useMemo(
     () =>

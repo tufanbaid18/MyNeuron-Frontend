@@ -4,7 +4,7 @@ import {
   SafetyOutlined,
   WarningOutlined,
 } from "@ant-design/icons";
-import { Alert, Button, Spin, Tag, Typography, message } from "antd";
+import { Alert, Button, Modal, Spin, Tag, Typography, message } from "antd";
 import type { GlobalToken } from "antd/es/theme/interface";
 import { useCallback, useState } from "react";
 
@@ -54,6 +54,9 @@ const INITIAL_STATE: PaymentFlowState = {
   errorMessage: null,
 };
 
+const MAX_RAZORPAY_DISMISSALS = 2;
+const RAZORPAY_DISMISSAL_KEY = "gatc_razorpay_dismiss_count";
+
 export const PaymentStep = ({
   token,
   selectedPricing,
@@ -63,6 +66,10 @@ export const PaymentStep = ({
   onBack,
 }: PaymentStepProps) => {
   const [flowState, setFlowState] = useState<PaymentFlowState>(INITIAL_STATE);
+  const [razorpayDismissCount, setRazorpayDismissCount] = useState(() => {
+    return Number(sessionStorage.getItem(RAZORPAY_DISMISSAL_KEY) ?? 0);
+  });
+  const [dismissModalOpen, setDismissModalOpen] = useState(false);
 
   const registration = useGatcRegistration();
   const createOrder = useCreateOrder();
@@ -72,6 +79,11 @@ export const PaymentStep = ({
 
   // ── Step 1: Create Registration (if not already created) ──
   const handleStartPayment = useCallback(async () => {
+    // Reset dismiss counter on new payment attempt
+    setRazorpayDismissCount(0);
+    sessionStorage.setItem(RAZORPAY_DISMISSAL_KEY, "0");
+    setDismissModalOpen(false);
+
     setFlowState({
       status: PaymentFlowStatus.REGISTERING,
       registrationId: registrationId,
@@ -183,9 +195,18 @@ export const PaymentStep = ({
         theme: { color: GATC_CONSTANTS.RAZORPAY_THEME_COLOR },
         modal: {
           ondismiss: () => {
-            // User closed the popup — retry by creating a new order
-            // Backend tracks attempt count and will return 400 after 3
-            handleCreateOrder(regId);
+            const newCount = razorpayDismissCount + 1;
+            setRazorpayDismissCount(newCount);
+            sessionStorage.setItem(RAZORPAY_DISMISSAL_KEY, String(newCount));
+
+            if (newCount >= MAX_RAZORPAY_DISMISSALS) {
+              setFlowState((prev) => ({
+                ...prev,
+                status: PaymentFlowStatus.MANUAL_PAYMENT,
+              }));
+            } else {
+              setDismissModalOpen(true);
+            }
           },
         },
       };
@@ -434,6 +455,47 @@ export const PaymentStep = ({
             </div>
           </div>
         )}
+
+      {/* Dismiss choice modal — shown after first Razorpay dismiss */}
+      <Modal
+        title="Payment not completed"
+        open={dismissModalOpen}
+        footer={[
+          <Button
+            key="manual"
+            shape="round"
+            onClick={() => {
+              setDismissModalOpen(false);
+              setFlowState((prev) => ({
+                ...prev,
+                status: PaymentFlowStatus.MANUAL_PAYMENT,
+              }));
+            }}
+          >
+            Use Manual Payment
+          </Button>,
+          <Button
+            key="retry"
+            type="primary"
+            shape="round"
+            onClick={() => {
+              setDismissModalOpen(false);
+              handleStartPayment();
+            }}
+          >
+            Try Again
+          </Button>,
+        ]}
+        onCancel={() => setDismissModalOpen(false)}
+        centered
+      >
+        <Text>
+          You closed the payment window without completing the payment.{" "}
+          {MAX_RAZORPAY_DISMISSALS - razorpayDismissCount} attempt
+          {MAX_RAZORPAY_DISMISSALS - razorpayDismissCount !== 1 ? "s" : ""}{" "}
+          remaining before automatic switch to manual payment.
+        </Text>
+      </Modal>
     </div>
   );
 };

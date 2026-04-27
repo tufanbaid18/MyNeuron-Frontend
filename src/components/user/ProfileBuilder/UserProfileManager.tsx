@@ -40,6 +40,17 @@ type UserProfileManagerProps = {
   mode?: "profile" | "registration";
 };
 
+const MAX_FILE_SIZE_MB = 5;
+const MAX_FILENAME_LENGTH = 90;
+
+const truncateFilename = (name: string): string => {
+  if (name.length <= MAX_FILENAME_LENGTH) return name;
+  const ext = name.split(".").pop() ?? "";
+  const baseName = name.slice(0, name.length - ext.length - 1);
+  const availableLength = MAX_FILENAME_LENGTH - ext.length - 1;
+  return `${baseName.slice(0, Math.max(availableLength, 1))}.${ext}`;
+};
+
 const UserProfileManager: React.FC<UserProfileManagerProps> = ({
   mode = "profile",
 }) => {
@@ -243,9 +254,9 @@ const UserProfileManager: React.FC<UserProfileManagerProps> = ({
                     showUploadList={false}
                     accept="image/*"
                     beforeUpload={(file) => {
-                      const isWithinLimit = file.size / 1024 / 1024 <= 5;
-                      if (!isWithinLimit) {
-                        message.error("Image must be smaller than 5MB.");
+                      const sizeMB = file.size / 1024 / 1024;
+                      if (sizeMB > MAX_FILE_SIZE_MB) {
+                        message.error(`"${truncateFilename(file.name)}" exceeds 5MB limit`);
                         return Upload.LIST_IGNORE;
                       }
                       return true;

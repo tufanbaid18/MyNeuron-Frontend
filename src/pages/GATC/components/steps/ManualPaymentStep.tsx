@@ -28,6 +28,16 @@ import { manualPaymentSchema } from "../../../../validations/gatc.schemas";
 
 const { Text, Paragraph } = Typography;
 
+const MAX_FILENAME_LENGTH = 90;
+
+const truncateFilename = (name: string): string => {
+  if (name.length <= MAX_FILENAME_LENGTH) return name;
+  const ext = name.split(".").pop() ?? "";
+  const baseName = name.slice(0, name.length - ext.length - 1);
+  const availableLength = MAX_FILENAME_LENGTH - ext.length - 1;
+  return `${baseName.slice(0, Math.max(availableLength, 1))}.${ext}`;
+};
+
 type ManualPaymentStepProps = {
   token: GlobalToken;
   registrationId: number;
@@ -182,7 +192,7 @@ export const ManualPaymentStep = ({
                 GATC_CONSTANTS.MAX_SCREENSHOT_SIZE_MB * 1024 * 1024;
               if (!isValidSize) {
                 message.error(
-                  `File must be under ${GATC_CONSTANTS.MAX_SCREENSHOT_SIZE_MB}MB.`,
+                  `"${truncateFilename(file.name)}" exceeds ${GATC_CONSTANTS.MAX_SCREENSHOT_SIZE_MB}MB limit`,
                 );
                 return Upload.LIST_IGNORE;
               }

@@ -6,6 +6,8 @@ import {
 import { Card, Form, Grid, Skeleton, Steps, message, theme } from "antd";
 import { useEffect, useState } from "react";
 
+import { APP_ROUTES } from "../../constants/app.routes";
+import { env } from "../../constants/env";
 import {
   useUpdateUserProfile,
   useUserProfile,
@@ -22,10 +24,8 @@ import {
   useScientificInterest,
   useUpdateScientificInterest,
 } from "../../hooks/user/useUserScientificInterests";
-import type { EventPricing } from "../../types/gatc/gatc.types";
-
-import { APP_ROUTES } from "../../constants/app.routes";
 import { RegisteredEventPaymentStatus } from "../../types/user/user.types";
+import type { EventPricing } from "../../types/gatc/gatc.types";
 import { type RegistrationFormValues } from "./components/Registration.types";
 import { allRequiredFieldsFilled } from "./components/Registration.utils";
 import { RegistrationHeroBanner } from "./components/RegistrationHeroBanner";
@@ -112,16 +112,22 @@ export default function GatcRegistration() {
     form,
   ]);
   useEffect(() => {
-    const isRegistered =
-      user?.registered_events.find(
-        (event) =>
-          event.payment_status === RegisteredEventPaymentStatus.PAID ||
-          event.payment_status === RegisteredEventPaymentStatus.MANUAL_VERIFIED,
-      ) !== undefined;
-    if (isRegistered) {
+    if (!user || loadingUser) return;
+
+    const defaultEventId = Number(env.VITE_DEFAULT_GATC_EVENT_ID);
+    const paymentStatus = user.registered_events?.find(
+      (event) => event.event_id === defaultEventId,
+    )?.payment_status;
+
+    // If user has any non-pending payment status, redirect away from registration
+    if (
+      paymentStatus === RegisteredEventPaymentStatus.PAID ||
+      paymentStatus === RegisteredEventPaymentStatus.MANUAL_VERIFIED ||
+      paymentStatus === RegisteredEventPaymentStatus.MANUAL_PENDING
+    ) {
       window.location.href = APP_ROUTES.GATC;
     }
-  }, [user]);
+  }, [user, loadingUser]);
 
   // ── Save & Continue handler ─────────────────────────────────
   const handleSaveAndContinue = async () => {
